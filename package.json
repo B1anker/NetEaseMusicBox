@@ -23,6 +23,7 @@
     "koa-bodyparser": "^4.1.0",
     "koa-router": "^7.1.0",
     "net": "^1.0.2",
+    "normalize.css": "^5.0.0",
     "request": "^2.80.0",
     "tls": "0.0.1",
     "vue": "^2.2.1",
@@ -97,7 +98,7 @@
     "webpack-merge": "^2.6.1"
   },
   "engines": {
-    "node": ">= 4.0.0",
+    "node": ">= 7.6.0",
     "npm": ">= 3.0.0"
   },
   "browserlist": [
