@@ -1,8 +1,8 @@
 'use strict';
 
-const origin = 'http://music.163.com';
+var origin = 'http://music.163.com';
 
-const globalOption = {
+var globalOption = {
   headers: {
     'Origin': origin,
     'Referer': origin,
@@ -11,4 +11,4 @@ const globalOption = {
   proxy: false
 };
 
-module.exports = { origin, globalOption };
+module.exports = { origin: origin, globalOption: globalOption };

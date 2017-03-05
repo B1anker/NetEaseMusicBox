@@ -1,24 +1,37 @@
 <template>
 <div class="hello">
-	hello
+	<input type="text" v-model="content" @keyup.enter="search">
 </div>
 </template>
 
 <script>
-import {api} from 'NeteaseCloudMusicApi'
-
+import axios from 'axios';
 export default {
   name: 'hello',
   mounted() {
-		api.search('年度之歌',data => {
-		    console.log(data)
-		})
+		axios.post('/music/signin', {
+			id: 100,
+			name: 'b1anker'
+		}).then((res) => {
+			console.log(res.data);
+		}).catch((err) => {
+			console.log(err);
+		});
   },
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      content: '周杰伦'
     }
-  }
+  },
+	methods: {
+		search() {
+			axios.get(`/music/search?content=${ this.content }`).then((res) => {
+				console.log(res.data.result.songs);
+			}).catch((err) => {
+				console.log(err);
+			});
+		}
+	}
 }
 </script>
 

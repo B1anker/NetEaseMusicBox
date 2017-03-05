@@ -1,14 +1,20 @@
-import api from './NetEaseMusicBoxApi/api';
-import Koa form 'koa';
+import api from './NetEaseMusicBoxApi/api.js';
+import Koa from 'koa';
+import KoaRouter from 'koa-router';
+import bodyParser from 'koa-bodyparser';
+const app = new Koa();
+const router = KoaRouter();
+const port = 3000;
 
-api.search('年度之歌').then((res) => {
-	let song = res.result.songs[0].id;
-	console.log(song)
-	api.song(song).then((res) => {
-		console.log(res);
-	}).catch((err) => {
-		console.log(err);
-	});
-}).catch((err) => {
-	console.log(err);
-});
+app.use(bodyParser());
+
+app.use(api.routes(), api.allowedMethods());
+
+console.log(`listening in ${port}`);
+
+app.listen(port, function(err) {
+	if (err) {
+		console.log(err)
+		return
+	}
+})
