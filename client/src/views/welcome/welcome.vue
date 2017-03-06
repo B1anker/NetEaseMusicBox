@@ -1,7 +1,15 @@
 <template>
 <div class="welcome">
-	<my-button val="手机号登录"></my-button>
-	<my-button val="注册"></my-button>
+	<div class="button-wrap">
+		<my-button val="登录" @click="signin"></my-button>
+		<my-button val="注册"></my-button>
+	</div>
+	<p class="try" @click="enterHome">
+		<span>游客试用</span>
+		<i class="icon icon-angle-right degree-1"></i>
+		<i class="icon icon-angle-right degree-2"></i>
+		<i class="icon icon-angle-right degree-3"></i>
+	</p>
 </div>
 </template>
 
@@ -15,14 +23,7 @@ export default {
 		myButton
 	},
 	mounted() {
-		axios.post('/music/signin', {
-			id: 100,
-			name: 'b1anker'
-		}).then((res) => {
-			console.log(res.data);
-		}).catch((err) => {
-			console.log(err);
-		});
+
 	},
 	data() {
 		return {
@@ -30,6 +31,14 @@ export default {
 		}
 	},
 	methods: {
+		signin() {
+			this.$router.push('/signin');
+		},
+
+		enterHome() {
+			this.$router.push('/home');
+		},
+
 		search() {
 			axios.get(`/music/search?content=${ this.content }`).then((res) => {
 				console.log(res.data.result.songs);
@@ -60,5 +69,38 @@ export default {
 				margin-top: 0.15rem;
 			}
 		}
+
+		.try{
+			margin-top: 0.26rem;
+			color: rgb(102, 102, 102);
+			height: 0.2rem;
+			line-height: 0.2rem;
+
+			span{
+				font-size: 0.14rem;
+				vertical-align: top;
+				margin-right: 0.08rem;
+			}
+
+			.icon{
+				font-size: 0.16rem;
+
+				&.degree-1{
+					color: rgb(102, 102, 102);
+				}
+				&.degree-3{
+					color: rgb(157, 157, 157);
+				}
+				&.degree-3{
+					color: rgb(203, 203, 203);
+				}
+			}
+
+			&:hover{
+				cursor: pointer;
+			}
+		}
+
+
 	}
 </style>

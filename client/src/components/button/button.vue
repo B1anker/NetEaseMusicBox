@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="button">
-  	<button type="button" name="button">{{ val }}</button>
+  	<button type="button" name="button" @click="emitClick">{{ val }}</button>
   </div>
 </template>
 
@@ -13,6 +13,11 @@ export default {
 	data() {
 		return {
 
+		}
+	},
+	methods: {
+		emitClick() {
+			this.$emit("click");
 		}
 	}
 }
@@ -31,6 +36,11 @@ export default {
 			font-size: 0.16rem;
 			border: 1px solid $base-color;
 			color: $base-color;
+			&:hover{
+				color: white;
+				cursor: pointer;
+				background: $base-color;
+			}
 		}
 	}
 </style>

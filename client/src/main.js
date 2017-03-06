@@ -4,7 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 require('normalize.css');
-
+require('@/scss/base/index.scss');
+require('@/scss/common/index.scss');
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

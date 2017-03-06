@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-		<router-view></router-view>
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
   </div>
 </template>
 
@@ -18,9 +20,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 	margin: 0 auto;
-	width: 100%;
-	height: 100%;
-	min-width: 3.2rem;
-	min-height: 5.68rem;
+	width: 3.2rem;
+	height: 5.68rem;
 }
 </style>
