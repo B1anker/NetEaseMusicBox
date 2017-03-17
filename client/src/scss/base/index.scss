@@ -29,7 +29,15 @@ a {
   }
 }
 
-button {
+button{
+	border: none;
+	border-radius: 0.05rem;
+	&[disabled="disabled"]{
+		color: rgb(207, 207, 207) !important;
+	}
+}
+
+button, input {
 	&:focus{
     outline: none;
   }
