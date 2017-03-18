@@ -28,6 +28,12 @@ export default StyleSheet.create({
         "WebkitFontSmoothing": "antialiased",
         "MozOsxFontSmoothing": "grayscale"
     },
+    "icon-error:before": {
+        "content": "\\e903"
+    },
+    "icon-correct:before": {
+        "content": "\\e904"
+    },
     "icon-account:before": {
         "content": "\\e901"
     },

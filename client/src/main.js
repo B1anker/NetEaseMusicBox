@@ -6,7 +6,13 @@ import router from './router'
 require('normalize.css');
 require('@/scss/base/index.scss');
 require('@/scss/common/index.scss');
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+import { RadonInstall } from 'radon-ui'
+
+Vue.use(RadonInstall, {
+    Notification: true
+})
 
 /* eslint-disable no-new */
 new Vue({

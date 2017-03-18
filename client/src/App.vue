@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-		<keep-alive>
-			<router-view></router-view>
-		</keep-alive>
+		<router-view></router-view>
+		<rd-notification></rd-notification>
   </div>
 </template>
 
@@ -22,5 +21,6 @@ export default {
 	margin: 0 auto;
 	width: 3.2rem;
 	height: 5.68rem;
+	position: relative;
 }
 </style>
