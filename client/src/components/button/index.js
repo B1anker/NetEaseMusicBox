@@ -1,4 +1,4 @@
-import Button from './button';
+import Button from './main';
 
 /* istanbul ignore next */
 Button.install = function(Vue) {

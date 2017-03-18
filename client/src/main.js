@@ -7,13 +7,9 @@ require('normalize.css');
 require('@/scss/base/index.scss');
 require('@/scss/common/index.scss');
 Vue.config.productionTip = false;
+import MyUI from '@/components/index';
 
-import { RadonInstall } from 'radon-ui'
-
-Vue.use(RadonInstall, {
-    Notification: true
-})
-
+Vue.use(MyUI)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

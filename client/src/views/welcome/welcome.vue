@@ -15,12 +15,10 @@
 
 <script>
 import axios from 'axios';
-import myButton from '@/components/button/index';
 
 export default {
 	name: 'welcome',
 	components: {
-		myButton
 	},
 	mounted() {
 

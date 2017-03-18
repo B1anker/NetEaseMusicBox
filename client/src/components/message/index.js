@@ -1,8 +1,3 @@
-import Message from './message';
-
-/* istanbul ignore next */
-Message.install = function(Vue) {
-  Vue.component(Message.name, Message);
-};
+import Message from './main';
 
 export default Message;
