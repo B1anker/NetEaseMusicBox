@@ -1,4 +1,4 @@
-import api from './NetEaseMusicBoxApi/api.js';
+import api from './api/index.js';
 import Koa from 'koa';
 import KoaRouter from 'koa-router';
 import bodyParser from 'koa-bodyparser';

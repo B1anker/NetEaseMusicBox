@@ -47,15 +47,15 @@ export default {
 			this.$router.back();
 		},
 		handleSignin() {
-			if (!this.username.match(/\d{11}/)) {
+			if (!this.username.match(/[a-zA-Z0-9_]{3,16}/)) {
 				this.$message({
-					message: '手机号码应该是11位数字',
+					message: '用户名不能有非法字符',
 					type: 'error',
 					duration: 1000
 				});
 				return ;
 			}
-			this.unAblebToSignin = true;
+			//this.unAblebToSignin = true;
 			signin({
 				username: this.username,
 				password: this.password
@@ -68,7 +68,7 @@ export default {
 			if (this.username !== '' && this.password !== '') {
 				this.unAblebToSignin = false;
 			} else {
-				this.unAblebToSignin = true;
+				//this.unAblebToSignin = true;
 			}
 		}
 	},
