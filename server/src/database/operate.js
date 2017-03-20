@@ -9,17 +9,17 @@ class Operate {
 		this.collection = null;
 	}
 
-	connect(table) {
-		return new Promise((resolve, reject) => {
+	async connect(table) {
+		return await new Promise((resolve, reject) => {
 			MongoClient.connect(this.url, (err, db) => {
 				if (!err) {
 					resolve(db);
 				}
 				reject(err);
 			});
-		}).then((db) => {
-			this.db = db;
-			this.collection = db.collection(table);
+		}).then((res) => {
+			this.db = res;
+			this.collection = res.collection(table);
 			return this;
 		});
 	}
@@ -29,13 +29,15 @@ class Operate {
 		return this;
 	}
 
-	find(query) {
-		return (ctx, callback) => {
+	async find(query) {
+		return await new Promise((resolve, reject) => {
 			this.collection.find(query).toArray(function(err, res) {
-				assert.equal(err, null);
-				callback && callback(res);
+				if (!err) {
+					resolve(res);
+				}
+				reject(err);
 			});
-		}
+		});
 	}
 
 	close() {
