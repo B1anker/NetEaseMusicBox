@@ -55,20 +55,26 @@ export default {
 				});
 				return ;
 			}
-			//this.unAblebToSignin = true;
+			this.unAblebToSignin = true;
 			signin({
 				username: this.username,
 				password: this.password
 			}).then((res) => {
-				console.log(res);
 				this.unAblebToSignin = false;
+				this.$router.push('/home');
+			}).catch((err) => {
+				this.$message({
+					message: '账号或密码错误',
+					type: 'error',
+					duration: 1000
+				});
 			});
 		},
 		validate() {
 			if (this.username !== '' && this.password !== '') {
 				this.unAblebToSignin = false;
 			} else {
-				//this.unAblebToSignin = true;
+				this.unAblebToSignin = true;
 			}
 		}
 	},

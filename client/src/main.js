@@ -7,7 +7,7 @@ require('normalize.css');
 require('@/scss/base/index.scss');
 require('@/scss/common/index.scss');
 Vue.config.productionTip = false;
-import MyUI from '@/components/index';
+import MyUI from '@/packages/index';
 
 Vue.use(MyUI)
 /* eslint-disable no-new */

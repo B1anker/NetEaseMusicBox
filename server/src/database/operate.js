@@ -1,5 +1,4 @@
-import mongodb from 'mongodb';
-import assert from 'assert';
+import mongodb from 'mongodb'; 
 const MongoClient = mongodb.MongoClient;
 
 class Operate {

@@ -28,6 +28,9 @@ export default StyleSheet.create({
         "WebkitFontSmoothing": "antialiased",
         "MozOsxFontSmoothing": "grayscale"
     },
+    "icon-search:before": {
+        "content": "\\e905"
+    },
     "icon-error:before": {
         "content": "\\e903"
     },
@@ -42,8 +45,5 @@ export default StyleSheet.create({
     },
     "icon-back:before": {
         "content": "\\e900"
-    },
-    "icon-angle-right:before": {
-        "content": "\\e915"
     }
 });
