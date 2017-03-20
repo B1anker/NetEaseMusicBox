@@ -15,7 +15,16 @@ const fetchData = (option) => {
 	});
 }
 
+const toArray = (obj) => {
+	const result = [];
+	for(let key of Object.keys(obj)){
+		obj[key] && result.push(obj[key]);
+	}
+	return result;
+}
+
 export {
 	deepCopy,
-	fetchData
+	fetchData,
+	toArray
 };
