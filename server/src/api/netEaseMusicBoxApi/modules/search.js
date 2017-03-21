@@ -1,20 +1,11 @@
 import KoaRouter from 'koa-router';
 import {
-	globalOption,
-	origin
-} from "../config";
-import {
-	deepCopy,
 	fetchData
 } from '../util';
 
 const serachApi = KoaRouter();
 
 serachApi.get('/netEaseApi/search', async(ctx, next) => {
-	const option = deepCopy(globalOption),
-		url = `${origin}/api/search/get`,
-		method = 'POST';
-
 	/**
 	 * 搜索api
 	 * @param {String} [s] [搜索内容]
@@ -24,18 +15,20 @@ serachApi.get('/netEaseApi/search', async(ctx, next) => {
 	 */
 	const form = {
 		s: ctx.query.content,
-		limit: ctx.query.limit || 3,
+		limit: ctx.query.limit || 10,
 		type: ctx.query.type || 1,
-		offset: ctx.query.offset || 0
+		offset: ctx.query.offset || 0,
+		total: true,
+		csrf_token: ''
 	};
 
-	Object.assign(option, {
-		url,
+	const options = Object.assign({}, {
+		url: 'weapi/cloudsearch/get/web?csrf_token=',
 		form,
-		method
+		dataType: 'json'
 	});
 
-	ctx.body = await fetchData(option);
+	ctx.body = await fetchData(options);
 });
 
 export default serachApi;

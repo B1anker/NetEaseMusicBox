@@ -18,6 +18,8 @@
   "dependencies": {
     "NeteaseCloudMusicApi": "^1.5.2",
     "axios": "^0.15.3",
+    "big-integer": "^1.6.17",
+    "crypto": "0.0.3",
     "fs": "0.0.1-security",
     "koa": "^2.0.1",
     "koa-bodyparser": "^4.1.0",
