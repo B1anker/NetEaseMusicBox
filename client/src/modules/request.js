@@ -4,12 +4,22 @@ function signin(params) {
 	return axios.post('/music/authority/signin', params);
 }
 
-function search(id) {
+function search(content) {
+	return axios.get(`/music/netEaseApi/song?content=${content}`);
+}
+
+function detail(id) {
+	return axios.get(`/music/netEaseApi/detail?id=${id}`);
+}
+
+function getMp3Url(id) {
 	return axios.get(`/music/netEaseApi/song?id=${id}`);
 }
 
 
 export {
 	signin,
-	search
+	search,
+	detail,
+	getMp3Url
 }

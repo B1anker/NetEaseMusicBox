@@ -22,6 +22,7 @@ const fetchData = (options) => {
 			if (err) return reject(err);
 			if (dataType === 'json') {
 				try {
+					console.log(result);
 					result = JSON.parse(result);
 				} catch (e) {
 					return reject(e);

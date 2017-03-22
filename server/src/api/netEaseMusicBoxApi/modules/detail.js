@@ -21,7 +21,8 @@ detailApi.get('/netEaseApi/detail', async(ctx, next) => {
 		form,
 		dataType: 'json'
 	});
-	ctx.body = await fetchData(options);
+	const data = await fetchData(options);
+	ctx.body = data;
 });
 
 export default detailApi;
