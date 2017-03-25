@@ -93,6 +93,7 @@ export default {
 	methods: {
 		init() {
 			this.mp3Dom = this.$refs.mp3;
+			this.mp3Dom.volume = localStorage.getItem('volume');
 			this.getDetail().then(() => {
 				this.getMp3();
 			});
@@ -211,9 +212,6 @@ export default {
 			if(this.mp3Dom){
 				this.mp3Dom.volume = level;
 				return ;
-			}
-			if(localStorage.getItem('volume')){
-				this.mp3Dom && (this.mp3Dom.volume = localStorage.getItem('volume'));
 			}
 		}
 	}
