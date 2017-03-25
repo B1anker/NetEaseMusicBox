@@ -4,14 +4,14 @@
 		</div>
 		<div class="main">
 			<div class="head">
-				<i class="icon icon-back"></i>
+				<i class="icon icon-back" @touchstart="handleBack"></i>
 				<div class="music-and-artist">
 					<hgroup>
 						<h3 class="music">{{ this.music }}</h3>
 						<h4 class="artist">{{ this.artist }}</h4>
 					</hgroup>
 				</div>
-				<i class="icon icon-share"></i>
+				<i class="icon icon-share" @touchstart="handleBack"></i>
 			</div>
 			<keep-alive>
 				<cover :onplaying="onplaying"
@@ -97,6 +97,14 @@ export default {
 			this.getDetail().then(() => {
 				this.getMp3();
 			});
+		},
+
+		handleBack() {
+			this.$router.go(-1);
+		},
+
+		handleShare() {
+
 		},
 
 		getDetail() {

@@ -15,7 +15,7 @@
 				<input type="password" class="password" v-model="password" placeholder="密码">
 			</div>
 			<div class="button-wrap">
-				<button type="button" name="button" @click="handleSignin" :disabled="unAblebToSignin">
+				<button type="button" name="button" @click="handleSignin" :disabled="unAbleToSignin">
 					登录
 				</button>
 			</div>
@@ -33,10 +33,9 @@ export default {
 	name: 'signin',
 	data() {
 		return {
-			unAblebToSignin: true,
+			unAbleToSignin: true,
 			username: '',
-			password: '',
-			messageVisible: false
+			password: ''
 		}
 	},
 	mounted() {
@@ -55,12 +54,12 @@ export default {
 				});
 				return ;
 			}
-			this.unAblebToSignin = true;
+			this.unAbleToSignin = true;
 			signin({
 				username: this.username,
 				password: this.password
 			}).then((res) => {
-				this.unAblebToSignin = false;
+				this.unAbleToSignin = false;
 				this.$router.push('/home');
 			}).catch((err) => {
 				this.$message({
@@ -72,9 +71,9 @@ export default {
 		},
 		validate() {
 			if (this.username !== '' && this.password !== '') {
-				this.unAblebToSignin = false;
+				this.unAbleToSignin = false;
 			} else {
-				this.unAblebToSignin = true;
+				this.unAbleToSignin = true;
 			}
 		}
 	},
