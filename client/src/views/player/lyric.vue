@@ -44,6 +44,12 @@ export default {
 					max: (320 - 212) / 2 + 212
 				}
 			});
+
+			if(localStorage.getItem('volume')){
+				this.level = localStorage.getItem('volume');
+				this.$refs.volumePoint.style.left = localStorage.getItem('volume') * 212 + 'px';
+			}
+
 			this.setVolume();
 			this.$refs.volumePoint.style.left = this.level * 212 + 'px';
 		},
@@ -59,7 +65,7 @@ export default {
 
 		emitTouchStart() {
 			clearTimeout(this.timer);
-			this.$emit('touchstart');
+			this.$emit('touchstart', this.level);
 		},
 
 		handleTouchstart() {
