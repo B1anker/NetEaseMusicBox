@@ -28,6 +28,12 @@ export default StyleSheet.create({
         "WebkitFontSmoothing": "antialiased",
         "MozOsxFontSmoothing": "grayscale"
     },
+    "icon-stop:before": {
+        "content": "\\e918"
+    },
+    "icon-start:before": {
+        "content": "\\e914"
+    },
     "icon-account:before": {
         "content": "\\e900"
     },
@@ -87,9 +93,6 @@ export default StyleSheet.create({
     },
     "icon-singer:before": {
         "content": "\\e913"
-    },
-    "icon-start:before": {
-        "content": "\\e914"
     },
     "icon-time:before": {
         "content": "\\e915"

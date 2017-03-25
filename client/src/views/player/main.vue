@@ -13,9 +13,22 @@
 				</div>
 				<i class="icon icon-share"></i>
 			</div>
-			<div class="disc-wrap"></div>
+			<div class="stick" :class="{active: onplaying}"></div>
+			<div class="disc-wrap" ref="rotateDom">
+				<img :src="picUrl" alt="music">
+			</div>
+			<div class="favor-bar"></div>
+			<div class="process-wrap" ref="processWrap">
+				<span class="current">{{ transformDuation(current) }}</span>
+				<div class="process-bar">
+					<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+				</div>
+				<span class="total">{{ transformDuation(total) }}</span>
+			</div>
 			<div class="player-bar">
-
+				<i class="icon icon-prev"></i>
+				<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
+				<i class="icon icon-next"></i>
 			</div>
 		</div>
 		<div class="audio">
@@ -28,12 +41,21 @@
 
 <script>
 import { detail, getMp3Url } from '@/modules/request';
-
+import Drag from './drag';
 export default {
 	name: 'player',
 	mounted() {
 		this.$nextTick(() => {
 			this.init();
+			this.processDrag = new Drag({
+				el: this.$refs.processWrap,
+				bar: 'process-bar',
+				point: 'point',
+				boundary: {
+					min: (320 - 212) / 2 + 8,
+					max: (320 - 212) / 2 + 212
+				}
+			});
 		});
 	},
 	data() {
@@ -43,16 +65,25 @@ export default {
 			music: '',
 			url: '',
 			picUrl: '',
-			id: 418603077
+			id: 418603077,
+			played: false,
+			onplaying: false,
+			current: 0,
+			total: 0,
+			step: 0,
+			timer: null,
+			processDrag: null
 		}
 	},
 	methods: {
 		init() {
 			this.mp3Dom = this.$refs.mp3;
+			this.$refs.rotateDom.style.animationPlayState = 'paused';
 			this.getDetail().then(() => {
 				this.getMp3();
 			});
 		},
+
 		getDetail() {
 			return detail(this.id).then((res) => {
 				const song = res.data.songs[0];
@@ -61,17 +92,113 @@ export default {
 				this.picUrl = song.al.picUrl;
 			});
 		},
+
 		getMp3() {
 			return getMp3Url(this.id).then((res) => {
 				const song = res.data.songs[0];
 				this.url = song.url;
+				this.played = false;
 			});
+		},
+
+		startTimer() {
+			this.timer = setInterval(() => {
+				this.current++;
+				if(this.mp3Dom.ended){
+					this.stopTimer();
+					this.current = 0;
+					this.onplaying = false;
+					this.$refs.rotateDom.style.animationPlayState = 'paused';
+				}
+			}, 1000);
+		},
+
+		stopTimer() {
+			clearInterval(this.timer);
+		},
+
+		transformDuation(seconds) {
+			const minutes = Math.floor(seconds / 60);
+			seconds = Math.floor(seconds - minutes * 60);
+			if(seconds < 10){
+				seconds = '0' + seconds;
+			}
+			return `${ minutes }:${ seconds }`
+		},
+
+		process() {
+			return this.current * this.step + 'px';
+		},
+
+		load() {
+			this.mp3Dom.load();
+			this.current = 0;
+			this.mp3Dom.addEventListener('canplay', this.canplay, false);
+		},
+
+		canplay(e) {
+			this.played = true;
+			this.$refs.rotateDom.style.animationPlayState = 'running';
+			this.total = this.mp3Dom.duration;
+			this.step = (212 / this.total).toFixed(2);
+			this.processDrag.start(function(e) {
+				e.preventDefault();
+
+				if(e.target.className !== 'point'){
+					return;
+				}
+				
+				this.stopTimer();
+			}.bind(this));
+			this.processDrag.end(function(e) {
+				e.preventDefault();
+
+				if(e.target.className !== 'point'){
+					return;
+				}
+
+				this.current =  ((parseInt(this.$refs.processPoint.style.left) / 212) * this.total).toFixed(2);
+				this.mp3Dom.currentTime = this.current;
+				this.startTimer();
+			}.bind(this));
+			this.mp3Dom.play();
+			this.stopTimer();
+			this.startTimer();
+			this.onplaying = true;
+			this.mp3Dom.removeEventListener('canplay', this.canplay, false);
+		},
+
+		play() {
+			if(!this.played){
+				this.load();
+				return ;
+			}
+
+			if(!this.played){
+				return;
+
+			}
+
+			this.$refs.rotateDom.style.animationPlayState = this.mp3Dom.paused ? 'running' : 'paused';
+
+			if(this.mp3Dom.paused && !this.onplaying){
+				this.mp3Dom.play();
+				this.stopTimer();
+				this.startTimer();
+				this.onplaying = true;
+				return ;
+			}
+
+			this.mp3Dom.pause();
+			this.stopTimer();
+			this.onplaying = false;
 		}
 	}
 }
 </script>
 
 <style lang="scss">
+	$base-color: rgb(212, 60, 51);
 	.player {
 		width: 100%;
 		height: 100%;
@@ -139,6 +266,143 @@ export default {
 							font-size: 0.1rem;
 						}
 					}
+				}
+			}
+
+			.stick{
+				position: absolute;
+				top: 0.45rem;
+				z-index: 10;
+				width: 100%;
+				height: 1.33rem;
+				overflow: hidden;
+
+				&:after{
+					content: '';
+					position: absolute;
+					width: 0.85rem;
+					height: 1.33rem;
+					top: -0.07rem;
+					left: 1.48rem;
+					background: url('../../assets/stick.png');
+					background-size: 100% 100%;
+					background-position: -10px -10px;
+					background-repeat: no-repeat;
+					transition: transform ease 0.3s;
+					transform: rotate(-45deg);
+					transform-origin: 11px 11px;
+				}
+
+				&.active:after{
+					transform: rotate(-7deg);
+				}
+			}
+
+			.disc-wrap {
+				@keyframes rotateAnimation {
+				  from {
+				    transform: rotate(0);
+				  }
+				  to {
+				    transform: rotate(360deg);
+				  }
+				}
+
+				$size: 2.25rem;
+				margin: 0.56rem auto 0.45rem auto;
+				position: relative;
+				display: flex;
+		    align-items: center;
+		    justify-content: center;
+				box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.7);
+				width: $size;
+				height: $size;
+				background: url('../../assets/disc.png');
+				background-clip: padding-box;
+				background-size: 100% 100%;
+				border-radius: 50%;
+				animation: rotateAnimation 18s linear infinite;
+
+				img{
+					height: 74%;
+    			border-radius: 50%;
+				}
+
+				&:before{
+					$size: 2.5rem;
+					content: '';
+					position: absolute;
+					top: -0.125rem;
+					left: -0.125rem;
+					width: $size;
+					height: $size;
+					border-radius: 50%;
+					background-color: rgba(255, 255, 255, 0.1);
+					box-shadow: 0 0 0.1rem rgba(130, 130, 130, 0.7);
+				}
+			}
+
+			.favor-bar{
+				width: 100%;
+				height: 0.28rem;
+			}
+
+			.process-wrap{
+				width: 100%;
+				height: 0.58rem;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+
+				.current, .total{
+					font-size: 0.06rem;
+					color: white;
+				}
+
+				.process-bar{
+					width: 2.12rem;
+					height: 0.02rem;
+					background-color: rgb(140, 140, 140);
+					position: relative;
+
+					&:before{
+						content: '';
+						position: absolute;
+					}
+
+					.point{
+						content: '';
+						position: absolute;
+						top: -0.07rem;
+						left: -0.07rem;
+						box-sizing: border-box;
+						width: 0.15rem;
+						height: 0.15rem;
+						border: 0.05rem solid white;
+						border-radius: 50%;
+						background-color: $base-color;
+					}
+				}
+			}
+
+			.player-bar{
+				height: 0.48rem;
+
+				.icon{
+					display: inline-block;
+					line-height: 0.48rem;
+					vertical-align: top;
+				}
+
+				.icon-prev, .icon-next{
+					font-size: 0.26rem;
+					color: white;
+				}
+
+				.icon-start, .icon-stop{
+					font-size: 0.48rem;
+					color: white;
+					margin: 0 0.3rem;
 				}
 			}
 		}
