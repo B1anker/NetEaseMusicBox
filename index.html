@@ -18,13 +18,18 @@
 
 		body {
 			font-size: 0;
-			display: flex;
-			align-items: center;
+			-webkit-user-select: none;/*禁用手机浏览器的用户选择功能 */
+			-moz-user-select: none;
 		}
 
 		@media screen and (min-width: 1080px){
 			html{
 				font-size: 750%;
+			}
+
+			body{
+				display: flex;
+				align-items: center;
 			}
 		}
 
