@@ -24,10 +24,10 @@
 				<lyric :onplaying="onplaying"
 					@volume="handleVolume"
 					@touchstart="switchCoverOrLyric"
+					:id="id"
 					v-if="!showCover">
 				</lyric>
 			</keep-alive>
-
 			<div class="process-wrap">
 				<span class="current">{{ transformDuation(current) }}</span>
 				<div class="process-bar">

@@ -27,7 +27,6 @@ class Drag {
 			return;
 		} else if (position.clientX < this.boundary.min) {
 			this.el.style.left = this.boundary.min - this.offset - this.halfPointWidth + 'px';
-			console.log(this.boundary.min - this.offset - this.halfPointWidth);
 			return;
 		}
 

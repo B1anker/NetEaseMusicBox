@@ -16,10 +16,28 @@
 </template>
 
 <script>
+
 import Drag from './drag';
+import { lyric } from '@/modules/request';
+
 export default {
 	props: {
-		onplaying: Boolean
+		onplaying: Boolean,
+		id: Number
+	},
+
+	created() {
+		lyric(this.id).then((res) => {
+			console.log(res.data);
+		});
+	},
+
+	watch: {
+		id(newId) {
+			lyric(newId).then((res) => {
+				console.log(res.data);
+			});
+		}
 	},
 
 	data() {

@@ -16,10 +16,15 @@ function getMp3Url(id) {
 	return axios.get(`/music/netEaseApi/song?id=${id}`);
 }
 
+function lyric(id) {
+	return axios.get(`/music/netEaseApi/lyric?id=${id}`);
+}
+
 
 export {
 	signin,
 	search,
 	detail,
-	getMp3Url
+	getMp3Url,
+	lyric
 }
