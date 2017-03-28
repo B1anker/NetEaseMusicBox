@@ -9,7 +9,7 @@
 				<i class="icon"></i>
 			</div>
 			<div class="lyric" @touchstart="handleTouchstart" ref="lyric">
-
+				<div class="lyric-container"></div>
 			</div>
 		</div>
 	</transition>
@@ -28,14 +28,14 @@ export default {
 
 	created() {
 		lyric(this.id).then((res) => {
-			console.log(res.data);
+			console.log(res.data.lrc.lyric);
 		});
 	},
 
 	watch: {
 		id(newId) {
 			lyric(newId).then((res) => {
-				console.log(res.data);
+				console.log(res.data.lrc.lyric);
 			});
 		}
 	},
