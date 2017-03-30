@@ -28,7 +28,7 @@ export default {
 
 	created() {
 		lyric(this.id).then((res) => {
-			console.log(res.data.lrc.lyric);
+			console.log(res.data.lrc.lyric.match(/\[\d{2}]:\d{2}\d{2}/g));
 		});
 	},
 
