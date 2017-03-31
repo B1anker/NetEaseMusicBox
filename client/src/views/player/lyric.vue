@@ -9,7 +9,7 @@
 				<i class="icon"></i>
 			</div>
 			<div class="lyric" @touchstart="handleTouchstart" ref="lyric">
-				<div class="lyric-container"></div>
+				<div class="lyric-container" v-html="temp" ref="roll"></div>
 			</div>
 		</div>
 	</transition>
@@ -27,23 +27,29 @@ export default {
 	},
 
 	created() {
-		lyric(this.id).then((res) => {
-			console.log(res.data.lrc.lyric.match(/\[\d{2}]:\d{2}\d{2}/g));
-		});
+		this.handleLyrics(this.id);
 	},
 
 	watch: {
 		id(newId) {
-			lyric(newId).then((res) => {
-				console.log(res.data.lrc.lyric);
-			});
+			this.handleLyrics(newId);
+			return newId;
+		},
+
+		onplaying(newState) {
+			newState && this.roll();
+			return newState;
 		}
 	},
 
 	data() {
 		return {
 			level: 1,
-			timer: null
+			timer: null,
+			times: [],
+			lyrics: [],
+			temp: '',
+			count: 0
 		}
 	},
 
@@ -91,6 +97,46 @@ export default {
 			this.timer = setTimeout(() => {
 				this.$refs.lyric.removeEventListener('touchend', this.emitTouchStart, false);
 			}, 300);
+		},
+
+		handleLyrics(id) {
+			lyric(id).then((res) => {
+				this.times = res.data.lrc.lyric.match(/\[\d{2}\:\d{2}\.\d{2}\]/g).map((value) => {
+					const time = value.slice(1, -1);
+					const min = Number(time.split(':')[0]);
+					const sec = Number(time.split(':')[1]);
+					return min * 60 + sec;
+				});
+				this.lyrics = res.data.lrc.lyric.match(/\].*\n/g).map((value) => {
+					if(value.length === 2){
+						return '<p>&nbsp;</p>';
+					}
+					return `<p>${ value.slice(1, value.length + 1).trim() }</p>`;
+				});
+				this.renderLyrics();
+			});
+		},
+
+		renderLyrics() {
+			this.temp = '';
+			this.lyrics.forEach((value, index) => {
+				this.temp += value;
+			});
+		},
+
+		roll() {
+			const ps = this.$refs.roll.querySelectorAll('p');
+			this.times.forEach((value, index) => {
+				setTimeout(() => {
+					this.$refs.roll.style.top = this.$refs.roll.offsetTop - '43' + 'px';
+					if(index === 0){
+						ps[index].className = 'on';
+					}else{
+						ps[index - 1].className = '';
+						ps[index].className = 'on';
+					}
+				}, value * 1000);
+			})
 		}
 	}
 }
@@ -137,6 +183,29 @@ export default {
 
 		.lyric{
 			height: 3.04rem;
+			position: relative;
+			overflow: hidden;
+
+			.lyric-container{
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding-top: 1.5rem;
+				width: 100%;
+			}
+		}
+	}
+</style>
+<style lang="scss">
+	.lyric-container{
+		p {
+			font-size: 0.16rem;
+			color: rgb(170, 170, 170);
+			margin-top: 0.25rem;
+
+			&.on{
+				color: white;
+			}
 		}
 	}
 </style>
