@@ -5,7 +5,7 @@ function signin(params) {
 }
 
 function search(content) {
-	return axios.get(`/music/netEaseApi/song?content=${content}`);
+	return axios.get(`/music/netEaseApi/search?content=${content}`);
 }
 
 function detail(id) {

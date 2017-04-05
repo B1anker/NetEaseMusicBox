@@ -38,11 +38,11 @@ export default {
 		},
 
 		search() {
-			axios.get(`/music/netEaseApi/search?content=${ this.content }`).then((res) => {
-				console.log(res.data.result.songs);
-			}).catch((err) => {
-				console.log(err);
-			});
+			// axios.get(`/music/netEaseApi/search?content=${ this.content }`).then((res) => {
+			// 	console.log(res.data.result.songs);
+			// }).catch((err) => {
+			// 	console.log(err);
+			// });
 		}
 	}
 }
