@@ -19,3 +19,15 @@ export function toObject(arr) {
   }
   return res;
 };
+
+export function uniq(arr) {
+	let result = [],
+		hash = {};
+	arr.forEach((item, index, arr) => {
+		if(!hash[item]){
+			hash[item] = true;
+			result.push(item);
+		}
+	});
+	return result;
+}

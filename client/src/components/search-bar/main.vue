@@ -10,19 +10,22 @@
 					@keyup.enter="handleSearch">
 			</div>
 		</div>
-		<transition name="slide-down">
-			<div class="slide-down" v-if="resultShow">
-				<ul class="lists">
-					<li class="list" v-for="list in lists">
-						<div class="info">
-							<div class="name">{{ list.name }}</div>
-							<div class="artist">{{ list.ar[0].name }}</div>
-						</div>
-						<div class="control"></div>
-					</li>
-				</ul>
+		<transition name="slide-down" v-if="historyShow">
+			<div class="history">
+
 			</div>
 		</transition>
+		<div class="slide-down" v-if="resultShow">
+			<ul class="lists">
+				<li class="list" v-for="(list, index) in lists" @click="playMusic(index)">
+					<div class="info">
+						<div class="name">{{ list.name }}</div>
+						<div class="artist">{{ list.ar[0].name }}</div>
+					</div>
+					<div class="control"></div>
+				</li>
+			</ul>
+		</div>
   </div>
 </template>
 
@@ -30,22 +33,40 @@
 import { search } from '@/modules/request';
 export default {
 	name: 'search-bar',
+
 	data() {
 		return {
 			content: '',
+			history: [],
+			historyShow: false,
 			resultShow: false,
 			lists: []
 		}
 	},
+
+	mounted() {
+		this.history = JSON.parse(localStorage.getItem('history'));
+		this.history = this.history ? this.history : [];
+	},
+
 	methods: {
 		handleClick(e) {
-			this.resultShow = true;
+			this.historyShow = true;
 		},
 
 		handleSearch() {
+			this.historyShow = false;
+			this.resultShow = true;
 			search(this.content).then((res) => {
+				console.log(this.history);
+				this.history.push(this.content);
+				localStorage.setItem('history', JSON.stringify(history));
 				this.lists = res.data.result.songs;
 			});
+		},
+
+		playMusic(index) {
+			this.$router.push({ name: '/player', params: { id: this.lists[index].id }});
 		}
 	}
 }
@@ -86,9 +107,16 @@ export default {
 
 		}
 
+		.history{
+			width: 100%;
+			height: 4.5rem;
+		}
+
 
 		.slide-down{
 			width: 100%;
+			height: 4.5rem;
+			overflow: scroll;
 			.lists{
 				padding-left: 0.1rem;
 
