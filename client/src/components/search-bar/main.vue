@@ -12,7 +12,13 @@
 		</div>
 		<transition name="slide-down" v-if="historyShow">
 			<div class="history">
-
+				<ul class="histories">
+					<li class="history" v-for="(history, index) in histories">
+						<i class="icon icon-time"></i>
+						<div class="text">{{ history }}</div>
+						<i class="icon icon-cross" @click="deleteHistory(index)"></i>
+					</li>
+				</ul>
 			</div>
 		</transition>
 		<div class="slide-down" v-if="resultShow">
@@ -31,13 +37,14 @@
 
 <script>
 import { search } from '@/modules/request';
+import { uniq } from '@/modules/utils/util';
 export default {
 	name: 'search-bar',
 
 	data() {
 		return {
 			content: '',
-			history: [],
+			histories: [],
 			historyShow: false,
 			resultShow: false,
 			lists: []
@@ -45,28 +52,34 @@ export default {
 	},
 
 	mounted() {
-		this.history = JSON.parse(localStorage.getItem('history'));
-		this.history = this.history ? this.history : [];
+		this.histories = JSON.parse(localStorage.getItem('histories'));
+		this.histories = this.histories ? this.histories : [];
 	},
 
 	methods: {
 		handleClick(e) {
 			this.historyShow = true;
+			this.resultShow = false;
 		},
 
 		handleSearch() {
 			this.historyShow = false;
 			this.resultShow = true;
 			search(this.content).then((res) => {
-				console.log(this.history);
-				this.history.push(this.content);
-				localStorage.setItem('history', JSON.stringify(history));
+				this.histories.push(this.content)
+				this.histories = uniq(this.histories);
+				localStorage.setItem('histories', JSON.stringify(this.histories));
 				this.lists = res.data.result.songs;
 			});
 		},
 
 		playMusic(index) {
 			this.$router.push({ name: '/player', params: { id: this.lists[index].id }});
+		},
+
+		deleteHistory(index) {
+			this.histories.splice(index, 1);
+			localStorage.setItem('histories', JSON.stringify(this.histories));
 		}
 	}
 }
@@ -110,6 +123,38 @@ export default {
 		.history{
 			width: 100%;
 			height: 4.5rem;
+
+			.histories{
+				width: 100%;
+				padding-left: 0.1rem;
+
+				.history{
+					position: relative;
+					width: 100%;
+					height: 0.45rem;
+					text-align: left;
+					line-height: 0.45rem;
+					font-size: 0.14rem;
+					border-bottom: 1px solid rgb(231, 232, 233);
+
+					.text{
+						display: inline-block;
+						width: 2.57rem;
+					}
+
+					.icon{
+						display: inline-block;
+						vertical-align: top;
+						font-size: 0.16rem;
+						line-height: 0.45rem;
+						color: rgb(213, 214, 214);
+					}
+
+					.icon-time{
+						margin-right: 0.05rem;
+					}
+				}
+			}
 		}
 
 
@@ -117,6 +162,7 @@ export default {
 			width: 100%;
 			height: 4.5rem;
 			overflow: scroll;
+
 			.lists{
 				padding-left: 0.1rem;
 
