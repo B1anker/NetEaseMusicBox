@@ -15,7 +15,7 @@
 				<ul class="histories">
 					<li class="history" v-for="(history, index) in histories">
 						<i class="icon icon-time"></i>
-						<div class="text" @click="handleSearch(e, history)">{{ history }}</div>
+						<div class="text" @click="handleSearch(history)">{{ history }}</div>
 						<i class="icon icon-cross" @click="deleteHistory(index)"></i>
 					</li>
 				</ul>
@@ -62,10 +62,13 @@ export default {
 			this.resultShow = false;
 		},
 
-		handleSearch(e, history) {
+		handleSearch(history) {
+			if(!!this.content.trim()){
+				return ;
+			}
 			this.historyShow = false;
 			this.resultShow = true;
-			if(history){
+			if(Object.prototype.toString.call(history).slice(8, -1) === 'String'){
 				search(history).then((res) => {
 					this.content = history;
 					this.lists = res.data.result.songs;

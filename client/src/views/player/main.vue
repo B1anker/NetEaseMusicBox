@@ -7,7 +7,7 @@
 				<i class="icon icon-back" @touchstart="handleBack"></i>
 				<div class="music-and-artist">
 					<hgroup>
-						<h3 class="music">{{ this.music }}</h3>
+						<marquee scrollAmount="3" behavior=alternate class="music">{{ this.music }}</marquee>
 						<h4 class="artist">{{ this.artist }}</h4>
 					</hgroup>
 				</div>
@@ -117,8 +117,12 @@ export default {
 		getDetail() {
 			return detail(this.id).then((res) => {
 				const song = res.data.songs[0];
+				const artist = [];
 				this.music = song.name;
-				this.artist = song.ar[0].name;
+				song.ar.forEach((item, index, arr) => {
+					artist.push(item.name);
+				});
+				this.artist = artist.join('\/');
 				this.picUrl = song.al.picUrl;
 			});
 		},
@@ -296,6 +300,9 @@ export default {
 
 						.music{
 							font-size: 0.18rem;
+							height: 0.22rem;
+							max-width: 70%;
+							margin: auto;
 						}
 
 						.artist{

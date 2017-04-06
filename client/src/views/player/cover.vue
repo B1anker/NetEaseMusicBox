@@ -98,7 +98,7 @@ export default {
 			}
 
 			&.active:after{
-				transform: rotate(-7deg);
+				transform: rotate(-4deg);
 			}
 		}
 
