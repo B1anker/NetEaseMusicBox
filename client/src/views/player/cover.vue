@@ -129,6 +129,8 @@ export default {
 
 			img{
 				height: 74%;
+    		width: 74%;
+				border: 0.05rem solid black;
 				border-radius: 50%;
 			}
 

@@ -60,6 +60,30 @@ export default {
 		Cover,
 		Lyric
 	},
+
+	data() {
+		return {
+			mp3Dom: null,
+			artist: '',
+			music: '',
+			url: '',
+			picUrl: '',
+			id: 0,
+			played: false,
+			onplaying: false,
+			current: 0,
+			total: 0,
+			step: 0,
+			timer: null,
+			processDrag: null,
+			showCover: true
+		}
+	},
+
+	created() {
+		this.id = this.$route.params.id;
+	},
+
 	mounted() {
 		this.$nextTick(() => {
 			this.init();
@@ -72,24 +96,7 @@ export default {
 			});
 		});
 	},
-	data() {
-		return {
-			mp3Dom: null,
-			artist: '',
-			music: '',
-			url: '',
-			picUrl: '',
-			id: 418603077,
-			played: false,
-			onplaying: false,
-			current: 0,
-			total: 0,
-			step: 0,
-			timer: null,
-			processDrag: null,
-			showCover: true
-		}
-	},
+
 	methods: {
 		init() {
 			this.mp3Dom = this.$refs.mp3;
@@ -234,7 +241,7 @@ export default {
 		position: relative;
 		margin: 0 auto;
 		height: 100%;
-		background: hsla(0, 0%, 100%, .25) border-box;
+		background: hsla(0, 0%, 50%, .35) border-box;
 		overflow: hidden;
 
 		.background-mask{

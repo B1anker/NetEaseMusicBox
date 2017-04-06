@@ -15,7 +15,7 @@
 				<ul class="histories">
 					<li class="history" v-for="(history, index) in histories">
 						<i class="icon icon-time"></i>
-						<div class="text">{{ history }}</div>
+						<div class="text" @click="handleSearch(e, history)">{{ history }}</div>
 						<i class="icon icon-cross" @click="deleteHistory(index)"></i>
 					</li>
 				</ul>
@@ -62,11 +62,18 @@ export default {
 			this.resultShow = false;
 		},
 
-		handleSearch() {
+		handleSearch(e, history) {
 			this.historyShow = false;
 			this.resultShow = true;
+			if(history){
+				search(history).then((res) => {
+					this.content = history;
+					this.lists = res.data.result.songs;
+				});
+				return ;
+			}
 			search(this.content).then((res) => {
-				this.histories.push(this.content)
+				this.histories.push(this.content);
 				this.histories = uniq(this.histories);
 				localStorage.setItem('histories', JSON.stringify(this.histories));
 				this.lists = res.data.result.songs;
@@ -74,7 +81,8 @@ export default {
 		},
 
 		playMusic(index) {
-			this.$router.push({ name: '/player', params: { id: this.lists[index].id }});
+			console.log(this.lists[index].id);
+			this.$router.push({ name: 'player', params: { id: this.lists[index].id }});
 		},
 
 		deleteHistory(index) {

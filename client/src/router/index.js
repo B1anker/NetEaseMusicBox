@@ -27,7 +27,8 @@ export default new Router({
 			component: Signup
 		},
 		{
-			path: '/player',
+			path: '/player:id',
+			name: 'player',
 			component: Player
 		}
   ]
