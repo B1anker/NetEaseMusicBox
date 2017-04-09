@@ -81,7 +81,7 @@ export default {
 	},
 
 	created() {
-		this.id = this.$route.params.id;
+		this.id = parseInt(this.$route.params.id);
 	},
 
 	mounted() {

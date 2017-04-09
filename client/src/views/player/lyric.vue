@@ -101,12 +101,13 @@ export default {
 
 		handleLyrics(id) {
 			lyric(id).then((res) => {
-				this.times = res.data.lrc.lyric.match(/\[\d{2}\:\d{2}\.\d{2}\]/g).map((value) => {
-					const time = value.slice(1, -1);
-					const min = Number(time.split(':')[0]);
-					const sec = Number(time.split(':')[1]);
+				this.times = res.data.lrc.lyric.match(/\[\d{2}\:\d{2}\.\d{2,3}\]/g).map((value) => {
+					const time = value.slice(1, -1),
+						min = Number(time.split(':')[0]),
+						sec = Number(time.split(':')[1]);
 					return min * 60 + sec;
 				});
+
 				this.lyrics = res.data.lrc.lyric.match(/\].*\n/g).map((value) => {
 					if(value.length === 2){
 						return '<p>&nbsp;</p>';

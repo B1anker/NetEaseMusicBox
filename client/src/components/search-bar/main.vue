@@ -63,11 +63,12 @@ export default {
 		},
 
 		handleSearch(history) {
-			if(!!this.content.trim()){
+			if(!this.content.trim()){
 				return ;
 			}
 			this.historyShow = false;
 			this.resultShow = true;
+
 			if(Object.prototype.toString.call(history).slice(8, -1) === 'String'){
 				search(history).then((res) => {
 					this.content = history;
@@ -75,6 +76,7 @@ export default {
 				});
 				return ;
 			}
+
 			search(this.content).then((res) => {
 				this.histories.push(this.content);
 				this.histories = uniq(this.histories);
@@ -84,7 +86,6 @@ export default {
 		},
 
 		playMusic(index) {
-			console.log(this.lists[index].id);
 			this.$router.push({ name: 'player', params: { id: this.lists[index].id }});
 		},
 

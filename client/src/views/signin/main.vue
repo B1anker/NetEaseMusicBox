@@ -56,7 +56,7 @@ export default {
 			}
 			this.unAbleToSignin = true;
 			signin({
-				username: this.username,
+				cellphone: this.username,
 				password: this.password
 			}).then((res) => {
 				this.unAbleToSignin = false;
