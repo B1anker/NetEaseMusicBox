@@ -2,7 +2,7 @@ import KoaRouter from 'koa-router';
 import {
 	fetchData
 } from '../util';
-
+import crypto from 'crypto';
 const playListApi = KoaRouter();
 
 /* 通过id获取mv
@@ -12,12 +12,15 @@ const playListApi = KoaRouter();
 playListApi.post('/netEaseApi/login', async(ctx, next) => {
 	const url = '/weapi/login/cellphone';
 	/**
-	 * 歌曲api
-	 * @param {String/Array} [ids] [歌曲ids]
+	 * 登录api
+	 * @param {String} [cellphone] [手机号]
+	 * @param {String} [password] [密码]
 	 */
+	const md5sum = crypto.createHash('md5');
+ 	md5sum.update(ctx.request.body.password);
 	const form = {
-		'phone': ctx.query.cellphone,
-		'password': ctx.query.password,
+		'phone': ctx.request.body.cellphone,
+		'password': md5sum.digest('hex'),
 		'rememberLogin': 'true'
 	};
 	const options = Object.assign({}, {
