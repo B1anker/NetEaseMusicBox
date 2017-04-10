@@ -1,5 +1,9 @@
 import * as types from './mutation-types'
 
-export const setSiderbar = ({ commit }, update) => {
-  commit(types.SETSIDERBAR, update);
+export const setPlayer = ({ commit }, update) => {
+  commit(types.SETPLAYER, update);
+}
+
+export const showPlayer = ({ commit }, update) => {
+  commit(types.SHOWPLAYER, update);
 }

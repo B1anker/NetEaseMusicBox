@@ -32,7 +32,8 @@
     "tls": "0.0.1",
     "vue": "^2.2.1",
     "vue-animated-list": "^1.0.2",
-    "vue-router": "^2.2.0"
+    "vue-router": "^2.2.0",
+    "vuex": "^2.2.1"
   },
   "devDependencies": {
     "assert": "^1.4.1",

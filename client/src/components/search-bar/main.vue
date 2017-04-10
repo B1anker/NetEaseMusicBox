@@ -63,7 +63,7 @@ export default {
 		},
 
 		handleSearch(history) {
-			if(!this.content.trim()){
+			if((Object.prototype.toString.call(history).slice(8, -1) === 'KeyboardEvent') && !this.content.trim()){
 				return ;
 			}
 			this.historyShow = false;
@@ -86,7 +86,9 @@ export default {
 		},
 
 		playMusic(index) {
-			this.$router.push({ name: 'player', params: { id: this.lists[index].id }});
+			this.$store.dispatch('setPlayer', {
+				songId: this.lists[index].id
+			});
 		},
 
 		deleteHistory(index) {

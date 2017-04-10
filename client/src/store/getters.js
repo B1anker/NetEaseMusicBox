@@ -1,1 +1,1 @@
-export const getSideBar = state => state.siderBar;
+export const getPlayer = state => state.player;

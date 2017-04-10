@@ -1,52 +1,54 @@
 <template lang="html">
-  <div class="player">
-		<div class="background-mask" :style="{ 'background-image': 'url(' + picUrl + ')' }">
-		</div>
-		<div class="main">
-			<div class="head">
-				<i class="icon icon-back" @touchstart="handleBack"></i>
-				<div class="music-and-artist">
-					<hgroup>
-						<marquee scrollAmount="3" behavior=alternate class="music">{{ this.music }}</marquee>
-						<h4 class="artist">{{ this.artist }}</h4>
-					</hgroup>
+	<transition name="slide-fade">
+		<div class="player" v-show="this.$store.getters.getPlayer.show">
+			<div class="background-mask" :style="{ 'background-image': 'url(' + picUrl + ')' }">
+			</div>
+			<div class="main">
+				<div class="head">
+					<i class="icon icon-back" @touchstart="handleBack"></i>
+					<div class="music-and-artist">
+						<hgroup>
+							<marquee scrollAmount="3" behavior=alternate class="music">{{ this.music }}</marquee>
+							<h4 class="artist">{{ this.artist }}</h4>
+						</hgroup>
+					</div>
+					<i class="icon icon-share" @touchstart="handleBack"></i>
 				</div>
-				<i class="icon icon-share" @touchstart="handleBack"></i>
-			</div>
-			<keep-alive>
-				<cover :onplaying="onplaying"
-					v-if="showCover"
-					:picUrl="picUrl"
-					@touchstart="switchCoverOrLyric">
-				</cover>
-			</keep-alive>
-			<keep-alive>
-				<lyric :onplaying="onplaying"
-					@volume="handleVolume"
-					@touchstart="switchCoverOrLyric"
-					:id="id"
-					v-if="!showCover">
-				</lyric>
-			</keep-alive>
-			<div class="process-wrap">
-				<span class="current">{{ transformDuation(current) }}</span>
-				<div class="process-bar">
-					<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+				<keep-alive>
+					<cover :onplaying="onplaying"
+						v-if="showCover"
+						:picUrl="picUrl"
+						@touchstart="switchCoverOrLyric">
+					</cover>
+				</keep-alive>
+				<keep-alive>
+					<lyric :onplaying="onplaying"
+						@volume="handleVolume"
+						@touchstart="switchCoverOrLyric"
+						:id="id"
+						v-if="!showCover">
+					</lyric>
+				</keep-alive>
+				<div class="process-wrap">
+					<span class="current">{{ transformDuation(current) }}</span>
+					<div class="process-bar">
+						<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+					</div>
+					<span class="total">{{ transformDuation(total) }}</span>
 				</div>
-				<span class="total">{{ transformDuation(total) }}</span>
+				<div class="player-bar">
+					<i class="icon icon-prev"></i>
+					<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
+					<i class="icon icon-next"></i>
+				</div>
 			</div>
-			<div class="player-bar">
-				<i class="icon icon-prev"></i>
-				<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
-				<i class="icon icon-next"></i>
+			<div class="audio">
+				<audio ref="mp3">
+	  			<source :src="url" type="audio/mpeg">
+				</audio>
 			</div>
-		</div>
-		<div class="audio">
-			<audio ref="mp3">
-  			<source :src="url" type="audio/mpeg">
-			</audio>
-		</div>
-  </div>
+	  </div>
+	</transition>
 </template>
 
 <script>
@@ -68,7 +70,6 @@ export default {
 			music: '',
 			url: '',
 			picUrl: '',
-			id: 0,
 			played: false,
 			onplaying: false,
 			current: 0,
@@ -80,13 +81,37 @@ export default {
 		}
 	},
 
-	created() {
-		this.id = parseInt(this.$route.params.id);
+	computed: {
+		show() {
+			return this.$store.getters.getPlayer.show;
+		},
+
+		id() {
+			return this.$store.getters.getPlayer.songId;
+		}
+	},
+
+	watch: {
+		id(newVal) {
+			this.switchSong(newVal);
+			return newVal;
+		}
 	},
 
 	mounted() {
-		this.$nextTick(() => {
-			this.init();
+		this.init(this.id);
+	},
+
+	methods: {
+		init(id) {
+			if(!id){
+				return ;
+			}
+			this.mp3Dom = this.$refs.mp3;
+			this.mp3Dom.volume = localStorage.getItem('volume');
+			this.getDetail().then(() => {
+				this.getMp3();
+			});
 			this.processDrag = new Drag({
 				el: this.$refs.processPoint,
 				boundary: {
@@ -94,28 +119,41 @@ export default {
 					max: (320 - 212) / 2 + 212
 				}
 			});
-		});
-	},
+		},
 
-	methods: {
-		init() {
-			this.mp3Dom = this.$refs.mp3;
-			this.mp3Dom.volume = localStorage.getItem('volume');
-			this.getDetail().then(() => {
-				this.getMp3();
+		switchSong(id) {
+			if(!id){
+				return ;
+			}
+			if(!this.mp3Dom){
+				return ;
+			}
+			this.current = 0;
+			this.processDrag = new Drag({
+				el: this.$refs.processPoint,
+				boundary: {
+					min: (320 - 212) / 2 + 8,
+					max: (320 - 212) / 2 + 212
+				}
+			});
+			this.getDetail(id).then(() => {
+			this.played = false;
+				this.getMp3().then(() => {
+					this.play();
+				});
 			});
 		},
 
 		handleBack() {
-			this.$router.go(-1);
+			this.$store.dispatch('showPlayer', false);
 		},
 
 		handleShare() {
 
 		},
 
-		getDetail() {
-			return detail(this.id).then((res) => {
+		getDetail(id) {
+			return detail(id || this.id).then((res) => {
 				const song = res.data.songs[0];
 				const artist = [];
 				this.music = song.name;
@@ -206,10 +244,6 @@ export default {
 				return ;
 			}
 
-			if(!this.played){
-				return;
-			}
-
 			if(this.mp3Dom.paused && !this.onplaying){
 				this.mp3Dom.play();
 				this.stopTimer();
@@ -242,7 +276,10 @@ export default {
 	.player {
 		width: 100%;
 		height: 100%;
-		position: relative;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 9999;
 		margin: 0 auto;
 		height: 100%;
 		background: hsla(0, 0%, 50%, .35) border-box;
@@ -384,6 +421,15 @@ export default {
 
 		.fade-enter, .fade-leave-active{
 			opacity: 0;
+		}
+
+		.slide-fade-enter-active,
+		.slide-fade-leave-active {
+		  transition: transform 0.3s;
+		}
+		.slide-fade-enter,
+		.slide-fade-leave-active {
+		  transform: translateX(100%);
 		}
 	}
 </style>

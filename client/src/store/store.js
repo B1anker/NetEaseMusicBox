@@ -9,8 +9,8 @@ Vue.use(Vuex)
 const state = {
   player: {
 		state: -1,
-		url: '',
-		singer: ''
+		songId: localStorage.getItem('songId'),
+		show: false
 	}
 }
 

@@ -1,7 +1,13 @@
 import * as types from './mutation-types'
 
 export default {
-  [types.SETSIDERBAR] (state, update) {
-    state.siderBar = update;
+  [types.SETPLAYER] (state, update) {
+		localStorage.setItem('songId', update.songId);
+		state.player.show = true;
+    state.player.songId = update.songId;
+  },
+
+	[types.SHOWPLAYER] (state, update) {
+		state.player.show = update;
   }
 }
