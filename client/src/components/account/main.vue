@@ -1,5 +1,6 @@
 <template lang="html">
 	<div class="account">
+		<div class="head">账号</div>
 		<div class="summary" v-if="summaryShow">
 			<div class="up">
 				<div class="avatar">
@@ -13,7 +14,26 @@
 					<button>签到</button>
 				</div>
 			</div>
-			<div class="down"></div>
+			<div class="down">
+				<ul>
+					<li>
+						<div class="text">动态</div>
+						<div class="num">0</div>
+					</li>
+					<li>
+						<div class="text">关注</div>
+						<div class="num">{{ follows.length }}</div>
+					</li>
+					<li>
+						<div class="text">粉丝</div>
+						<div class="num">{{ followeds.length }}</div>
+					</li>
+					<li>
+						<i class="icon"></i>
+						<div class="my-info">我的资料</div>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<div class="menu">
 			<ul>
@@ -26,17 +46,17 @@
 </template>
 
 <script>
-import { subcount } from '@/modules/request';
+import { getFollows, getFolloweds } from '@/modules/request';
 export default {
 	name: 'account',
 
 	data() {
 		return {
-			user: {}
+			user: {},
+			follows: [],
+			followeds: []
 		}
 	},
-
-
 
 	computed: {
 		summaryShow() {
@@ -46,68 +66,130 @@ export default {
 
 	mounted() {
 		const user = JSON.parse(localStorage.getItem('user'));
+
 		if(Object.prototype.toString.call(user).slice(8, -1) === 'Object') {
 			this.user = user;
+			this.init();
 		}
 	},
+
+	methods: {
+		init() {
+			getFollows({
+				offset: 0,
+				limit: 1000,
+				id: this.user.profile.userId
+			}).then((res) => {
+				this.follows = res.data.follow;
+			});
+
+			getFolloweds(this.user.profile.userId).then((res) => {
+				this.followeds = res.data.followeds;
+			});
+		}
+	}
 }
 </script>
 
 <style lang="scss" scoped>
-.summary{
-	height: 1.22rem;
-	width: 100%;
-
-	.up{
-		position: relative;
-		height: 0.92rem;
-		border-bottom: 1px solid rgb(230, 230, 230);
-		text-align: left;
-
-		.avatar{
-			display: inline-block;
-			width: 0.63rem;
-			height: 0.63rem;
-			margin-top: 0.15rem;
-			margin-left: 0.15rem;
-
-			img{
-				width: 100%;
-				height: 100%;
-				border-radius: 50%;
-			}
-		}
-
-		.username-wrap{
-			display: inline-block;
-			padding-top: 0.3rem;
-			padding-left: 0.1rem;
-			vertical-align: top;
-
-			.username{
-				font-size: 0.2rem;
-			}
-		}
-
-		.sign{
-			position: absolute;
-			top: 0.3rem;
-			right: 0.1rem;
-
-			button{
-				width: 0.62rem;
-				height: 0.25rem;
-				border-radius: 0.25rem;
-				background-color: white;
-				border: 1px solid rgb(205, 0, 0);
-				color: rgb(205, 0, 0);
-				font-size: 0.1rem;
-			}
-		}
+.account{
+	background-color: rgb(238, 239, 241);
+	.head{
+		width: 100%;
+		height: 0.48rem;
+		background-color: rgb(212, 60, 51);
+		font-size: 0.17rem;
+		line-height: 0.48rem;
+		color: white;
 	}
 
-	.down{
-		height: 0.3rem;
+	.summary{
+		height: 1.22rem;
+		width: 100%;
+
+		.up{
+			position: relative;
+			height: 0.92rem;
+			border-bottom: 1px solid rgb(230, 230, 230);
+			text-align: left;
+			background-color: white;
+
+			.avatar{
+				display: inline-block;
+				width: 0.63rem;
+				height: 0.63rem;
+				margin-top: 0.15rem;
+				margin-left: 0.15rem;
+
+				img{
+					width: 100%;
+					height: 100%;
+					border-radius: 50%;
+				}
+			}
+
+			.username-wrap{
+				display: inline-block;
+				padding-top: 0.3rem;
+				padding-left: 0.1rem;
+				vertical-align: top;
+
+				.username{
+					font-size: 0.2rem;
+				}
+			}
+
+			.sign{
+				position: absolute;
+				top: 0.3rem;
+				right: 0.1rem;
+
+				button{
+					width: 0.62rem;
+					height: 0.25rem;
+					border-radius: 0.25rem;
+					background-color: white;
+					border: 1px solid rgb(205, 0, 0);
+					color: rgb(205, 0, 0);
+					font-size: 0.1rem;
+				}
+			}
+		}
+
+		.down{
+			padding: 0.1rem 0;
+			background-color: white;
+
+			ul{
+				height: 0.3rem;
+
+				li{
+					display: inline-block;
+					width: 25%;
+					border-right: 1px solid rgb(230, 230, 230);
+
+					&:last-child{
+						border-right: none;
+					}
+
+					.text{
+						font-size: 0.12rem;
+						color: rgb(167, 167, 167);
+					}
+
+					.num{
+						padding-top: 0.02rem;
+						font-size: 0.1rem;
+						font-weight: bold;
+					}
+
+					.my-info{
+						font-size: 0.1rem;
+						color: rgb(140, 140, 140);
+					}
+				}
+			}
+		}
 	}
 }
 </style>

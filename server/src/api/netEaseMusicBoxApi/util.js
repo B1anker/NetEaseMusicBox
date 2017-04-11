@@ -14,7 +14,8 @@ const fetchData = (options) => {
 			url: referer + options.url,
 			headers: {
 				Referer: referer,
-				Host: 'music.163.com'
+				Host: 'music.163.com',
+				Cookie: options.cookie,
 			},
 			method: 'POST',
 			form: encryptData(form)

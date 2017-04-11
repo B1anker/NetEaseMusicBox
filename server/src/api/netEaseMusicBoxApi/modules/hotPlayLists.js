@@ -3,28 +3,27 @@ import {
 	fetchData
 } from '../util';
 
-const subcountApi = KoaRouter();
+const hotPlayListsApi = KoaRouter();
 
 /* 通过id获取用户信息
  * @param {String} id
  * @return {Promise}
  */
-subcountApi.get('/netEaseApi/subcount', async(ctx, next) => {
-	const url = 'weapi/subcount';
+hotPlayListsApi.get('/netEaseApi/hotplaylist', async(ctx, next) => {
+	const url = 'api/personalized/playlist';
 	/**
 	 * 歌曲api
 	 * @param {String/Array} [ids] [歌曲ids]
 	 */
-	const form = {
-		userId: ctx.query.id,
-		csrf_token: ''
-	};
+	const form = {};
+	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
 	const options = Object.assign({}, {
 		url,
 		form,
+		cookie,
 		dataType: 'json'
 	});
 	ctx.body = await fetchData(options);
 });
 
-export default subcountApi;
+export default hotPlayListsApi;

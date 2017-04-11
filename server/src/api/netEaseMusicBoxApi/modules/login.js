@@ -5,10 +5,6 @@ import {
 import crypto from 'crypto';
 const loginApi = KoaRouter();
 
-/* 通过id获取mv
- * @param {String} mvId
- * @return {Promise}
- */
 loginApi.post('/netEaseApi/login', async(ctx, next) => {
 	const url = '/weapi/login/cellphone';
 	/**

@@ -24,6 +24,18 @@ function subcount(id) {
 	return axios.get(`/music/netEaseApi/subcount?id=${id}`);
 }
 
+function getFollows(params) {
+	return axios.post(`/music/netEaseApi/getFollows`, params);
+}
+
+function getFolloweds(id) {
+	return axios.get(`/music/netEaseApi/getFolloweds?id=${id}`);
+}
+
+function getHotPlayList() {
+	return axios.get('/music/netEaseApi/hotplaylist');
+}
+
 
 export {
 	signin,
@@ -31,5 +43,8 @@ export {
 	detail,
 	getMp3Url,
 	lyric,
-	subcount
+	subcount,
+	getFollows,
+	getFolloweds,
+	getHotPlayList
 }
