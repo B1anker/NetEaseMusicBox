@@ -7,3 +7,7 @@ export const setPlayer = ({ commit }, update) => {
 export const showPlayer = ({ commit }, update) => {
   commit(types.SHOWPLAYER, update);
 }
+
+export const setUser = ({ commit }, update) => {
+  commit(types.SETUSER, update);
+}

@@ -39,7 +39,6 @@ export default {
 		}
 	},
 	mounted() {
-
 	},
 	methods: {
 		handleBack() {
@@ -59,6 +58,8 @@ export default {
 				cellphone: this.username,
 				password: this.password
 			}).then((res) => {
+				this.$store.dispatch('setUser', res.data);
+				localStorage.setItem('user', JSON.stringify(res.data));
 				this.unAbleToSignin = false;
 				this.$router.push('/home');
 			}).catch((err) => {

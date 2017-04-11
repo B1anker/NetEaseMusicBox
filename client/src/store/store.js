@@ -11,7 +11,8 @@ const state = {
 		state: -1,
 		songId: localStorage.getItem('songId'),
 		show: false
-	}
+	},
+	user: {}
 }
 
 export default new Vuex.Store({

@@ -1,18 +1,23 @@
 <template lang="html">
   <div class="home">
-		<search-bar></search-bar>
+		<router-view class="home-content"></router-view>
+		<my-footer></my-footer>
   </div>
 </template>
 
 <script>
-import SearchBar from '@/components/search-bar/index';
+import MyFooter from '@/components/footer/index';
 export default {
 	name: 'home',
 	components: {
-		SearchBar
+		MyFooter
 	}
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.home-content{
+	height: 4.55rem;
+	width: 100%
+}
 </style>

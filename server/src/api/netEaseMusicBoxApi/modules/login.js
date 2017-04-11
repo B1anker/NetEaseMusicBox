@@ -3,13 +3,13 @@ import {
 	fetchData
 } from '../util';
 import crypto from 'crypto';
-const playListApi = KoaRouter();
+const loginApi = KoaRouter();
 
 /* 通过id获取mv
  * @param {String} mvId
  * @return {Promise}
  */
-playListApi.post('/netEaseApi/login', async(ctx, next) => {
+loginApi.post('/netEaseApi/login', async(ctx, next) => {
 	const url = '/weapi/login/cellphone';
 	/**
 	 * 登录api
@@ -31,4 +31,4 @@ playListApi.post('/netEaseApi/login', async(ctx, next) => {
 	ctx.body = await fetchData(options);
 });
 
-export default playListApi;
+export default loginApi;

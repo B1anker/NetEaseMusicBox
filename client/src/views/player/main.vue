@@ -358,7 +358,7 @@ export default {
 				align-items: center;
 
 				.current, .total{
-					font-size: 0.06rem;
+					font-size: 0.12rem;
 					color: white;
 				}
 

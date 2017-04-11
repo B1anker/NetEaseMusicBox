@@ -20,11 +20,16 @@ function lyric(id) {
 	return axios.get(`/music/netEaseApi/lyric?id=${id}`);
 }
 
+function subcount(id) {
+	return axios.get(`/music/netEaseApi/subcount?id=${id}`);
+}
+
 
 export {
 	signin,
 	search,
 	detail,
 	getMp3Url,
-	lyric
+	lyric,
+	subcount
 }

@@ -9,6 +9,7 @@
 					@click.stop="handleClick"
 					@keyup.enter="handleSearch">
 			</div>
+			<span class="cancel" v-show="cancelShow" @click="cancel">取消</span>
 		</div>
 		<transition name="slide-down" v-if="historyShow">
 			<div class="history">
@@ -47,7 +48,8 @@ export default {
 			histories: [],
 			historyShow: false,
 			resultShow: false,
-			lists: []
+			lists: [],
+			cancelShow: false
 		}
 	},
 
@@ -60,6 +62,7 @@ export default {
 		handleClick(e) {
 			this.historyShow = true;
 			this.resultShow = false;
+			this.cancelShow = true;
 		},
 
 		handleSearch(history) {
@@ -94,6 +97,12 @@ export default {
 		deleteHistory(index) {
 			this.histories.splice(index, 1);
 			localStorage.setItem('histories', JSON.stringify(this.histories));
+		},
+
+		cancel() {
+			this.cancelShow = false;
+			this.historyShow = false;
+			this.resultShow = false;
 		}
 	}
 }
@@ -130,6 +139,16 @@ export default {
 					text-indent: 0.38rem;
 				}
 
+			}
+
+			.cancel{
+				position: absolute;
+				right: 0.1rem;
+				top: 0;
+				height: 0.46rem;
+				line-height: 0.46rem;
+				font-size: 0.18rem;
+				color: white;
 			}
 
 		}

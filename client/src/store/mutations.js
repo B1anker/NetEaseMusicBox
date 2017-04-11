@@ -9,5 +9,9 @@ export default {
 
 	[types.SHOWPLAYER] (state, update) {
 		state.player.show = update;
+  },
+
+	[types.SETUSER] (state, update) {
+		state.user = update;
   }
 }
