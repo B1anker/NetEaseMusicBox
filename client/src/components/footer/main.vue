@@ -19,7 +19,31 @@ export default {
 		}
 	},
 
+	mounted() {
+		this.init();
+	},
+
 	methods: {
+		init() {
+			const path = this.$route.path.replace(/\/home\//, '');
+			switch (path) {
+				case 'discover':
+					this.index = 0;
+					break;
+				case 'my-music':
+					this.index = 1;
+					break;
+				case 'friends':
+					this.index = 2;
+					break;
+				case 'account':
+					this.index = 3;
+					break;
+				default:
+					break;
+			}
+		},
+
 		jump(to, index) {
 			this.index = index;
 			this.$router.push(to);
