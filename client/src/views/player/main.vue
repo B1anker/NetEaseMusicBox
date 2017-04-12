@@ -1,53 +1,55 @@
 <template lang="html">
 	<transition name="slide-fade">
-		<div class="player" v-show="this.$store.getters.getPlayer.show">
-			<div class="background-mask" :style="{ 'background-image': 'url(' + picUrl + ')' }">
-			</div>
-			<div class="main">
-				<div class="head">
-					<i class="icon icon-back" @touchstart="handleBack"></i>
-					<div class="music-and-artist">
-						<hgroup>
-							<marquee scrollAmount="3" behavior=alternate class="music">{{ this.music }}</marquee>
-							<h4 class="artist">{{ this.artist }}</h4>
-						</hgroup>
+		<div class="player-wrap" v-show="this.$store.getters.getPlayer.show">
+			<div class="player">
+				<div class="background-mask" :style="{ 'background-image': 'url(' + picUrl + ')' }">
+				</div>
+				<div class="main">
+					<div class="head">
+						<i class="icon icon-back" @click.stop="handleBack"></i>
+						<div class="music-and-artist">
+							<hgroup>
+								<marquee scrollAmount="3" behavior=alternate class="music">{{ this.music }}</marquee>
+								<h4 class="artist">{{ this.artist }}</h4>
+							</hgroup>
+						</div>
+						<i class="icon icon-share" @click.stop="handleBack"></i>
 					</div>
-					<i class="icon icon-share" @touchstart="handleBack"></i>
-				</div>
-				<keep-alive>
-					<cover :onplaying="onplaying"
-						v-if="showCover"
-						:picUrl="picUrl"
-						@touchstart="switchCoverOrLyric">
-					</cover>
-				</keep-alive>
-				<keep-alive>
-					<lyric :onplaying="onplaying"
-						@volume="handleVolume"
-						@touchstart="switchCoverOrLyric"
-						:id="id"
-						v-if="!showCover">
-					</lyric>
-				</keep-alive>
-				<div class="process-wrap">
-					<span class="current">{{ transformDuation(current) }}</span>
-					<div class="process-bar">
-						<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+					<keep-alive>
+						<cover :onplaying="onplaying"
+							v-if="showCover"
+							:picUrl="picUrl"
+							@touchstart="switchCoverOrLyric">
+						</cover>
+					</keep-alive>
+					<keep-alive>
+						<lyric :onplaying="onplaying"
+							@volume="handleVolume"
+							@touchstart="switchCoverOrLyric"
+							:id="id"
+							v-if="!showCover">
+						</lyric>
+					</keep-alive>
+					<div class="process-wrap">
+						<span class="current">{{ transformDuation(current) }}</span>
+						<div class="process-bar">
+							<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+						</div>
+						<span class="total">{{ transformDuation(total) }}</span>
 					</div>
-					<span class="total">{{ transformDuation(total) }}</span>
+					<div class="player-bar">
+						<i class="icon icon-prev"></i>
+						<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
+						<i class="icon icon-next"></i>
+					</div>
 				</div>
-				<div class="player-bar">
-					<i class="icon icon-prev"></i>
-					<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
-					<i class="icon icon-next"></i>
+				<div class="audio">
+					<audio ref="mp3">
+		  			<source :src="url" type="audio/mpeg">
+					</audio>
 				</div>
-			</div>
-			<div class="audio">
-				<audio ref="mp3">
-	  			<source :src="url" type="audio/mpeg">
-				</audio>
-			</div>
-	  </div>
+		  </div>
+		</div>
 	</transition>
 </template>
 
@@ -154,6 +156,9 @@ export default {
 
 		getDetail(id) {
 			return detail(id || this.id).then((res) => {
+				if (!res.data.songs.length) {
+					return ;
+				}
 				const song = res.data.songs[0];
 				const artist = [];
 				this.music = song.name;
@@ -273,163 +278,172 @@ export default {
 
 <style lang="scss">
 	$base-color: rgb(212, 60, 51);
-	.player {
+	.player-wrap{
 		width: 100%;
 		height: 100%;
 		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 9999;
-		margin: 0 auto;
-		height: 100%;
-		background: hsla(0, 0%, 50%, .35) border-box;
 		overflow: hidden;
+		background: white;
 
-		.background-mask{
+		.player {
+			width: 100%;
+			height: 100%;
 			position: absolute;
 			top: 0;
-			right: 0;
-			bottom: 0;
 			left: 0;
-			z-index: -1;
-			background-size: auto 100%;
-			background-position: center top;
-			padding-top: 30px;
-			margin: -30px;
-			filter: blur(30px);
-		}
+			margin: 0 auto;
+			background: hsla(0, 0%, 50%, .35) border-box;
+			overflow: hidden;
 
-		.main{
-			.head{
-				height: 0.45rem;
-				border-bottom: 1px solid rgb(120, 119, 113);
-				position: relative;
-				overflow: hidden;
+			.background-mask{
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: -1;
+				background-size: auto 100%;
+				background-position: center top;
+				padding-top: 30px;
+				margin: -30px;
+				filter: blur(30px);
+			}
 
-				.icon-back, .icon-share{
-					position: absolute;
-					top: 0;
-					line-height: 0.45rem;
-					font-size: 0.25rem;
-					color: white;
-				}
+			.main{
+				.head{
+					height: 0.45rem;
+					border-bottom: 1px solid rgb(120, 119, 113);
+					position: relative;
+					overflow: hidden;
 
-				.icon-back{
-					left: 0.05rem;
-				}
+					.icon-back, .icon-share{
+						position: absolute;
+						top: 0;
+						line-height: 0.45rem;
+						font-size: 0.25rem;
+						color: white;
+					}
 
-				.icon-share{
-					right: 0.1rem;
-				}
+					.icon-back{
+						left: 0.05rem;
+					}
 
-				.music-and-artist{
-					height: 100%;
-					width: 100%;
-					display: table;
+					.icon-share{
+						right: 0.1rem;
+					}
 
-					hgroup{
+					.music-and-artist{
 						height: 100%;
 						width: 100%;
+						display: table;
+
+						hgroup{
+							height: 100%;
+							width: 100%;
+							color: white;
+							display: table-cell;
+							vertical-align: middle;
+							text-align: center;
+
+							.music{
+								font-size: 0.18rem;
+								height: 0.22rem;
+								max-width: 70%;
+								margin: auto;
+							}
+
+							.artist{
+								font-size: 0.1rem;
+							}
+						}
+					}
+				}
+
+				.process-wrap{
+					width: 100%;
+					height: 0.58rem;
+					margin-top: 3.54rem;
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+
+					.current, .total{
+						font-size: 0.12rem;
 						color: white;
-						display: table-cell;
-						vertical-align: middle;
-						text-align: center;
+					}
 
-						.music{
-							font-size: 0.18rem;
-							height: 0.22rem;
-							max-width: 70%;
-							margin: auto;
+					.process-bar{
+						width: 2.12rem;
+						height: 0.02rem;
+						background-color: rgba(140, 140, 140, 0.7);
+						position: relative;
+
+						&:before{
+							content: '';
+							position: absolute;
 						}
 
-						.artist{
-							font-size: 0.1rem;
+						.point{
+							content: '';
+							position: absolute;
+							top: -0.07rem;
+							left: -0.07rem;
+							box-sizing: border-box;
+							width: 0.15rem;
+							height: 0.15rem;
+							border: 0.05rem solid white;
+							border-radius: 50%;
+							background-color: $base-color;
 						}
 					}
 				}
-			}
 
-			.process-wrap{
-				width: 100%;
-				height: 0.58rem;
-				margin-top: 3.54rem;
-				display: flex;
-				justify-content: space-around;
-				align-items: center;
+				.player-bar{
+					height: 0.48rem;
 
-				.current, .total{
-					font-size: 0.12rem;
-					color: white;
-				}
-
-				.process-bar{
-					width: 2.12rem;
-					height: 0.02rem;
-					background-color: rgba(140, 140, 140, 0.7);
-					position: relative;
-
-					&:before{
-						content: '';
-						position: absolute;
+					.icon{
+						display: inline-block;
+						line-height: 0.48rem;
+						vertical-align: top;
 					}
 
-					.point{
-						content: '';
-						position: absolute;
-						top: -0.07rem;
-						left: -0.07rem;
-						box-sizing: border-box;
-						width: 0.15rem;
-						height: 0.15rem;
-						border: 0.05rem solid white;
-						border-radius: 50%;
-						background-color: $base-color;
+					.icon-prev, .icon-next{
+						font-size: 0.26rem;
+						color: white;
+					}
+
+					.icon-start, .icon-stop{
+						font-size: 0.48rem;
+						color: white;
+						margin: 0 0.3rem;
 					}
 				}
 			}
 
-			.player-bar{
-				height: 0.48rem;
 
-				.icon{
-					display: inline-block;
-					line-height: 0.48rem;
-					vertical-align: top;
-				}
-
-				.icon-prev, .icon-next{
-					font-size: 0.26rem;
-					color: white;
-				}
-
-				.icon-start, .icon-stop{
-					font-size: 0.48rem;
-					color: white;
-					margin: 0 0.3rem;
-				}
+			.audio{
+				display: none;
 			}
-		}
 
+			.fade-enter-active, .fade-leave-active{
+				transition: opacity ease 0.5s;
+			}
 
-		.audio{
-			display: none;
-		}
+			.fade-enter, .fade-leave-active{
+				opacity: 0;
+			}
 
-		.fade-enter-active, .fade-leave-active{
-			transition: opacity ease 0.5s;
-		}
-
-		.fade-enter, .fade-leave-active{
-			opacity: 0;
-		}
-
-		.slide-fade-enter-active,
-		.slide-fade-leave-active {
-		  transition: transform 0.3s;
-		}
-		.slide-fade-enter,
-		.slide-fade-leave-active {
-		  transform: translateX(100%);
+			.slide-fade-enter-active,
+			.slide-fade-leave-active {
+			  transition: transform 0.3s;
+			}
+			.slide-fade-enter,
+			.slide-fade-leave-active {
+			  transform: translateX(100%);
+			}
 		}
 	}
 </style>

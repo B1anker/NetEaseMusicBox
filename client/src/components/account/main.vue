@@ -8,7 +8,7 @@
 				</div>
 				<div class="username-wrap">
 					<div class="username">{{ user.profile.nickname }}</div>
-					<div class="level"></div>
+					<div class="level">{{ 'LV ' + details.level }}</div>
 				</div>
 				<div class="sign">
 					<button>签到</button>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { getFollows, getFolloweds } from '@/modules/request';
+import { getFollows, getFolloweds, getUserDetail } from '@/modules/request';
 export default {
 	name: 'account',
 
@@ -54,7 +54,8 @@ export default {
 		return {
 			user: {},
 			follows: [],
-			followeds: []
+			followeds: [],
+			details: {}
 		}
 	},
 
@@ -75,6 +76,11 @@ export default {
 
 	methods: {
 		init() {
+
+			getUserDetail(this.user.account.id).then((res) => {
+				this.details = res.data;
+			});
+
 			getFollows({
 				offset: 0,
 				limit: 1000,
@@ -125,6 +131,7 @@ export default {
 					width: 100%;
 					height: 100%;
 					border-radius: 50%;
+					border: 1px solid rgb(238, 244, 239);
 				}
 			}
 
@@ -136,6 +143,19 @@ export default {
 
 				.username{
 					font-size: 0.2rem;
+				}
+
+				.level{
+					margin-top: 0.05rem;
+					text-align: center;
+					width: 0.35rem;
+					height: 0.15rem;
+					border-radius: 0.15rem;
+					border: 1px solid rgb(180, 180, 180);
+					font-size: 0.1rem;
+					font-weight: bold;
+					line-height: 0.15rem;
+					color: rgb(150, 150, 150);
 				}
 			}
 
@@ -173,13 +193,13 @@ export default {
 					}
 
 					.text{
-						font-size: 0.12rem;
+						font-size: 0.13rem;
 						color: rgb(167, 167, 167);
 					}
 
 					.num{
 						padding-top: 0.02rem;
-						font-size: 0.1rem;
+						font-size: 0.11rem;
 						font-weight: bold;
 					}
 

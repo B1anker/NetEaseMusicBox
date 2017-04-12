@@ -3,23 +3,26 @@ import {
 	fetchData
 } from '../util';
 
-const hotPlayListsApi = KoaRouter();
+const userDetailApi = KoaRouter();
 
-/* 通过id获取热门歌单
- * @param {String} id
- * @return {Promise}
- */
-hotPlayListsApi.get('/netEaseApi/hotplaylist', async(ctx, next) => {
-	const url = 'api/personalized/playlist';
-	const form = {};
+userDetailApi.get('/netEaseApi/userDetail', async(ctx, next) => {
+	/**
+	 * 搜索api
+	 */
 	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
+
+	const form = {
+		csrf_token: ''
+	};
+
 	const options = Object.assign({}, {
-		url,
+		url: 'api/v1/user/detail/' + ctx.query.id,
 		form,
 		cookie,
 		dataType: 'json'
 	});
+
 	ctx.body = await fetchData(options);
 });
 
-export default hotPlayListsApi;
+export default userDetailApi;

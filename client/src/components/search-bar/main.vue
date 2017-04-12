@@ -100,6 +100,7 @@ export default {
 		},
 
 		cancel() {
+			this.content = '';
 			this.cancelShow = false;
 			this.historyShow = false;
 			this.resultShow = false;
@@ -111,6 +112,10 @@ export default {
 <style lang="scss" scoped>
 	$base-color: rgb(232, 53, 53);
 	.search-bar{
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 999;
 
 		.search{
 			background-color: $base-color;
@@ -155,6 +160,7 @@ export default {
 
 		.history{
 			width: 100%;
+			background-color: white;
 			height: 4.5rem;
 
 			.histories{
@@ -192,6 +198,8 @@ export default {
 
 
 		.slide-down{
+			position: absolute;
+			background-color: white;
 			width: 100%;
 			height: 4.5rem;
 			overflow: scroll;

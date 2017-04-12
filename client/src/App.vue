@@ -1,18 +1,23 @@
 <template>
   <div id="app">
-		<router-view class="view"></router-view>
+		<keep-alive>
+			<router-view class="view"></router-view>
+		</keep-alive>
+		<my-footer></my-footer>
 		<player></player>
   </div>
 </template>
 
 <script>
+import MyFooter from '@/components/footer/index';
 import Player from '@/views/player/main';
 import store from '@/store/store';
 export default {
   name: 'app',
 	store,
 	components: {
-		Player
+		Player,
+		MyFooter
 	}
 }
 </script>

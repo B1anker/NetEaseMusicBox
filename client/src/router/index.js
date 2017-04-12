@@ -9,6 +9,7 @@ import Account from '@/components/account/index';
 import Signin from '@/views/signin/main';
 import Signup from '@/views/signup/main';
 import Player from '@/views/player/main';
+import PlayList from '@/components/playlist';
 
 Vue.use(Router)
 
@@ -50,9 +51,14 @@ export default new Router({
 			component: Signup
 		},
 		{
-			path: '/player:id',
+			path: '/player',
 			name: 'player',
 			component: Player
+		},
+		{
+			path: '/playlist:id',
+			name: 'playlist',
+			component: PlayList
 		}
   ]
 })

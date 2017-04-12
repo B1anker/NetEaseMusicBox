@@ -1,12 +1,13 @@
 <template lang="html">
   <div class="discover">
   	<search-bar></search-bar>
+		<banner :banners="banners"></banner>
 		<div class="recommend-playlist">
 			<div class="title">
 				<div class="text">推荐歌单<i class="icon icon-back"></i></div>
 			</div>
 			<ul class="playlists">
-				<li class="playlist" v-for="(playlist, index) in playlists">
+				<li class="playlist" v-for="(playlist, index) in playlists" @click="toPlayList(index)">
 					<img :src="playlist.picUrl" :alt="playlist.name">
 					<div class="name">{{ playlist.name }}</div>
 					<span class="playcount">{{ transformNumber(playlist.playCount) }}</span>
@@ -18,17 +19,23 @@
 
 <script>
 import SearchBar from '@/components/search-bar/main';
-import { getHotPlayList } from '@/modules/request';
+import PlayList from '@/components/playlist/main';
+import Banner from '@/components/banner/main';
+import { getHotPlayList, getBanner } from '@/modules/request';
 export default {
 	name: 'Discover',
 
 	components: {
-		SearchBar
+		SearchBar,
+		PlayList,
+		Banner
 	},
 
 	data() {
 		return {
-			playlists: []
+			banners: [],
+			playlists: [],
+			playListId: 0
 		}
 	},
 
@@ -38,6 +45,9 @@ export default {
 
 	methods: {
 		init() {
+			getBanner().then((res) => {
+				this.banners = res.data.banners;
+			});
 			getHotPlayList().then((res) => {
 				this.playlists = res.data.result;
 			});
@@ -45,6 +55,10 @@ export default {
 
 		transformNumber(num) {
 			return Math.floor(num).toString().slice(0, -4) + '万';
+		},
+
+		toPlayList(index) {
+			this.$router.push({ name: 'playlist', params: { id: this.playlists[index].id }});
 		}
 	}
 }
@@ -52,6 +66,7 @@ export default {
 
 <style lang="scss">
 .discover{
+	position: relative;
 
 	.title{
 		height: 0.5rem;
@@ -76,10 +91,13 @@ export default {
 	}
 
 	.recommend-playlist{
+		position: relative;
+    z-index: 1;
 		border-top: 1px solid rgb(226, 227, 228);
 
 		.playlists{
 			margin-top: -0.3rem;
+			padding-bottom: 0.15rem;
 			display: flex;
 			justify-content: space-between;
 			flex-wrap: wrap;
@@ -89,8 +107,8 @@ export default {
 				overflow: hidden;
 
 				img{
-					width: 1.05rem;
-					height: 1.05rem;
+					width: 1.03rem;
+					height: 1.03rem;
 					background-size: 1005；
 				}
 

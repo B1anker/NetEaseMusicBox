@@ -3,15 +3,20 @@ import {
 	fetchData
 } from '../util';
 
-const hotPlayListsApi = KoaRouter();
+const userPlayListsApi = KoaRouter();
 
-/* 通过id获取热门歌单
+/* 通过id获取y用户歌单
  * @param {String} id
  * @return {Promise}
  */
-hotPlayListsApi.get('/netEaseApi/hotplaylist', async(ctx, next) => {
-	const url = 'api/personalized/playlist';
-	const form = {};
+userPlayListsApi.get('/netEaseApi/userPlayLists', async(ctx, next) => {
+	const url = 'weapi/user/playlist';
+	const form = {
+		"offset": ctx.query.offset || '0',
+		"uid": ctx.query.id,
+		"limit": ctx.query.limit || 20,
+		"csrf_token": ""
+	};
 	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
 	const options = Object.assign({}, {
 		url,
@@ -22,4 +27,4 @@ hotPlayListsApi.get('/netEaseApi/hotplaylist', async(ctx, next) => {
 	ctx.body = await fetchData(options);
 });
 
-export default hotPlayListsApi;
+export default userPlayListsApi;

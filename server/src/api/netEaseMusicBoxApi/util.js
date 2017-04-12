@@ -17,13 +17,13 @@ const fetchData = (options) => {
 				Host: 'music.163.com',
 				Cookie: options.cookie,
 			},
-			method: 'POST',
+			method: options.method || 'POST',
 			form: encryptData(form)
 		}, (err, res, result) => {
 			if (err) return reject(err);
 			if (dataType === 'json') {
 				try {
-					result = JSON.parse(result);
+					result = result && JSON.parse(result);
 				} catch (e) {
 					return reject(e);
 				}

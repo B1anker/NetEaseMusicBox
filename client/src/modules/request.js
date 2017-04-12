@@ -36,6 +36,22 @@ function getHotPlayList() {
 	return axios.get('/music/netEaseApi/hotplaylist');
 }
 
+function getBanner() {
+	return axios.get('/music/netEaseApi/banner');
+}
+
+function getPlayList(id) {
+	return axios.get(`/music/netEaseApi/playList?playListId=${id}`);
+}
+
+function getUserDetail(id) {
+	return axios.get(`/music/netEaseApi/userDetail?id=${id}`);
+}
+
+function userPlayListsApi(id) {
+	return axios.get(`/music/netEaseApi/userPlayLists?id=${id}`);
+}
+
 
 export {
 	signin,
@@ -46,5 +62,9 @@ export {
 	subcount,
 	getFollows,
 	getFolloweds,
-	getHotPlayList
+	getHotPlayList,
+	getBanner,
+	getPlayList,
+	getUserDetail,
+	userPlayListsApi
 }
