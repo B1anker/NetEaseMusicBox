@@ -1,56 +1,58 @@
 <template lang="html">
-	<transition name="slide-fade">
-		<div class="player-wrap" v-show="this.$store.getters.getPlayer.show">
-			<div class="player">
-				<div class="background-mask" :style="{ 'background-image': 'url(' + picUrl + ')' }">
-				</div>
-				<div class="main">
-					<div class="head">
-						<i class="icon icon-back" @click.stop="handleBack"></i>
-						<div class="music-and-artist">
-							<hgroup>
-								<marquee scrollAmount="3" behavior=alternate class="music">{{ this.music }}</marquee>
-								<h4 class="artist">{{ this.artist }}</h4>
-							</hgroup>
+	<div class="player-wrap">
+		<transition name="slide-fade">
+			<div class="player-container" v-show="this.$store.getters.getPlayer.show">
+				<div class="player">
+					<div class="background-mask" :style="{ 'background-image': 'url(' + picUrl + ')' }">
+					</div>
+					<div class="main">
+						<div class="head">
+							<i class="icon icon-back" @click.stop="handleBack"></i>
+							<div class="music-and-artist">
+								<hgroup>
+									<marquee scrollAmount="3" behavior=alternate class="music">{{ this.music }}</marquee>
+									<h4 class="artist">{{ this.artist }}</h4>
+								</hgroup>
+							</div>
+							<i class="icon icon-share" @click.stop="handleBack"></i>
 						</div>
-						<i class="icon icon-share" @click.stop="handleBack"></i>
-					</div>
-					<keep-alive>
-						<cover :onplaying="onplaying"
-							v-if="showCover"
-							:picUrl="picUrl"
-							@touchstart="switchCoverOrLyric">
-						</cover>
-					</keep-alive>
-					<keep-alive>
-						<lyric :onplaying="onplaying"
-							@volume="handleVolume"
-							@touchstart="switchCoverOrLyric"
-							:id="id"
-							v-if="!showCover">
-						</lyric>
-					</keep-alive>
-					<div class="process-wrap">
-						<span class="current">{{ transformDuation(current) }}</span>
-						<div class="process-bar">
-							<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+						<keep-alive>
+							<cover :onplaying="onplaying"
+								v-if="showCover"
+								:picUrl="picUrl"
+								@touchstart="switchCoverOrLyric">
+							</cover>
+						</keep-alive>
+						<keep-alive>
+							<lyric :onplaying="onplaying"
+								@volume="handleVolume"
+								@touchstart="switchCoverOrLyric"
+								:id="id"
+								v-if="!showCover">
+							</lyric>
+						</keep-alive>
+						<div class="process-wrap">
+							<span class="current">{{ transformDuation(current) }}</span>
+							<div class="process-bar">
+								<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+							</div>
+							<span class="total">{{ transformDuation(total) }}</span>
 						</div>
-						<span class="total">{{ transformDuation(total) }}</span>
+						<div class="player-bar">
+							<i class="icon icon-prev"></i>
+							<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
+							<i class="icon icon-next"></i>
+						</div>
 					</div>
-					<div class="player-bar">
-						<i class="icon icon-prev"></i>
-						<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
-						<i class="icon icon-next"></i>
+					<div class="audio">
+						<audio ref="mp3">
+			  			<source :src="url" type="audio/mpeg">
+						</audio>
 					</div>
-				</div>
-				<div class="audio">
-					<audio ref="mp3">
-		  			<source :src="url" type="audio/mpeg">
-					</audio>
-				</div>
-		  </div>
-		</div>
-	</transition>
+			  </div>
+			</div>
+		</transition>
+	</div>
 </template>
 
 <script>
@@ -278,7 +280,8 @@ export default {
 
 <style lang="scss">
 	$base-color: rgb(212, 60, 51);
-	.player-wrap{
+
+	.player-container{
 		width: 100%;
 		height: 100%;
 		position: absolute;

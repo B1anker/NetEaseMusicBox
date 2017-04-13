@@ -1,39 +1,41 @@
 <template lang="html">
 	<div class="my-music">
 		<div class="top">我的音乐</div>
-		<div class="create common">
-			<div class="head" @click="toggleCreate">
-				<i class="icon icon-back" :class="{hide: !createShow}"></i>
-				<div class="playlist-type">我创建的歌单({{ create.length }})</div>
+		<div class="content-wrap">
+			<div class="create common">
+				<div class="head" @click="toggleCreate">
+					<i class="icon icon-back" :class="{hide: !createShow}"></i>
+					<div class="playlist-type">我创建的歌单({{ create.length }})</div>
+				</div>
+				<ul class="lists" v-show="createShow">
+					<li class="list" v-for="(item, index) in create" @click="toPlayList(index, 'create')">
+						<div class="left">
+							<img class="cover" :src="item.coverImgUrl" :alt="item.name">
+						</div>
+						<div class="right">
+							<div class="name">{{ item.name }}</div>
+							<div class="count">{{ item.trackCount + '首' }}</div>
+						</div>
+					</li>
+				</ul>
 			</div>
-			<ul class="lists" v-show="createShow">
-				<li class="list" v-for="(item, index) in create" @click="toPlayList(index, 'create')">
-					<div class="left">
-						<img class="cover" :src="item.coverImgUrl" :alt="item.name">
-					</div>
-					<div class="right">
-						<div class="name">{{ item.name }}</div>
-						<div class="count">{{ item.trackCount + '首' }}</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div class="subscribe common">
-			<div class="head" @click="toggleSubscribe">
-				<i class="icon icon-back" :class="{hide: !subscribeShow}"></i>
-				<div class="playlist-type">我收藏的歌单({{ subscribe.length }})</div>
+			<div class="subscribe common">
+				<div class="head" @click="toggleSubscribe">
+					<i class="icon icon-back" :class="{hide: !subscribeShow}"></i>
+					<div class="playlist-type">我收藏的歌单({{ subscribe.length }})</div>
+				</div>
+				<ul class="lists" v-show="subscribeShow">
+					<li class="list" v-for="(item, index) in subscribe" @click="toPlayList(index, 'subscribe')">
+						<div class="left">
+							<img class="cover" :src="item.coverImgUrl" :alt="item.name">
+						</div>
+						<div class="right">
+							<div class="name">{{ item.name }}</div>
+							<div class="count">{{ item.trackCount + '首' }}</div>
+						</div>
+					</li>
+				</ul>
 			</div>
-			<ul class="lists" v-show="subscribeShow">
-				<li class="list" v-for="(item, index) in subscribe" @click="toPlayList(index, 'subscribe')">
-					<div class="left">
-						<img class="cover" :src="item.coverImgUrl" :alt="item.name">
-					</div>
-					<div class="right">
-						<div class="name">{{ item.name }}</div>
-						<div class="count">{{ item.trackCount + '首' }}</div>
-					</div>
-				</li>
-			</ul>
 		</div>
 	</div>
 </template>
@@ -93,6 +95,11 @@ export default {
 
 <style lang="scss" scoped>
 .my-music{
+
+	.content-wrap{
+		overflow: scroll;
+		height: 4.503rem;
+	}
 
 	.top{
 		height: 0.5rem;
@@ -154,6 +161,7 @@ export default {
 
 				.right{
 					overflow: hidden;
+					padding-right: 0.2rem;
 					margin-left: 0.6rem;
 					height: 0.55rem;
 					border-bottom: 1px solid rgb(228, 229, 230);

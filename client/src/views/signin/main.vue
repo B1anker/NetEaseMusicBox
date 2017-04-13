@@ -97,6 +97,7 @@ $base-color: rgb(212, 60, 51);
 	position: absolute;
 	top: 0;
 	left: 0;
+	background: white;
 	z-index: 999;
 	width: 100%;
 	height: 100%;

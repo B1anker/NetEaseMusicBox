@@ -57,9 +57,11 @@ export default {
 	position: fixed;
 	top: 5.003rem;
 	left: 0;
+	right: 0;
+	margin: 0 auto;
 	z-index: 99;
 	height: 0.5rem;
-	width: 100%;
+	width: 3.2rem;
 	background-color: rgb(57, 57, 57);
 
 	ul{

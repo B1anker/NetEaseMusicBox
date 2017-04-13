@@ -1,18 +1,20 @@
 <template lang="html">
   <div class="discover">
   	<search-bar></search-bar>
-		<banner :banners="banners"></banner>
-		<div class="recommend-playlist">
-			<div class="title">
-				<div class="text">推荐歌单<i class="icon icon-back"></i></div>
+		<div class="content-wrap">
+			<banner :banners="banners"></banner>
+			<div class="recommend-playlist">
+				<div class="title">
+					<div class="text">推荐歌单<i class="icon icon-back"></i></div>
+				</div>
+				<ul class="playlists">
+					<li class="playlist" v-for="(playlist, index) in playlists" @click="toPlayList(index)">
+						<img :src="playlist.picUrl" :alt="playlist.name">
+						<div class="name">{{ playlist.name }}</div>
+						<span class="playcount">{{ transformNumber(playlist.playCount) }}</span>
+					</li>
+				</ul>
 			</div>
-			<ul class="playlists">
-				<li class="playlist" v-for="(playlist, index) in playlists" @click="toPlayList(index)">
-					<img :src="playlist.picUrl" :alt="playlist.name">
-					<div class="name">{{ playlist.name }}</div>
-					<span class="playcount">{{ transformNumber(playlist.playCount) }}</span>
-				</li>
-			</ul>
 		</div>
   </div>
 </template>
@@ -67,6 +69,11 @@ export default {
 <style lang="scss">
 .discover{
 	position: relative;
+
+	.content-wrap{
+		overflow: scroll;
+		height: 4.503rem;
+	}
 
 	.title{
 		height: 0.5rem;

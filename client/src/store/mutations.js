@@ -11,6 +11,10 @@ export default {
 		state.player.show = update;
   },
 
+	[types.SHOWCONTROLER] (state, update) {
+		state.controler = update;
+  },
+
 	[types.SETUSER] (state, update) {
 		state.user = update;
   }

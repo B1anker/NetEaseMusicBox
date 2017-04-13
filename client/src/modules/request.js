@@ -52,6 +52,13 @@ function userPlayListsApi(id) {
 	return axios.get(`/music/netEaseApi/userPlayLists?id=${id}`);
 }
 
+function getEvent(params) {
+	if (!params) {
+		return axios.get('/music/netEaseApi/event');
+	}
+	return axios.get(`/music/netEaseApi/event?offset=${ params.offset }&limit=${ params.limit }`);
+}
+
 
 export {
 	signin,
@@ -66,5 +73,6 @@ export {
 	getBanner,
 	getPlayList,
 	getUserDetail,
-	userPlayListsApi
+	userPlayListsApi,
+	getEvent
 }

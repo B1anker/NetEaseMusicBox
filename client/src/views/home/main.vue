@@ -3,20 +3,22 @@
 		<keep-alive>
 			<router-view class="home-content"></router-view>
 		</keep-alive>
+		<controler></controler>
   </div>
 </template>
 
 <script>
+import Controler from '@/views/player/controler';
 export default {
 	name: 'home',
 	components: {
+		Controler
 	}
 }
 </script>
 
 <style lang="scss" scoped>
 .home-content{
-	overflow: scroll;
 	height: 5.003rem;
 	width: 100%
 }

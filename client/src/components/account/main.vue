@@ -1,46 +1,48 @@
 <template lang="html">
 	<div class="account">
 		<div class="head">账号</div>
-		<div class="summary" v-if="summaryShow">
-			<div class="up">
-				<div class="avatar">
-					<img :src="user.profile.avatarUrl" :alt="user.profile.nickname">
+		<div class="content-wrap">
+			<div class="summary" v-if="summaryShow">
+				<div class="up">
+					<div class="avatar">
+						<img :src="user.profile.avatarUrl" :alt="user.profile.nickname">
+					</div>
+					<div class="username-wrap">
+						<div class="username">{{ user.profile.nickname }}</div>
+						<div class="level">{{ 'LV ' + details.level }}</div>
+					</div>
+					<div class="sign">
+						<button>签到</button>
+					</div>
 				</div>
-				<div class="username-wrap">
-					<div class="username">{{ user.profile.nickname }}</div>
-					<div class="level">{{ 'LV ' + details.level }}</div>
-				</div>
-				<div class="sign">
-					<button>签到</button>
+				<div class="down">
+					<ul>
+						<li>
+							<div class="text">动态</div>
+							<div class="num">0</div>
+						</li>
+						<li>
+							<div class="text">关注</div>
+							<div class="num">{{ follows.length }}</div>
+						</li>
+						<li>
+							<div class="text">粉丝</div>
+							<div class="num">{{ followeds.length }}</div>
+						</li>
+						<li>
+							<i class="icon"></i>
+							<div class="my-info">我的资料</div>
+						</li>
+					</ul>
 				</div>
 			</div>
-			<div class="down">
+			<div class="menu">
 				<ul>
-					<li>
-						<div class="text">动态</div>
-						<div class="num">0</div>
-					</li>
-					<li>
-						<div class="text">关注</div>
-						<div class="num">{{ follows.length }}</div>
-					</li>
-					<li>
-						<div class="text">粉丝</div>
-						<div class="num">{{ followeds.length }}</div>
-					</li>
-					<li>
-						<i class="icon"></i>
-						<div class="my-info">我的资料</div>
-					</li>
+					<li><i></i><span></span></li>
+					<li><i></i><span></span></li>
+					<li><i></i><span></span></li>
 				</ul>
 			</div>
-		</div>
-		<div class="menu">
-			<ul>
-				<li><i></i><span></span></li>
-				<li><i></i><span></span></li>
-				<li><i></i><span></span></li>
-			</ul>
 		</div>
 	</div>
 </template>
@@ -100,6 +102,7 @@ export default {
 <style lang="scss" scoped>
 .account{
 	background-color: rgb(238, 239, 241);
+
 	.head{
 		width: 100%;
 		height: 0.48rem;
@@ -107,6 +110,11 @@ export default {
 		font-size: 0.17rem;
 		line-height: 0.48rem;
 		color: white;
+	}
+
+	.content-wrap{
+		overflow: scroll;
+		height: 4.503rem;
 	}
 
 	.summary{

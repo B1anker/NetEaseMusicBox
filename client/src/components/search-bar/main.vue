@@ -60,6 +60,7 @@ export default {
 
 	methods: {
 		handleClick(e) {
+			this.$store.dispatch('showControler', false);
 			this.historyShow = true;
 			this.resultShow = false;
 			this.cancelShow = true;
@@ -104,6 +105,7 @@ export default {
 			this.cancelShow = false;
 			this.historyShow = false;
 			this.resultShow = false;
+			this.$store.dispatch('showControler', true);
 		}
 	}
 }
@@ -112,10 +114,7 @@ export default {
 <style lang="scss" scoped>
 	$base-color: rgb(232, 53, 53);
 	.search-bar{
-		position: absolute;
-		top: 0;
-		width: 100%;
-		z-index: 999;
+		position: relative;
 
 		.search{
 			background-color: $base-color;
@@ -159,6 +158,8 @@ export default {
 		}
 
 		.history{
+			position: absolute;
+			z-index: 999;
 			width: 100%;
 			background-color: white;
 			height: 4.5rem;
@@ -200,6 +201,7 @@ export default {
 		.slide-down{
 			position: absolute;
 			background-color: white;
+			z-index: 999;
 			width: 100%;
 			height: 4.5rem;
 			overflow: scroll;

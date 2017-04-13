@@ -12,7 +12,10 @@ const state = {
 		songId: localStorage.getItem('songId'),
 		show: false
 	},
-	user: {}
+
+	user: {},
+
+	controler: true
 }
 
 export default new Vuex.Store({

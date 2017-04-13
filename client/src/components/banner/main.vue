@@ -51,7 +51,6 @@ export default {
 
 <style lang="scss">
 .banner{
-	margin-top: 0.3rem;
 	overflow: hidden;
 
 	.img{
