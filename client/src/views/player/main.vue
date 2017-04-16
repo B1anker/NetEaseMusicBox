@@ -50,6 +50,7 @@
 						</audio>
 					</div>
 			  </div>
+				<lists></lists>
 			</div>
 		</transition>
 	</div>
@@ -60,11 +61,13 @@ import { detail, getMp3Url } from '@/modules/request';
 import Cover from './cover';
 import Lyric from './lyric';
 import Drag from './drag';
+import Lists from './lists';
 export default {
 	name: 'player',
 	components: {
 		Cover,
-		Lyric
+		Lyric,
+		Lists
 	},
 
 	data() {

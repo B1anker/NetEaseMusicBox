@@ -5,8 +5,7 @@ import {
 
 const hotPlayListsApi = KoaRouter();
 
-/* 通过id获取热门歌单
- * @param {String} id
+/* 获取热门歌单
  * @return {Promise}
  */
 hotPlayListsApi.get('/netEaseApi/hotplaylist', async(ctx, next) => {
