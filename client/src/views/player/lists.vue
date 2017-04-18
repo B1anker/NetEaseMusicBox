@@ -18,7 +18,9 @@ export default {
 	name: 'lists',
 
 	data() {
+		return {
 
+		}
 	}
 }
 </script>
