@@ -28,6 +28,18 @@ export default StyleSheet.create({
         "WebkitFontSmoothing": "antialiased",
         "MozOsxFontSmoothing": "grayscale"
     },
+    "icon-order-loop:before": {
+        "content": "\\e91a"
+    },
+    "icon-shuffle-loop:before": {
+        "content": "\\e91b"
+    },
+    "icon-single-loop:before": {
+        "content": "\\e91c"
+    },
+    "icon-song-lists:before": {
+        "content": "\\e919"
+    },
     "icon-stop:before": {
         "content": "\\e918"
     },

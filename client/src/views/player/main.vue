@@ -39,9 +39,11 @@
 							<span class="total">{{ transformDuation(total) }}</span>
 						</div>
 						<div class="player-bar">
+							<i class="icon icon-order-loop"></i>
 							<i class="icon icon-prev"></i>
 							<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
 							<i class="icon icon-next"></i>
+							<i class="icon icon-song-lists" @click="popLists"></i>
 						</div>
 					</div>
 					<div class="audio">
@@ -276,6 +278,10 @@ export default {
 				this.mp3Dom.volume = level;
 				return ;
 			}
+		},
+
+		popLists() {
+			console.log(1);
 		}
 	}
 }
@@ -416,7 +422,7 @@ export default {
 						vertical-align: top;
 					}
 
-					.icon-prev, .icon-next{
+					.icon-prev, .icon-next, .icon-song-lists, .icon-order-loop{
 						font-size: 0.26rem;
 						color: white;
 					}
@@ -425,6 +431,14 @@ export default {
 						font-size: 0.48rem;
 						color: white;
 						margin: 0 0.3rem;
+					}
+
+					.icon-order-loop{
+						margin-right: 0.4rem;
+					}
+
+					.icon-song-lists{
+						margin-left: 0.4rem;
 					}
 				}
 			}
