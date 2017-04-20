@@ -10,7 +10,10 @@ const state = {
   player: {
 		state: -1,
 		songId: localStorage.getItem('songId'),
-		show: false
+		show: false,
+		lists: {
+			show: false
+		}
 	},
 
 	user: {},

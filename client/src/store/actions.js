@@ -12,6 +12,10 @@ export const showControler = ({ commit }, update) => {
   commit(types.SHOWCONTROLER, update);
 }
 
+export const showLists = ({ commit }, update) => {
+  commit(types.SHOWLISTS, update);
+}
+
 export const setUser = ({ commit }, update) => {
   commit(types.SETUSER, update);
 }

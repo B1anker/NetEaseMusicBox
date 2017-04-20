@@ -281,7 +281,7 @@ export default {
 		},
 
 		popLists() {
-			console.log(1);
+			this.$store.dispatch('showLists', true);
 		}
 	}
 }

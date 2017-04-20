@@ -1,15 +1,17 @@
 <template lang="html">
-  <div class="lists-wrap" v-if="listsShow">
-  	<div class="tool">
-  		<div class="play-way">单曲循环</div>
-			<div class="favor">收藏</div>
-			<div class="clear">清空</div>
-  	</div>
-		<ul class="lists">
-			<li class="list"></li>
-		</ul>
-		<div class="close"></div>
-  </div>
+  <transition name="slide-up">
+		<div class="lists-wrap" v-if="$store.getters.getPlayer.lists.show">
+	  	<div class="tool">
+	  		<div class="play-way">单曲循环</div>
+				<div class="favor">收藏</div>
+				<div class="clear">清空</div>
+	  	</div>
+			<ul class="lists">
+				<li class="list"></li>
+			</ul>
+			<div class="close" @click="close">关闭</div>
+	  </div>
+  </transition>
 </template>
 
 <script>
@@ -24,6 +26,13 @@ export default {
 	},
 
 	mounted() {
+
+	},
+
+	methods: {
+		close() {
+			this.$store.dispatch('showLists', false);
+		}
 	}
 }
 </script>
@@ -79,7 +88,18 @@ export default {
 
 	.close {
 		height: 0.55rem;
+		font-size: 0.18rem;
+		line-height: 0.55rem;
+		border-top: 1px solid rgb(209, 202, 207);
 	}
 
+}
+
+.slide-up-enter-active, .slide-up-leave-active{
+	transition: transform 0.3s ease;
+}
+
+.slide-up-enter, .slide-up-leave-active{
+	transform: translateY(100%);
 }
 </style>

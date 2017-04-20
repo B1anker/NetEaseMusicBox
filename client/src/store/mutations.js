@@ -15,6 +15,10 @@ export default {
 		state.controler = update;
   },
 
+	[types.SHOWLISTS] (state, update) {
+		state.player.lists.show = update;
+  },
+
 	[types.SETUSER] (state, update) {
 		state.user = update;
   }
