@@ -96,7 +96,7 @@ export default {
 		},
 
 		id() {
-			return this.$store.getters.getPlayer.songId;
+			return Number(this.$store.getters.getPlayer.songId);
 		}
 	},
 
@@ -146,7 +146,7 @@ export default {
 				}
 			});
 			this.getDetail(id).then(() => {
-			this.played = false;
+				this.played = false;
 				this.getMp3().then(() => {
 					this.play();
 				});
@@ -163,7 +163,7 @@ export default {
 
 		getDetail(id) {
 			return detail(id || this.id).then((res) => {
-				if (!res.data.songs.length) {
+				if (!res.data.songs) {
 					return ;
 				}
 				const song = res.data.songs[0];
@@ -179,6 +179,14 @@ export default {
 
 		getMp3() {
 			return getMp3Url(this.id).then((res) => {
+				if (!res.data.songs) {
+					this.$message({
+						message: '获取歌曲失败',
+						type: 'error',
+						duration: 1000
+					});
+					return ;
+				}
 				const song = res.data.songs[0];
 				this.url = song.url;
 				this.played = false;
@@ -281,7 +289,9 @@ export default {
 		},
 
 		popLists() {
-			this.$store.dispatch('showLists', true);
+			this.$store.dispatch('setLists', {
+				show: true
+			});
 		}
 	}
 }

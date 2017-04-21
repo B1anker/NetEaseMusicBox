@@ -12,6 +12,7 @@ const state = {
 		songId: localStorage.getItem('songId'),
 		show: false,
 		lists: {
+			container: [],
 			show: false
 		}
 	},

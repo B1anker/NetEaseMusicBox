@@ -31,7 +31,9 @@ export default {
 
 	methods: {
 		close() {
-			this.$store.dispatch('showLists', false);
+			this.$store.dispatch('setLists', {
+				show: false
+			});
 		}
 	}
 }

@@ -15,8 +15,10 @@ export default {
 		state.controler = update;
   },
 
-	[types.SHOWLISTS] (state, update) {
-		state.player.lists.show = update;
+	[types.SETLISTS] (state, update) {
+		for(let key of Object.keys(update)){
+			state.player.lists[key] = update[key];
+		}
   },
 
 	[types.SETUSER] (state, update) {

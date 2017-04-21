@@ -101,6 +101,14 @@ export default {
 
 		handleLyrics(id) {
 			lyric(id).then((res) => {
+				if (!res.data.lrc) {
+					this.$message({
+						message: '获取歌词失败',
+						type: 'error',
+						duration: 1000
+					});
+					return ;
+				}
 				this.times = res.data.lrc.lyric.match(/\[\d{2}\:\d{2}\.\d{2,3}\]/g).map((value) => {
 					const time = value.slice(1, -1),
 						min = Number(time.split(':')[0]),

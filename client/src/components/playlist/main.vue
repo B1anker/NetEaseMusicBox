@@ -22,7 +22,7 @@
 			</div>
 			<div class="lists-wrap">
 				<div class="play">
-					<i class="icon icon-start"></i>
+					<i class="icon icon-start" @click="playAll"></i>
 					<div class="text">播放全部<span class="count">(共{{ tracks.length }}首)</span></div>
 				</div>
 				<ul class="lists">
@@ -39,12 +39,15 @@
 
 <script>
 import { getPlayList } from '@/modules/request';
+import playList from '@/modules/mixins/playList';
 export default {
 	name: 'playlist',
 
 	props: {
 		playListId: Number
 	},
+
+	mixins: [playList],
 
 	data() {
 		return {
@@ -86,6 +89,11 @@ export default {
 
 		handleBack() {
 			this.$router.back();
+		},
+
+		playAll() {
+			this.setList(this.tracks);
+			this.playMusic(0);
 		},
 
 		playMusic(index) {
@@ -242,6 +250,9 @@ export default {
 				}
 
 				.artist-and-album{
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
 					font-size: 0.11rem;
 					color: rgb(137, 137, 137);
 				}
