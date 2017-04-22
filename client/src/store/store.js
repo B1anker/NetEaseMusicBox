@@ -9,11 +9,12 @@ Vue.use(Vuex)
 const state = {
   player: {
 		state: -1,
-		songId: localStorage.getItem('songId'),
+		songId: localStorage.getItem('songId') || '418603077',
 		show: false,
 		lists: {
-			container: [],
-			show: false
+			id: 0,
+			show: false,
+			index: 0
 		}
 	},
 

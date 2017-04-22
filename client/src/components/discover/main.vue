@@ -21,7 +21,6 @@
 
 <script>
 import SearchBar from '@/components/search-bar/main';
-import PlayList from '@/components/playlist/main';
 import Banner from '@/components/banner/main';
 import { getHotPlayList, getBanner } from '@/modules/request';
 export default {
@@ -29,7 +28,6 @@ export default {
 
 	components: {
 		SearchBar,
-		PlayList,
 		Banner
 	},
 
@@ -37,7 +35,7 @@ export default {
 		return {
 			banners: [],
 			playlists: [],
-			playListId: 0
+			playListId: '0'
 		}
 	},
 

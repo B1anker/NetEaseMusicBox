@@ -11,6 +11,7 @@
 import Controler from '@/views/player/controler';
 export default {
 	name: 'home',
+	
 	components: {
 		Controler
 	}

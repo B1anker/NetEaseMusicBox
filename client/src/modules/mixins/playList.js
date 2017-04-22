@@ -1,9 +1,11 @@
 const playList = {
 	methods: {
-		setList(lists) {
+		setList(id, index) {
+			localStorage.setItem('playLists', JSON.stringify({id, index}));
 			this.$store.dispatch('setLists', {
-				container: lists
-			})
+				id,
+				index
+			});
 		}
 	}
 }

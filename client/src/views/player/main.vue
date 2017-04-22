@@ -40,9 +40,12 @@
 						</div>
 						<div class="player-bar">
 							<i class="icon icon-order-loop"></i>
-							<i class="icon icon-prev"></i>
-							<i class="icon" :class="{'icon-start': !onplaying, 'icon-stop': onplaying}" @click="play"></i>
-							<i class="icon icon-next"></i>
+							<i class="icon icon-prev" @click="prev"></i>
+							<i class="icon"
+								:class="{'icon-start': !onplaying, 'icon-stop': onplaying}"
+								@click="play">
+							</i>
+							<i class="icon icon-next" @click="next"></i>
 							<i class="icon icon-song-lists" @click="popLists"></i>
 						</div>
 					</div>
@@ -52,7 +55,7 @@
 						</audio>
 					</div>
 			  </div>
-				<lists></lists>
+				<lists :lists="playLists"></lists>
 			</div>
 		</transition>
 	</div>
@@ -60,12 +63,14 @@
 
 <script>
 import { detail, getMp3Url } from '@/modules/request';
+import { getPlayLists } from '@/modules/request';
 import Cover from './cover';
 import Lyric from './lyric';
 import Drag from './drag';
 import Lists from './lists';
 export default {
 	name: 'player',
+
 	components: {
 		Cover,
 		Lyric,
@@ -86,7 +91,10 @@ export default {
 			step: 0,
 			timer: null,
 			processDrag: null,
-			showCover: true
+			showCover: true,
+			playLists: [],
+			playListsId: 0,
+			playIndex: 0
 		}
 	},
 
@@ -96,7 +104,7 @@ export default {
 		},
 
 		id() {
-			return Number(this.$store.getters.getPlayer.songId);
+			return this.$store.getters.getPlayer.songId;
 		}
 	},
 
@@ -108,6 +116,7 @@ export default {
 	},
 
 	mounted() {
+		this.setPlayLists();
 		this.init(this.id);
 	},
 
@@ -116,6 +125,7 @@ export default {
 			if(!id){
 				return ;
 			}
+
 			this.mp3Dom = this.$refs.mp3;
 			this.mp3Dom.volume = localStorage.getItem('volume');
 			this.getDetail().then(() => {
@@ -128,6 +138,26 @@ export default {
 					max: (320 - 212) / 2 + 212
 				}
 			});
+		},
+
+		setPlayLists() {
+			const playLists = JSON.parse(localStorage.getItem('playLists')) || {id: 0, index: 0};
+			this.playListsId = playLists.id ? playLists.id : this.playListsId;
+			this.playIndex = playLists.index;
+
+			if (this.playListsId) {
+				getPlayLists(this.playListsId).then((res) => {
+					if (!res.data) {
+						this.$message({
+							message: '获取歌单失败',
+							type: 'error',
+							duration: 1000
+						});
+					}
+
+					this.playLists = res.data.playlist.tracks;
+				})
+			}
 		},
 
 		switchSong(id) {
@@ -164,6 +194,11 @@ export default {
 		getDetail(id) {
 			return detail(id || this.id).then((res) => {
 				if (!res.data.songs) {
+					this.$message({
+						message: '获取歌曲信息失败',
+						type: 'error',
+						duration: 1000
+					});
 					return ;
 				}
 				const song = res.data.songs[0];
@@ -292,6 +327,22 @@ export default {
 			this.$store.dispatch('setLists', {
 				show: true
 			});
+		},
+
+		prev() {
+			if (this.playIndex > 0) {
+				this.$store.dispatch('setPlayer', {
+					songId: '' + this.playLists[--this.playIndex].id
+				});
+			}
+		},
+
+		next() {
+			if (this.playIndex < this.playLists.length) {
+				this.$store.dispatch('setPlayer', {
+					songId: '' + this.playLists[++this.playIndex].id
+				});
+			}
 		}
 	}
 }

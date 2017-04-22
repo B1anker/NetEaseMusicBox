@@ -40,7 +40,7 @@ function getBanner() {
 	return axios.get('/music/netEaseApi/banner');
 }
 
-function getPlayList(id) {
+function getPlayLists(id) {
 	return axios.get(`/music/netEaseApi/playList?playListId=${id}`);
 }
 
@@ -71,7 +71,7 @@ export {
 	getFolloweds,
 	getHotPlayList,
 	getBanner,
-	getPlayList,
+	getPlayLists,
 	getUserDetail,
 	userPlayListsApi,
 	getEvent

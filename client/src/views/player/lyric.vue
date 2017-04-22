@@ -23,7 +23,7 @@ import { lyric } from '@/modules/request';
 export default {
 	props: {
 		onplaying: Boolean,
-		id: Number
+		id: String
 	},
 
 	created() {

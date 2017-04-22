@@ -22,7 +22,7 @@
 			</div>
 			<div class="lists-wrap">
 				<div class="play">
-					<i class="icon icon-start" @click="playAll"></i>
+					<i class="icon icon-start" @click="playMusic(0)"></i>
 					<div class="text">播放全部<span class="count">(共{{ tracks.length }}首)</span></div>
 				</div>
 				<ul class="lists">
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import { getPlayList } from '@/modules/request';
+import { getPlayLists } from '@/modules/request';
 import playList from '@/modules/mixins/playList';
 export default {
 	name: 'playlist',
 
 	props: {
-		playListId: Number
+		playListId: String
 	},
 
 	mixins: [playList],
@@ -78,7 +78,7 @@ export default {
 
 	methods: {
 		init(id) {
-			getPlayList(id || this.id).then((res) => {
+			getPlayLists(id || this.id).then((res) => {
 				this.playlist = res.data.playlist;
 				this.tracks = res.data.playlist.tracks;
 				this.avatarUrl = this.playlist.creator.avatarUrl;
@@ -91,12 +91,8 @@ export default {
 			this.$router.back();
 		},
 
-		playAll() {
-			this.setList(this.tracks);
-			this.playMusic(0);
-		},
-
 		playMusic(index) {
+			this.setList(this.$route.params.id, index);
 			this.$store.dispatch('setPlayer', {
 				songId: this.tracks[index].id
 			});
