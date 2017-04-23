@@ -94,7 +94,9 @@ export default {
 		playMusic(index) {
 			this.setList(this.$route.params.id, index);
 			this.$store.dispatch('setPlayer', {
-				songId: this.tracks[index].id
+				songId: this.tracks[index].id,
+				show: true,
+				state: 1
 			});
 		}
 	}

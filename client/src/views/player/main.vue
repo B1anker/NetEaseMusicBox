@@ -24,11 +24,10 @@
 							</cover>
 						</keep-alive>
 						<keep-alive>
-							<lyric :onplaying="onplaying"
-								@volume="handleVolume"
+							<lyric @volume="handleVolume"
 								@touchstart="switchCoverOrLyric"
 								:id="id"
-								v-if="!showCover">
+								v-show="!showCover">
 							</lyric>
 						</keep-alive>
 						<div class="process-wrap">
@@ -78,6 +77,24 @@ export default {
 	},
 
 	data() {
+		/**
+     * @param {HTMLELEMENT} [mp3Dom] [mp3元素]
+     * @param {String} [artist] [歌手名]
+     * @param {String} [music] [音乐名]
+     * @param {String} [url] [音乐链接]
+     * @param {String} [picUrl] [图片链接]
+     * @param {Boolean} [played] [是否播放过]
+		 * @param {Boolean} [onplaying] [是否正在播放]
+     * @param {Number} [current] [当前播放进度]
+     * @param {Number} [total] [音乐总时长]
+     * @param {Number} [step] [每秒播放圆点移动距离]
+     * @param {Number} [timer] [定时器返回值]
+     * @param {Object} [processDrag] [拖动对象]
+		 * @param {Boolean} [switchCoverOrLyric] [切换封面/歌词]
+     * @param {Array} [playLists] [歌单列表]
+     * @param {String} [playListsId] [歌单id]
+     * @param {Number} [playIndex] [播放歌单索引]
+     */
 		return {
 			mp3Dom: null,
 			artist: '',
@@ -104,7 +121,7 @@ export default {
 		},
 
 		id() {
-			return this.$store.getters.getPlayer.songId;
+			return '' + this.$store.getters.getPlayer.songId;
 		}
 	},
 
@@ -116,8 +133,10 @@ export default {
 	},
 
 	mounted() {
-		this.setPlayLists();
-		this.init(this.id);
+		this.$nextTick(() => {
+			this.setPlayLists();
+			this.init(this.id);
+		});
 	},
 
 	methods: {
@@ -133,6 +152,7 @@ export default {
 			});
 			this.processDrag = new Drag({
 				el: this.$refs.processPoint,
+				parentNodeWidth: 212,
 				boundary: {
 					min: (320 - 212) / 2 + 8,
 					max: (320 - 212) / 2 + 212
@@ -153,6 +173,7 @@ export default {
 							type: 'error',
 							duration: 1000
 						});
+						return;
 					}
 
 					this.playLists = res.data.playlist.tracks;
@@ -170,6 +191,7 @@ export default {
 			this.current = 0;
 			this.processDrag = new Drag({
 				el: this.$refs.processPoint,
+				parentNodeWidth: 212,
 				boundary: {
 					min: (320 - 212) / 2 + 8,
 					max: (320 - 212) / 2 + 212
@@ -290,6 +312,9 @@ export default {
 			this.stopTimer();
 			this.startTimer();
 			this.onplaying = true;
+			this.$store.dispatch('setPlayer', {
+				state: 1
+			});
 			this.mp3Dom.removeEventListener('canplay', this.canplay, false);
 		},
 
@@ -304,12 +329,18 @@ export default {
 				this.stopTimer();
 				this.startTimer();
 				this.onplaying = true;
+				this.$store.dispatch('setPlayer', {
+					state: 1
+				});
 				return ;
 			}
 
 			this.mp3Dom.pause();
 			this.stopTimer();
 			this.onplaying = false;
+			this.$store.dispatch('setPlayer', {
+				state: -1
+			});
 		},
 
 		switchCoverOrLyric() {

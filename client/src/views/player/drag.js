@@ -2,7 +2,7 @@ class Drag {
 	constructor(options) {
 		this.el = options.el;
 		this.halfPointWidth = Math.round(this.el.offsetWidth / 2);
-		this.offset = Math.round((320 - this.el.parentNode.offsetWidth) / 2);
+		this.offset = Math.round((320 - options.parentNodeWidth) / 2);
 		this.boundary = options.boundary;
 		this.init();
 	}

@@ -22,12 +22,17 @@ import { lyric } from '@/modules/request';
 
 export default {
 	props: {
-		onplaying: Boolean,
 		id: String
 	},
 
 	created() {
 		this.handleLyrics(this.id);
+	},
+
+	computed: {
+		playing() {
+			return this.$store.getters.getPlayer.state;
+		}
 	},
 
 	watch: {
@@ -36,7 +41,7 @@ export default {
 			return newId;
 		},
 
-		onplaying(newState) {
+		playing(newState) {
 			newState && this.roll();
 			return newState;
 		}
@@ -56,6 +61,7 @@ export default {
 	mounted() {
 		this.$nextTick(() => {
 			this.init();
+			this.playing && this.roll();
 		});
 	},
 
@@ -63,6 +69,7 @@ export default {
 		init() {
 			this.volumeDrag = new Drag({
 				el: this.$refs.volumePoint,
+				parentNodeWidth: 212,
 				boundary: {
 					min: (320 - 212) / 2 + 4.5,
 					max: (320 - 212) / 2 + 212
@@ -113,7 +120,7 @@ export default {
 					const time = value.slice(1, -1),
 						min = Number(time.split(':')[0]),
 						sec = Number(time.split(':')[1]);
-					return min * 60 + sec;
+					return (min * 60 + sec).toFixed(2);
 				});
 
 				this.lyrics = res.data.lrc.lyric.match(/\].*\n/g).map((value) => {
@@ -138,14 +145,14 @@ export default {
 			this.times.forEach((value, index) => {
 				setTimeout(() => {
 					this.$refs.roll.style.top = this.$refs.roll.offsetTop - '43' + 'px';
-					if(index === 0){
+					if (index === 0) {
 						ps[index].className = 'on';
-					}else{
+					} else {
 						ps[index - 1].className = '';
 						ps[index].className = 'on';
 					}
 				}, value * 1000);
-			})
+			});
 		}
 	}
 }

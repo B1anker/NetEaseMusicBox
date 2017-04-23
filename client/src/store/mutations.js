@@ -2,9 +2,10 @@ import * as types from './mutation-types'
 
 export default {
   [types.SETPLAYER] (state, update) {
-		localStorage.setItem('songId', update.songId);
-		state.player.show = true;
-    state.player.songId = update.songId;
+		update.songId  && localStorage.setItem('songId', update.songId);
+		for(let key of Object.keys(update)){
+			state.player[key] = update[key];
+		}
   },
 
 	[types.SHOWPLAYER] (state, update) {
