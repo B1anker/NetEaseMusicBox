@@ -25,9 +25,8 @@ const fetchData = (options) => {
 				try {
 					result = result && JSON.parse(result);
 				} catch (e) {
-					return reject(e);
+					console.log(e);
 				}
-
 				return resolve(result);
 			}
 

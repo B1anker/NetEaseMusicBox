@@ -2,7 +2,7 @@
 	<transition name="slide-fade">
 		<div class="playlist">
 			<div class="head">
-				<div class="background-mask" :style="{ 'background-image': 'url(' + avatarUrl + ')' }">
+				<div class="background-mask" :style="{ 'background-image': 'url(' + backgroundUrl + ')' }">
 				</div>
 				<div class="title">
 					<i class="icon icon-back" @click.stop="handleBack"></i>
@@ -40,6 +40,7 @@
 <script>
 import { getPlayLists } from '@/modules/request';
 import playList from '@/modules/mixins/playList';
+import Ls from '@/modules/utils/localStorage';
 export default {
 	name: 'playlist',
 
@@ -78,11 +79,19 @@ export default {
 
 	methods: {
 		init(id) {
+			const ls = new Ls();
+			this.backgroundUrl = ls.get('playLists').cover;
 			getPlayLists(id || this.id).then((res) => {
+				if(!res.data){
+					this.$message({
+						type: 'error',
+						message: '获取歌单失败',
+						duration: 1000
+					})
+				}
 				this.playlist = res.data.playlist;
 				this.tracks = res.data.playlist.tracks;
 				this.avatarUrl = this.playlist.creator.avatarUrl;
-				this.backgroundUrl = this.playlist.creator.backgroundUrl;
 				this.nickname = this.playlist.creator.nickname;
 			});
 		},
@@ -149,6 +158,7 @@ export default {
 
 		.info{
 			text-align: left;
+			white-space: nowrap;
 
 			.album{
 				margin: 0 0.15rem;
@@ -162,7 +172,14 @@ export default {
 				vertical-align: top;
 
 				.name{
-					font-size: 0.18rem;
+					overflow: hidden;
+					text-align: justify;
+			    text-overflow: ellipsis;
+			    display: -webkit-box;
+			    -webkit-line-clamp: 2;
+			    -webkit-box-orient: vertical;
+					white-space: normal;
+					font-size: 0.16rem;
 					color: white;
 					width: 1.5rem;
 					height: 0.36rem;
@@ -172,12 +189,17 @@ export default {
 					margin-top: 0.2rem;
 
 					.avatar{
+						vertical-align: top;
 						width: 0.3rem;
 						height: 0.3rem;
 						border-radius: 50%;
 					}
 
 					.nickname{
+						overflow: hidden;
+						display: inline-block;
+						text-overflow: ellipsis;
+						max-width: 1.25rem;
 						margin-left: 0.05rem;
 						font-size: 0.15rem;
 						color: rgb(203, 201, 197);

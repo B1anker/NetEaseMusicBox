@@ -40,6 +40,14 @@ function getBanner() {
 	return axios.get('/music/netEaseApi/banner');
 }
 
+function getNewBanner() {
+	return axios.get('/music/netEaseApi/newBanner').then((res) => {
+		return res.data.match(/Gbanners[\S\s]*\;/)[0].replace(/\s/g, '').match(/picUrl.*?jpg\"/g).map((item, index, arr) => {
+			return item.match(/http.*jpg/)[0];
+		});
+	});
+}
+
 function getPlayLists(id) {
 	return axios.get(`/music/netEaseApi/playList?playListId=${id}`);
 }
@@ -71,6 +79,7 @@ export {
 	getFolloweds,
 	getHotPlayList,
 	getBanner,
+	getNewBanner,
 	getPlayLists,
 	getUserDetail,
 	userPlayListsApi,

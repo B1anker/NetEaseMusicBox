@@ -22,6 +22,12 @@ export default {
 		}
   },
 
+	[types.SETPLAYLISTS] (state, update) {
+		for(let key of Object.keys(update)){
+			state.playLists.lists[key] = update[key];
+		}
+  },
+
 	[types.SETUSER] (state, update) {
 		state.user = update;
   }

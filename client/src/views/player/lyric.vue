@@ -187,7 +187,7 @@ export default {
 
 				.point{
 					position: absolute;
-					top: -0.045rem;
+					top: -0.038rem;
 					left: -0.045rem;
 					width: 0.09rem;
 					height: 0.09rem;

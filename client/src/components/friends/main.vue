@@ -47,6 +47,14 @@ export default {
 	methods: {
 		init() {
 			getEvent().then((res) => {
+				if (res.data.code !== 200) {
+					this.$message({
+						type: 'error',
+						message: '获取动态失败',
+						duration: 1000
+					});
+					return ;
+				}
 				this.events = res.data.event;
 				this.events = this.events.filter((item, index) => {
 					return !!item.uuid;

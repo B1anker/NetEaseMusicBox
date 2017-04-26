@@ -70,7 +70,7 @@ export default {
 	mounted() {
 		const user = JSON.parse(localStorage.getItem('user'));
 
-		if(Object.prototype.toString.call(user).slice(8, -1) === 'Object') {
+		if (user.code === 200) {
 			this.user = user;
 			this.init();
 		}

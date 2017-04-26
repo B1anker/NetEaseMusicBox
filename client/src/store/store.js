@@ -18,6 +18,10 @@ const state = {
 		}
 	},
 
+	playLists: {
+		cover: JSON.parse(localStorage.getItem('playLists')) ? JSON.parse(localStorage.getItem('playLists')).cover : ''
+	},
+
 	user: {},
 
 	controler: true

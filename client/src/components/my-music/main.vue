@@ -42,6 +42,8 @@
 
 <script>
 import { userPlayListsApi } from '@/modules/request';
+import Ls from '@/modules/utils/localStorage';
+const ls = new Ls();
 export default {
 	name: 'my-music',
 
@@ -62,15 +64,30 @@ export default {
 	methods: {
 		init() {
 			this.user = JSON.parse(localStorage.getItem('user'));
+			if (this.user.code !== 200) {
+				return ;
+			}
 			userPlayListsApi(this.user.account.id).then((res) => {
-				this.create = this.filterPlayList(res.data.playlist, false);
-				this.subscribe = this.filterPlayList(res.data.playlist, true);
+				if (!res.data) {
+					this.$message({
+						message: '获取用户歌单失败',
+						type: 'error',
+						duration: 1000
+					});
+					return ;
+				}
+				this.create = res.data.playlist.filter((item, index) => {
+					return item.userId === this.user.account.id;
+				});
+				this.subscribe = res.data.playlist.filter((item, index) => {
+					return item.userId !== this.user.account.id;
+				});
 			});
 		},
 
 		filterPlayList(arr, type) {
 			return arr.filter((item, index) => {
-				return item.subscribed === type;
+				return item.userId === type;
 			});
 		},
 
@@ -84,8 +101,14 @@ export default {
 
 		toPlayList(index, type) {
 			if (type === 'create') {
+				ls.set('playLists', {
+					cover: this.create[index].coverImgUrl
+				});
 				this.$router.push({ name: 'playlist', params: { id: this.create[index].id }});
 			} else {
+				ls.set('playLists', {
+					cover: this.subscribe[index].coverImgUrl
+				});
 				this.$router.push({ name: 'playlist', params: { id: this.subscribe[index].id }});
 			}
 		}

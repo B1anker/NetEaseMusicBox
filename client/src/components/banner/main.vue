@@ -2,7 +2,7 @@
   <div class="banner">
 		<swiper :options="swiperOption">
         <swiper-slide v-for="(banner, index) in banners" :key="banner.id">
-        	<img class="img" :src="banner.pic" :alt="banner.typeTitle">
+        	<img class="img" :src="banner" :alt="banner.typeTitle">
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
@@ -52,10 +52,17 @@ export default {
 <style lang="scss">
 .banner{
 	overflow: hidden;
+	height: 1.25rem;
 
 	.img{
+		position: relative;
+		top: -0.14rem;
+		width: 100%;
+		background-size: auto 100%;
+	}
+
+	.swiper-container{
 		height: 1.25rem;
-		background-size: 100%;
 	}
 
 	.swiper-pagination-bullet{

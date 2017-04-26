@@ -16,6 +16,10 @@ export const setLists = ({ commit }, update) => {
   commit(types.SETLISTS, update);
 }
 
+export const setPlayLists = ({ commit }, update) => {
+  commit(types.SETPLAYLISTS, update);
+}
+
 export const setUser = ({ commit }, update) => {
   commit(types.SETUSER, update);
 }

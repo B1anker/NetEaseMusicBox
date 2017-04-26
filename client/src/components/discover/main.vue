@@ -22,7 +22,9 @@
 <script>
 import SearchBar from '@/components/search-bar/main';
 import Banner from '@/components/banner/main';
-import { getHotPlayList, getBanner } from '@/modules/request';
+import { getHotPlayList, getBanner, getNewBanner } from '@/modules/request';
+import Ls from '@/modules/utils/localStorage';
+const ls = new Ls();
 export default {
 	name: 'Discover',
 
@@ -45,8 +47,8 @@ export default {
 
 	methods: {
 		init() {
-			getBanner().then((res) => {
-				this.banners = res.data.banners;
+			getNewBanner().then((res) => {
+				this.banners = res;
 			});
 			getHotPlayList().then((res) => {
 				this.playlists = res.data.result;
@@ -58,6 +60,9 @@ export default {
 		},
 
 		toPlayList(index) {
+			ls.set('playLists', {
+				cover: this.playlists[index].picUrl
+			});
 			this.$router.push({ name: 'playlist', params: { id: this.playlists[index].id }});
 		}
 	}

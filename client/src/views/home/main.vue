@@ -11,16 +11,24 @@
 import Controler from '@/views/player/controler';
 export default {
 	name: 'home',
-	
+
 	components: {
 		Controler
+	},
+
+	mounted() {
+		const user = JSON.parse(localStorage.getItem('user'));
+		if (user.code !== 200) {
+			this.$router.push('/');
+			return ;
+		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
-.home-content{
-	height: 5.003rem;
-	width: 100%
+.home-content {
+  height: 5.003rem;
+  width: 100%;
 }
 </style>
