@@ -9,7 +9,7 @@ detailApi.get('/netEaseApi/detail', async(ctx, next) => {
 	const url = 'weapi/v1/song/detail';
 	const ids = ctx.query.id;
 	/**
-	 * 歌曲api
+	 * 歌曲详情
 	 * @param {String/Array} [ids] [歌曲ids]
 	 */
 	const form = {

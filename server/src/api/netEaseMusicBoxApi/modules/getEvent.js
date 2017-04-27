@@ -6,7 +6,7 @@ import {
 const getEventApi = KoaRouter();
 
 getEventApi.get('/netEaseApi/event', async(ctx, next) => {
-	const url = 'weapi/event/get';
+	const url = 'weapi/v1/event/get?csrf_token=';
 	/**
 	 * 用户动态api
 	 * @param {String/Array} [ids] [歌曲ids]
@@ -23,7 +23,8 @@ getEventApi.get('/netEaseApi/event', async(ctx, next) => {
 		url,
 		form,
 		dataType: 'json',
-		cookie
+		cookie,
+		method: 'POST'
 	});
 	const data = await fetchData(options);
 	ctx.body = data;

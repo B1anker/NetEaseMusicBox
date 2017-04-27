@@ -17,7 +17,7 @@ newBannerApi.get('/netEaseApi/newBanner', async(ctx, next) => {
 		form,
 		cookie,
 		method: 'GET',
-		dataType: 'json'
+		dataType: 'text/html; charset=utf-8'
 	});
 	const data = await fetchData(options);
 	const $ = cheerio.load(data + '');
