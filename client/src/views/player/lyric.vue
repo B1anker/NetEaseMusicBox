@@ -26,6 +26,21 @@ export default {
 		current: Number
 	},
 
+	data() {
+		return {
+			level: 1,
+			timer: null,
+			times: [],
+			lyrics: [],
+			temp: '',
+			count: 0,
+			index: 0,
+			rollStyle: 'transform: translateY(0)',
+			lyricTimer: null,
+			ps: []
+		}
+	},
+
 	created() {
 		this.handleLyrics(this.id);
 	},
@@ -42,14 +57,12 @@ export default {
 			return newId;
 		},
 
-		playing(newState) {
-			newState && this.roll();
-			return newState;
-		},
-
-		current(newVal) {
-			if (newVal >= Number(this.times[this.index])) {
-				console.log(newVal, this.times[this.index]);
+		current(newVal, oldVal) {
+			if (Math.abs(newVal - oldVal) > 1) {
+				this.setIndex(newVal);
+				this.rollStyle = `transform: translateY(-${ ++this.index * 43 + 'px' })`;
+			}
+			if (newVal <= Number(this.times[this.times.length - 1]) && newVal >= Number(this.times[this.index])) {
 				if (this.index === 0) {
 					this.ps[this.index].className = 'on';
 				} else {
@@ -65,25 +78,10 @@ export default {
 		}
 	},
 
-	data() {
-		return {
-			level: 1,
-			timer: null,
-			times: [],
-			lyrics: [],
-			temp: '',
-			count: 0,
-			index: 0,
-			rollStyle: 'transform: translateY(0)',
-			lyricTimer: null,
-			ps: []
-		}
-	},
 
 	mounted() {
 		this.$nextTick(() => {
 			this.init();
-			this.playing && this.roll();
 		});
 	},
 
@@ -164,16 +162,14 @@ export default {
 			});
 		},
 
-		roll() {
-			// this.lyricTimer = setInterval(() => {
-			// 	if (!this.playing){
-			// 		clearInterval(this.lyricTimer);
-			// 		return ;
-			// 	}
-			// 	if (this.current >= Number(this.times[this.index])) {
-			//
-			// 	}
-			// });
+		setIndex(current) {
+			this.times.some((item, index) => {
+				if (current >= item) {
+					this.index = index;
+					return true;
+				}
+				return false;
+			})
 		}
 	}
 }
@@ -229,7 +225,7 @@ export default {
 				left: 0;
 				padding-top: 1.5rem;
 				width: 100%;
-				transition: transform 0.3s ease;
+				transition: transform 0.1s ease;
 			}
 		}
 	}
