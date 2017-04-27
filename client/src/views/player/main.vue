@@ -253,13 +253,14 @@ export default {
 
 		startTimer() {
 			this.timer = setInterval(() => {
-				this.current++;
-				if(this.mp3Dom.ended){
+				this.current = Number((this.current + 0.1).toFixed(2));
+
+				if (this.mp3Dom.ended) {
 					this.stopTimer();
 					this.current = 0;
 					this.onplaying = false;
 				}
-			}, 1000);
+			}, 100);
 		},
 
 		stopTimer() {
@@ -305,7 +306,7 @@ export default {
 					return;
 				}
 
-				this.current =  ((parseInt(this.$refs.processPoint.style.left) / 212) * this.total).toFixed(2);
+				this.current =  Number(((parseInt(this.$refs.processPoint.style.left) / 212) * this.total).toFixed(2));
 				this.mp3Dom.currentTime = this.current;
 				this.startTimer();
 			}.bind(this));

@@ -9,7 +9,7 @@
 				<i class="icon"></i>
 			</div>
 			<div class="lyric" @touchstart="handleTouchstart" ref="lyric">
-				<div class="lyric-container" v-html="temp" ref="roll"></div>
+				<div class="lyric-container" v-html="temp" ref="roll" :style="rollStyle"></div>
 			</div>
 		</div>
 	</transition>
@@ -45,6 +45,23 @@ export default {
 		playing(newState) {
 			newState && this.roll();
 			return newState;
+		},
+
+		current(newVal) {
+			if (newVal >= Number(this.times[this.index])) {
+				console.log(newVal, this.times[this.index]);
+				if (this.index === 0) {
+					this.ps[this.index].className = 'on';
+				} else {
+					this.ps[this.index - 1].className = '';
+					this.ps[this.index].className = 'on';
+				}
+				this.rollStyle = `transform: translateY(-${ ++this.index * 43 + 'px' })`;
+				if (this.index === this.times.length - 1) {
+					this.index = 0;
+				}
+			}
+			return newVal;
 		}
 	},
 
@@ -55,7 +72,11 @@ export default {
 			times: [],
 			lyrics: [],
 			temp: '',
-			count: 0
+			count: 0,
+			index: 0,
+			rollStyle: 'transform: translateY(0)',
+			lyricTimer: null,
+			ps: []
 		}
 	},
 
@@ -138,21 +159,21 @@ export default {
 			this.lyrics.forEach((value, index) => {
 				this.temp += value;
 			});
+			this.$nextTick(() => {
+				this.ps = this.$refs.roll.querySelectorAll('p');
+			});
 		},
 
 		roll() {
-			const ps = this.$refs.roll.querySelectorAll('p');
-			this.times.forEach((value, index) => {
-				setTimeout(() => {
-					this.$refs.roll.style.top = this.$refs.roll.offsetTop - '43' + 'px';
-					if (index === 0) {
-						ps[index].className = 'on';
-					} else {
-						ps[index - 1].className = '';
-						ps[index].className = 'on';
-					}
-				}, value * 1000);
-			});
+			// this.lyricTimer = setInterval(() => {
+			// 	if (!this.playing){
+			// 		clearInterval(this.lyricTimer);
+			// 		return ;
+			// 	}
+			// 	if (this.current >= Number(this.times[this.index])) {
+			//
+			// 	}
+			// });
 		}
 	}
 }
@@ -208,6 +229,7 @@ export default {
 				left: 0;
 				padding-top: 1.5rem;
 				width: 100%;
+				transition: transform 0.3s ease;
 			}
 		}
 	}
