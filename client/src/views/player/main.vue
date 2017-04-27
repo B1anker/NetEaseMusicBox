@@ -27,6 +27,7 @@
 							<lyric @volume="handleVolume"
 								@touchstart="switchCoverOrLyric"
 								:id="id"
+								:current="current"
 								v-show="!showCover">
 							</lyric>
 						</keep-alive>

@@ -22,7 +22,8 @@ import { lyric } from '@/modules/request';
 
 export default {
 	props: {
-		id: String
+		id: String,
+		current: Number
 	},
 
 	created() {
@@ -76,22 +77,21 @@ export default {
 				}
 			});
 
-			if(localStorage.getItem('volume')){
-				this.level = localStorage.getItem('volume');
-				this.$refs.volumePoint.style.left = localStorage.getItem('volume') * 212 + 'px';
-			}
-
 			this.setVolume();
-			this.$refs.volumePoint.style.left = this.level * 212 + 'px';
 		},
 
 		setVolume() {
+			if (localStorage.getItem('volume')) {
+				this.level = localStorage.getItem('volume');
+				this.$refs.volumePoint.style.left = localStorage.getItem('volume') * 212 + 'px';
+			}
 			this.volumeDrag.end(function(e) {
 				e.preventDefault();
 				this.level = (this.$refs.volumePoint.offsetLeft / 212).toFixed(1);
 				localStorage.setItem('volume', this.level);
 				this.$emit('volume', this.level);
 			}.bind(this));
+			this.$refs.volumePoint.style.left = this.level * 212 + 'px';
 		},
 
 		emitTouchStart() {
