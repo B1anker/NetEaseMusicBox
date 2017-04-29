@@ -7,7 +7,7 @@ const userDetailApi = KoaRouter();
 
 userDetailApi.get('/netEaseApi/userDetail', async(ctx, next) => {
 	/**
-	 * 搜索api
+	 * 用户详情
 	 */
 	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
 

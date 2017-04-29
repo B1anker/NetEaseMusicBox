@@ -25,12 +25,11 @@
 </template>
 
 <script>
-import {
-	signin
-} from '@/modules/request';
+import { signin } from '@/modules/request';
 
 export default {
 	name: 'signin',
+
 	data() {
 		return {
 			unAbleToSignin: true,
@@ -38,8 +37,11 @@ export default {
 			password: ''
 		}
 	},
+
 	mounted() {
+
 	},
+
 	methods: {
 		handleBack() {
 			this.$router.back();

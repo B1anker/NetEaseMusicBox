@@ -37,7 +37,8 @@ export default {
 			index: 0,
 			rollStyle: 'transform: translateY(0)',
 			lyricTimer: null,
-			ps: []
+			ps: [],
+			autoScrolling: true
 		}
 	},
 
@@ -58,11 +59,17 @@ export default {
 		},
 
 		current(newVal, oldVal) {
-			if (Math.abs(newVal - oldVal) > 1) {
+			if (Math.abs(newVal - oldVal) > .3) {
+				this.ps[this.index - 1].className = '';
 				this.setIndex(newVal);
-				this.rollStyle = `transform: translateY(-${ ++this.index * 43 + 'px' })`;
+				this.ps[this.index - 1].className = 'on';
+				this.rollStyle = `transform: translateY(-${ this.index * 43 + 'px' })`;
+				this.autoScrolling = false;
+				setTimeout(() => {
+					this.autoScrolling = true;
+				}, 300);
 			}
-			if (newVal <= Number(this.times[this.times.length - 1]) && newVal >= Number(this.times[this.index])) {
+			if (this.autoScrolling && newVal <= (Number(this.times[this.times.length - 1])) && newVal >= Number(this.times[this.index])) {
 				if (this.index === 0) {
 					this.ps[this.index].className = 'on';
 				} else {
@@ -72,6 +79,7 @@ export default {
 				this.rollStyle = `transform: translateY(-${ ++this.index * 43 + 'px' })`;
 				if (this.index === this.times.length - 1) {
 					this.index = 0;
+					this.rollStyle = `transform: translateY(0)`;
 				}
 			}
 			return newVal;
@@ -163,11 +171,11 @@ export default {
 		},
 
 		setIndex(current) {
-			this.times.some((item, index) => {
-				if (current >= item) {
-					this.index = index;
+			this.times.every((item, index) => {
+				if (current >= Number(item)) {
 					return true;
 				}
+				this.index = index;
 				return false;
 			})
 		}
@@ -225,7 +233,7 @@ export default {
 				left: 0;
 				padding-top: 1.5rem;
 				width: 100%;
-				transition: transform 0.1s ease;
+				transition: transform 0.3s ease;
 			}
 		}
 	}

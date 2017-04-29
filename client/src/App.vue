@@ -14,10 +14,16 @@ import Player from '@/views/player/main';
 import store from '@/store/store';
 export default {
   name: 'app',
+
 	store,
+
 	components: {
 		Player,
 		MyFooter
+	},
+
+	mounted() {
+
 	}
 }
 </script>

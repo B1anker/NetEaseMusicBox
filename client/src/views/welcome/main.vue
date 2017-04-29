@@ -14,35 +14,41 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import { getUserDetail } from '@/modules/request';
 export default {
 	name: 'welcome',
+
 	components: {
 	},
+
 	mounted() {
-		this.search();
+		this.init();
 	},
+
 	data() {
 		return {
-			content: '周杰伦'
 		}
 	},
+
 	methods: {
+		init() {
+			const user = JSON.parse(localStorage.getItem('user'));
+			if (user.code !== 200) {
+				return ;
+			}
+			getUserDetail(user.account.id).then((res) => {
+				if (res.data) {
+					this.$router.push('/home');
+				}
+			});
+		},
+
 		signin() {
 			this.$router.push('/signin');
 		},
 
 		enterHome() {
 			this.$router.push('/home');
-		},
-
-		search() {
-			// axios.get(`/music/netEaseApi/search?content=${ this.content }`).then((res) => {
-			// 	console.log(res.data.result.songs);
-			// }).catch((err) => {
-			// 	console.log(err);
-			// });
 		}
 	}
 }
