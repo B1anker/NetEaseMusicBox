@@ -1,6 +1,6 @@
 <template lang="html">
   <transition name="slide-up">
-		<div class="lists-wrap" v-if="$store.getters.getPlayer.lists.show">
+		<div class="lists-wrap" v-show="$store.getters.getPlayer.lists.show">
 			<div class="mask" @click="close"></div>
 	  	<div class="tool">
 	  		<div class="play-way">单曲循环</div>

@@ -67,6 +67,9 @@ function getEvent(params) {
 	return axios.get(`/music/netEaseApi/event?offset=${ params.offset }&limit=${ params.limit }`);
 }
 
+function dailySign(type) {
+	return axios.get(`/music/netEaseApi/dailySign?type=${type}`);
+}
 
 export {
 	signin,
@@ -83,5 +86,6 @@ export {
 	getPlayLists,
 	getUserDetail,
 	userPlayListsApi,
-	getEvent
+	getEvent,
+	dailySign
 }

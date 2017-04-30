@@ -61,6 +61,9 @@ export default {
 		current(newVal, oldVal) {
 			if (Math.abs(newVal - oldVal) > .3) {
 				this.ps[this.index - 1].className = '';
+				this.ps.forEach((item, index) => {
+					item.className = '';
+				});
 				this.setIndex(newVal);
 				this.ps[this.index - 1].className = 'on';
 				this.rollStyle = `transform: translateY(-${ this.index * 43 + 'px' })`;
@@ -69,7 +72,10 @@ export default {
 					this.autoScrolling = true;
 				}, 300);
 			}
-			if (this.autoScrolling && newVal <= (Number(this.times[this.times.length - 1])) && newVal >= Number(this.times[this.index])) {
+			if (this.autoScrolling && (newVal <= (Number(this.times[this.times.length - 1]) + 0.2)) && (newVal >= Number(this.times[this.index]))) {
+				if (this.index === this.times.length) {
+					return;
+				}
 				if (this.index === 0) {
 					this.ps[this.index].className = 'on';
 				} else {
@@ -77,10 +83,6 @@ export default {
 					this.ps[this.index].className = 'on';
 				}
 				this.rollStyle = `transform: translateY(-${ ++this.index * 43 + 'px' })`;
-				if (this.index === this.times.length - 1) {
-					this.index = 0;
-					this.rollStyle = `transform: translateY(0)`;
-				}
 			}
 			return newVal;
 		}

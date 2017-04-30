@@ -3,19 +3,16 @@ import {
 	fetchData
 } from '../util';
 
-const getEventApi = KoaRouter();
+const dailySigninApi = KoaRouter();
 
-getEventApi.get('/netEaseApi/event', async(ctx, next) => {
+dailySigninApi.get('/netEaseApi/dailySign', async(ctx, next) => {
 	const url = 'weapi/v1/event/get?csrf_token=';
 	/**
 	 * 签到
-	 * @param {String/Array} [ids] [歌曲ids]
+	 * @param {Number} [type] [0为安卓端签到 3点经验,1为网页签到,2点经验]
 	 */
 	const form = {
-		'time': -1,
-		'offset': ctx.query.offset || '0',
-		'pagesize': ctx.query.limit || 20,
-		'getcounts': true,
+		type: ctx.query.type,
 		"csrf_token": ""
 	};
 	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
@@ -30,4 +27,4 @@ getEventApi.get('/netEaseApi/event', async(ctx, next) => {
 	ctx.body = data;
 });
 
-export default getEventApi;
+export default dailySigninApi;

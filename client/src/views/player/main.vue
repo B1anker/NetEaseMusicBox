@@ -55,7 +55,9 @@
 						</audio>
 					</div>
 			  </div>
-				<lists :lists="playLists"></lists>
+				<keep-alive>
+					<lists :lists="playLists"></lists>
+				</keep-alive>
 			</div>
 		</transition>
 	</div>

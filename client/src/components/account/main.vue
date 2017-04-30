@@ -12,7 +12,7 @@
 						<div class="level">{{ 'LV ' + details.level }}</div>
 					</div>
 					<div class="sign">
-						<button>签到</button>
+						<button @click="handleDailySign">签到</button>
 					</div>
 				</div>
 				<div class="down">
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getFollows, getFolloweds, getUserDetail } from '@/modules/request';
+import { getFollows, getFolloweds, getUserDetail, dailySign } from '@/modules/request';
 export default {
 	name: 'account',
 
@@ -93,6 +93,22 @@ export default {
 
 			getFolloweds(this.user.profile.userId).then((res) => {
 				this.followeds = res.data.followeds;
+			});
+		},
+
+		handleDailySign() {
+			dailySign(1).then((res) => {
+				this.$messaga({
+					type: 'success',
+					messaga: '成功',
+					duration: 1000
+				});
+			}).catch((err) => {
+				this.$messaga({
+					type: 'error',
+					messaga: '失败',
+					duration: 1000
+				});
 			});
 		}
 	}
