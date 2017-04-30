@@ -261,6 +261,7 @@ export default {
 					this.stopTimer();
 					this.current = 0;
 					this.onplaying = false;
+					this.next();
 				}
 			}, 100);
 		},
