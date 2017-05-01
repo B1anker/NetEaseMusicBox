@@ -8,7 +8,7 @@
 				<div class="clear">清空</div>
 	  	</div>
 			<ul class="lists">
-				<li class="list" v-for="(list, index) in lists" @click="switchMusic(index)">
+				<li class="list" :class="{active: index === _index}" v-for="(list, index) in lists" @click="switchMusic(index)">
 					<span class="music-name">{{ list.name }}</span>
 					<span class="split">-</span>
 					<span class="artist">{{list.ar[0].name}}</span>
@@ -34,6 +34,12 @@ export default {
 		}
 	},
 
+	computed: {
+		_index() {
+			return this.$store.getters.getPlayer.lists.index;
+		}
+	},
+
 	mounted() {
 
 	},
@@ -49,6 +55,9 @@ export default {
 			this.$store.dispatch('setPlayer', {
 				songId: this.lists[index].id
 			});
+			this.$store.dispatch('setLists', {
+				index
+			});
 			this.close();
 		}
 	}
@@ -56,6 +65,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$base-color: rgb(212, 60, 51);
 .lists-wrap {
 	position: absolute;
 	bottom: 0;
@@ -109,6 +119,12 @@ export default {
 			line-height: 0.45rem;
 			border-bottom: 1px solid rgb(212, 205, 207);
 			text-align: left;
+
+			&.active{
+				.music-name, .split, .artist {
+					color: $base-color;
+				}
+			}
 
 			&:last-child{
 				border-bottom: none;

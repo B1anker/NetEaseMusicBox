@@ -60,7 +60,7 @@ export default {
 
 		current(newVal, oldVal) {
 			if (Math.abs(newVal - oldVal) > .3) {
-				this.ps[this.index - 1].className = '';
+				this.ps[this.index - 1].className && (this.ps[this.index - 1].className = '');
 				this.ps.forEach((item, index) => {
 					item.className = '';
 				});

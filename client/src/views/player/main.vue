@@ -370,6 +370,9 @@ export default {
 				this.$store.dispatch('setPlayer', {
 					songId: '' + this.playLists[--this.playIndex].id
 				});
+				this.$store.dispatch('setLists', {
+					index: this.playIndex
+				});
 			}
 		},
 
@@ -377,6 +380,9 @@ export default {
 			if (this.playIndex < this.playLists.length) {
 				this.$store.dispatch('setPlayer', {
 					songId: '' + this.playLists[++this.playIndex].id
+				});
+				this.$store.dispatch('setLists', {
+					index: this.playIndex
 				});
 			}
 		}
