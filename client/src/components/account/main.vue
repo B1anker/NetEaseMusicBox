@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getFollows, getFolloweds, getUserDetail, dailySign } from '@/modules/request';
+import { getFollows, getFolloweds, getUserDetail, dailySign, refresh } from '@/modules/request';
 export default {
 	name: 'account',
 
@@ -78,6 +78,10 @@ export default {
 
 	methods: {
 		init() {
+
+			refresh().then((res) => {
+				console.log(res);
+			})
 
 			getUserDetail(this.user.account.id).then((res) => {
 				this.details = res.data;

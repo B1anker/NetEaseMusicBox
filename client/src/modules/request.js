@@ -4,6 +4,10 @@ function signin(params) {
 	return axios.post('/music/netEaseApi/login', params);
 }
 
+function refresh() {
+	return axios.get('/music/netEaseApi/refresh');
+}
+
 function search(content) {
 	return axios.get(`/music/netEaseApi/search?content=${content}`);
 }
@@ -73,6 +77,7 @@ function dailySign(type) {
 
 export {
 	signin,
+	refresh,
 	search,
 	detail,
 	getMp3Url,
