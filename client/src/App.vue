@@ -9,22 +9,22 @@
 </template>
 
 <script>
-import MyFooter from '@/components/footer/index';
-import Player from '@/views/player/main';
-import store from '@/store/store';
+import MyFooter from '@/components/footer/index'
+import Player from '@/views/player/main'
+import store from '@/store/store'
 export default {
   name: 'app',
 
-	store,
+  store,
 
-	components: {
-		Player,
-		MyFooter
-	},
+  components: {
+  Player,
+  MyFooter
+},
 
-	mounted() {
+  mounted () {
 
-	}
+}
 }
 </script>
 

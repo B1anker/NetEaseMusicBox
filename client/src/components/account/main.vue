@@ -30,7 +30,7 @@
 							<div class="num">{{ followeds.length }}</div>
 						</li>
 						<li>
-							<i class="icon"></i>
+							<i class="icon icon-pencil"></i>
 							<div class="my-info">我的资料</div>
 						</li>
 					</ul>
@@ -49,6 +49,8 @@
 
 <script>
 import { getFollows, getFolloweds, getUserDetail, dailySign, refresh } from '@/modules/request';
+import axios from 'axios';
+import MySwitch from '@/packages/switch';
 export default {
 	name: 'account',
 
@@ -59,6 +61,10 @@ export default {
 			followeds: [],
 			details: {}
 		}
+	},
+
+	components: {
+		MySwitch
 	},
 
 	computed: {
@@ -78,39 +84,28 @@ export default {
 
 	methods: {
 		init() {
-
-			refresh().then((res) => {
-				console.log(res);
-			})
-
-			getUserDetail(this.user.account.id).then((res) => {
-				this.details = res.data;
-			});
-
-			getFollows({
+			axios.all([getUserDetail(this.user.account.id), getFollows({
 				offset: 0,
 				limit: 1000,
 				id: this.user.profile.userId
-			}).then((res) => {
-				this.follows = res.data.follow;
-			});
-
-			getFolloweds(this.user.profile.userId).then((res) => {
-				this.followeds = res.data.followeds;
-			});
+			}), getFolloweds(this.user.profile.userId)]).then(axios.spread((details, follows, followeds) => {
+				this.details = details.data;
+				this.follows = follows.data.follow;
+				this.followeds = followeds.data.followeds;
+			}));
 		},
 
 		handleDailySign() {
 			dailySign(1).then((res) => {
-				this.$messaga({
-					type: 'success',
-					messaga: '成功',
+				this.$message({
+					type: 'correct',
+					message: '签到成功',
 					duration: 1000
 				});
 			}).catch((err) => {
-				this.$messaga({
+				this.$message({
 					type: 'error',
-					messaga: '失败',
+					message: '签到失败',
 					duration: 1000
 				});
 			});
@@ -231,6 +226,10 @@ export default {
 						font-weight: bold;
 					}
 
+					.icon-pencil{
+						font-size: 0.15rem;
+					}
+
 					.my-info{
 						font-size: 0.1rem;
 						color: rgb(140, 140, 140);
@@ -238,6 +237,12 @@ export default {
 				}
 			}
 		}
+	}
+
+	.switch{
+		position: absolute;
+		left: 1rem;
+		bottom: 1rem;
 	}
 }
 </style>

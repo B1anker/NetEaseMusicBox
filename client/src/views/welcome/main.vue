@@ -36,11 +36,11 @@ export default {
 			if (user.code !== 200) {
 				return ;
 			}
-			getUserDetail(user.account.id).then((res) => {
-				if (res.data) {
-					this.$router.push('/home');
-				}
-			});
+			// getUserDetail(user.account.id).then((res) => {
+			// 	if (res.data) {
+			// 		this.$router.push('/home');
+			// 	}
+			// });
 		},
 
 		signin() {

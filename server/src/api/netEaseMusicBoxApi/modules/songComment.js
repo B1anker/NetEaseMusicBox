@@ -3,16 +3,19 @@ import {
 	fetchData
 } from '../util';
 
-const dailySigninApi = KoaRouter();
+const songCommentApi = KoaRouter();
 
-dailySigninApi.get('/netEaseApi/dailySign', async(ctx, next) => {
-	const url = '/weapi/point/dailyTask?type=';
+songCommentApi.get('/netEaseApi/song/comment', async(ctx, next) => {
+	const url = `/weapi/v1/resource/comments/R_SO_4_${ ctx.query.id }/?csrf_token=`;
 	/**
-	 * 签到
-	 * @param {Number} [type] [0为安卓端签到 3点经验,1为网页签到,2点经验]
+	 * 获取歌曲评论
+	 * @param {Number} [id] [歌曲id]
 	 */
 	const form = {
-		"csrf_token": ""
+		"offset": ctx.query.offset || 0,
+    "rid": ctx.query.id,
+    "limit": ctx.query.limit || 20,
+    "csrf_token": ""
 	};
 	const cookie = ctx.request.get('Cookie') ? ctx.request.get('Cookie') : (ctx.request.query.cookie ? ctx.request.query.cookie : '');
 	const options = Object.assign({}, {
@@ -26,4 +29,4 @@ dailySigninApi.get('/netEaseApi/dailySign', async(ctx, next) => {
 	ctx.body = data;
 });
 
-export default dailySigninApi;
+export default songCommentApi;

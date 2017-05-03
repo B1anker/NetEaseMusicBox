@@ -6,22 +6,14 @@ import {
 const refreshApi = KoaRouter();
 
 refreshApi.get('/netEaseApi/refresh', async(ctx, next) => {
-	let url = '/weapi/login/token/refresh?csrf_token=';
-	let csrf = '';
-	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
-	for(i in cookie) {
-		if(cookie[i].name === '__csrf') {
-			csrf = cookie.value
-		}
-	}
-	csrf = ctx.query.t;
-	console.log(ctx.get('Cookie'));
+	const url = '/weapi/login/token/refresh?csrf_token=';
+	const cookie = ctx.request.get('Cookie') ? ctx.request.get('Cookie') : (ctx.request.query.cookie ? ctx.request.query.cookie : '');
+	const csrf_token = cookie.split('=')[2];
 	const form = {
-		csrf_token: csrf
+		csrf_token: csrf_token
 	};
-	url += csrf;
 	const options = Object.assign({}, {
-		url,
+		url: url + csrf_token,
 		form,
 		dataType: 'json'
 	});

@@ -58,6 +58,7 @@
 				<keep-alive>
 					<lists :lists="playLists"></lists>
 				</keep-alive>
+				<comments :picUrl="picUrl" :music="music" :artist="artist"></comments>
 			</div>
 		</transition>
 	</div>
@@ -70,13 +71,15 @@ import Cover from './cover';
 import Lyric from './lyric';
 import Drag from './drag';
 import Lists from './lists';
+import Comments from './comments';
 export default {
 	name: 'player',
 
 	components: {
 		Cover,
 		Lyric,
-		Lists
+		Lists,
+		Comments
 	},
 
 	data() {

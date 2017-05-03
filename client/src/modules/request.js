@@ -20,6 +20,10 @@ function getMp3Url(id) {
 	return axios.get(`/music/netEaseApi/song?id=${id}`);
 }
 
+function getMp3Comments(id) {
+	return axios.get(`/music/netEaseApi/song/comment?id=${id}`);
+}
+
 function lyric(id) {
 	return axios.get(`/music/netEaseApi/lyric?id=${id}`);
 }
@@ -71,6 +75,13 @@ function getEvent(params) {
 	return axios.get(`/music/netEaseApi/event?offset=${ params.offset }&limit=${ params.limit }`);
 }
 
+function getNewEvent(params) {
+	if (!params) {
+		return axios.get('/music/netEaseApi/newEvent');
+	}
+	return axios.get(`/music/netEaseApi/newEvent?offset=${ params.offset }&limit=${ params.limit }`);
+}
+
 function dailySign(type) {
 	return axios.get(`/music/netEaseApi/dailySign?type=${type}`);
 }
@@ -81,6 +92,7 @@ export {
 	search,
 	detail,
 	getMp3Url,
+	getMp3Comments,
 	lyric,
 	subcount,
 	getFollows,
@@ -92,5 +104,6 @@ export {
 	getUserDetail,
 	userPlayListsApi,
 	getEvent,
+	getNewEvent,
 	dailySign
 }

@@ -15,6 +15,9 @@ const state = {
 			id: 0,
 			show: false,
 			index: 0
+		},
+		comments: {
+			show: false
 		}
 	},
 

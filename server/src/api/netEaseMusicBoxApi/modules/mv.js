@@ -10,7 +10,7 @@ const mvApi = KoaRouter();
  * @return {Promise}
  */
 mvApi.get('/netEaseApi/mv', async(ctx, next) => {
-	const url = 'weapi/mv/detail/';
+	const url = 'weapi/v1/mv/detail/';
 	/**
 	 * 歌曲api
 	 * @param {String/Array} [ids] [歌曲ids]

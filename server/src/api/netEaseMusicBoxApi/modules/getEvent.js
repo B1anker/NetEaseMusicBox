@@ -11,16 +11,18 @@ getEventApi.get('/netEaseApi/event', async(ctx, next) => {
 	 * 用户动态api
 	 * @param {String/Array} [ids] [歌曲ids]
 	 */
-	const form = {
-		'time': -1,
-		'offset': ctx.query.offset || '0',
-		'pagesize': ctx.query.limit || 20,
-		'getcounts': true,
-		"csrf_token": ""
-	};
-	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
+	 const form = {
+ 		'time': -1,
+ 		'offset': ctx.request.query.offset || '0',
+ 		'pagesize': ctx.request.query.limit || 20,
+ 		'getcounts': true,
+ 		"csrf_token": ""
+ 	};
+	const cookie = ctx.request.get('Cookie') ? ctx.request.get('Cookie') : (ctx.request.query.cookie ? ctx.request.query.cookie : '');
+	const csrf_token = cookie.split('=')[2];
+	console.log(csrf_token);
 	const options = Object.assign({}, {
-		url,
+		url: url + csrf_token,
 		form,
 		dataType: 'json',
 		cookie,

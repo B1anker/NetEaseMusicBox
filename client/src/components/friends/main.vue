@@ -16,7 +16,7 @@
 						<div class="time">{{ handleTime(e.eventTime) }}</div>
 						<div class="text" v-html=" e.json.msg "></div>
 						<div v-if="e.type === 39" class="video-wrap" @click="playVideo">
-							<video class="video" :poster="e.json.video.coverUrl" :src="e.json.video.nosKey"></video>
+							<video class="video" :poster="e.json.video.coverUrl"></video>
 						</div>
 						<div v-if="e.type === 18" class="music-wrap">
 							<img v-for="(pic, index) in e.pics" :src="pic.pcSquareUrl" alt="">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { getEvent } from '@/modules/request';
+import { getNewEvent } from '@/modules/request';
 export default {
 	name: 'friends',
 
@@ -46,7 +46,7 @@ export default {
 
 	methods: {
 		init() {
-			getEvent().then((res) => {
+			getNewEvent().then((res) => {
 				if (res.data.code !== 200) {
 					this.$message({
 						type: 'error',
@@ -56,11 +56,11 @@ export default {
 					return ;
 				}
 				this.events = res.data.event;
-				this.events = this.events.filter((item, index) => {
-					return !!item.uuid;
-				}).map((item, index) => {
+				this.events = this.events.map((item, index) => {
 					item.json = JSON.parse(item.json);
-					item.json.msg = item.json.msg.replace(/\n/, '<br/>');
+					if (item.json.msg) {
+						item.json.msg = item.json.msg.replace(/\n/, '<br/>');
+					}
 					return item;
 				});
 			})
