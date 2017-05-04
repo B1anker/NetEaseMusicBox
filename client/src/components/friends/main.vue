@@ -144,7 +144,6 @@ export default {
 
 <style lang="scss">
 .friends {
-
 	.head {
 		width: 100%;
 		height: 0.48rem;
@@ -154,7 +153,7 @@ export default {
 		color: white;
 	}
 
-	.content-wrap{
+	.content-wrap {
 		overflow: scroll;
 		height: 4.503rem;
 		background-color: rgb(239, 240, 241);
@@ -168,44 +167,41 @@ export default {
 			padding: 0.2rem 0;
 			border-bottom: 1px solid rgb(225, 226, 227);
 
-
-
-			.content{
-
-				.normal{
+			.content {
+				.normal {
 					padding-left: 0.6rem;
 					position: relative;
 
-					.avatar{
+					.avatar {
 						position: absolute;
 						left: 0;
 						top: 0;
 						width: 0.6rem;
 
-						img{
+						img {
 							width: 0.4rem;
 							height: 0.4rem;
 							background-size: 100%;
 							border-radius: 50%;
 						}
-
 					}
 
-					.name-wrap{
+					.name-wrap {
 						overflow: hidden;
 						font-size: 0.15rem;
 
-						.name, .type{
+						.name,
+						.type {
 							float: left;
 						}
 
-						.follow{
+						.follow {
 							float: right;
 							margin-right: 0.1rem;
 							color: rgb(210, 50, 39);
 						}
 
-						.name{
+						.name {
 							text-align: left;
 							width: 0.6rem;
 							overflow: hidden;
@@ -214,21 +210,20 @@ export default {
 							color: rgb(67, 119, 172);
 						}
 
-						.type{
+						.type {
 							margin-left: 0.24rem;
 							color: rgb(101, 101, 101);
 						}
-
 					}
 
-					.time{
+					.time {
 						margin-top: 0.03rem;
 						text-align: left;
 						font-size: 0.1rem;
 						color: rgb(165, 165, 165);
 					}
 
-					.text{
+					.text {
 						margin-top: 0.15rem;
 						font-weight: bold;
 						text-align: justify;
@@ -237,33 +232,32 @@ export default {
 						line-height: 0.24rem;
 					}
 
-					.video-wrap{
+					.video-wrap {
 						margin-top: 0.05rem;
 						width: 2.5rem;
 						height: 1.4rem;
 
-						.video{
+						.video {
 							height: 100%;
 							width: 100%;
 						}
 					}
 
-					.music-wrap{
+					.music-wrap {
 						width: 2.5rem;
 						display: flex;
 						justify-content: space-between;
 						flex-wrap: wrap;
 
-						img{
+						img {
 							margin-top: 0.05rem;
 							width: 0.8rem;
 							height: 0.8rem;
 							background-size: 100%;
 						}
-
 					}
 
-					.reason{
+					.reason {
 						position: relative;
 						margin-top: 0.1rem;
 						color: rgb(141, 141, 141);
@@ -271,7 +265,7 @@ export default {
 						text-indent: 0.25rem;
 						font-size: 0.13rem;
 
-						&:after{
+						&:after {
 							content: '';
 							position: absolute;
 							top: 0.06rem;
@@ -284,16 +278,16 @@ export default {
 					}
 				}
 
-				.advertisement{
+				.advertisement {
 					position: relative;
 					padding: 0.2rem 0.1rem;
 
-					.img-wrap{
+					.img-wrap {
 						height: 1.9rem;
 						width: 3rem;
 					}
 
-					.text{
+					.text {
 						position: absolute;
 						top: 0;
 						left: 0;
@@ -303,7 +297,7 @@ export default {
 						width: 2.45rem;
 						height: 0.7rem;
 
-						.long-line{
+						.long-line {
 							position: absolute;
 							top: 0;
 							left: 0;
@@ -313,13 +307,13 @@ export default {
 							opacity: 0.6;
 						}
 
-						.short-line{
+						.short-line {
 							position: absolute;
 							bottom: 0;
 							left: 0;
 							font-size: 0.12rem;
 
-							&:before{
+							&:before {
 								content: '';
 								position: absolute;
 								bottom: 0.05rem;
@@ -329,7 +323,7 @@ export default {
 								background-color: #333;
 							}
 
-							&:after{
+							&:after {
 								content: '';
 								position: absolute;
 								bottom: 0.05rem;
@@ -340,15 +334,9 @@ export default {
 							}
 						}
 					}
-
-
 				}
-
 			}
-
 		}
-
 	}
-
 }
 </style>
