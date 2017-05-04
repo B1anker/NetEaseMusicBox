@@ -10,6 +10,7 @@ import Signin from '@/views/signin/main';
 import Signup from '@/views/signup/main';
 import Player from '@/views/player/main';
 import PlayList from '@/components/playlist';
+import RankingList from '@/components/rankingList';
 
 Vue.use(Router)
 
@@ -59,6 +60,11 @@ export default new Router({
 			path: '/playlist:id',
 			name: 'playlist',
 			component: PlayList
+		},
+		{
+			path: '/rankingList:id',
+			name: 'rankingList',
+			component: RankingList
 		}
   ]
 })

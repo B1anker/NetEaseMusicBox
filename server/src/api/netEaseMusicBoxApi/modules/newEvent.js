@@ -15,7 +15,7 @@ getNewEvent.get('/netEaseApi/newEvent', async(ctx, next) => {
 		'getcounts': true,
 		"csrf_token": ""
 	};
-	const csrf_token = cookie.split('=')[2];
+	const csrf_token = cookie.split(';')[1].split('=')[1];
 	const options = {
 		url: '/weapi/v1/event/get/?csrf_token=' + csrf_token,
 		form,

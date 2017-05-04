@@ -4,24 +4,36 @@
 		<div class="content-wrap">
 			<ul class="events">
 				<li class="event" v-for="(e, index) in events">
-					<div class="avatar">
-						<img :src="e.user.avatarUrl" :alt="e.user.nickname">
-					</div>
 					<div class="content">
-						<div class="name-wrap">
-							<div class="name">{{ e.user.nickname }}</div>
-							<div class="type">{{ handleType(e.type) }}</div>
-							<div class="follow">+关注</div>
+						<div class="normal" v-if="e.type === 18 || e.type === 39">
+							<div class="avatar">
+								<img :src="e.user.avatarUrl" :alt="e.user.nickname">
+							</div>
+							<div class="name-wrap">
+								<div class="name">{{ e.user.nickname }}</div>
+								<div class="type">{{ handleType(e.type) }}</div>
+								<div class="follow">+关注</div>
+							</div>
+							<div class="time">{{ handleTime(e.eventTime) }}</div>
+							<div class="text" v-html=" e.json.msg "></div>
+							<div v-if="e.type === 39" class="video-wrap" @click="playVideo">
+								<video class="video" :poster="e.json.video.coverUrl"></video>
+							</div>
+							<div v-if="e.type === 18" class="music-wrap">
+								<img v-for="(pic, index) in e.pics" :src="pic.pcSquareUrl" alt="">
+							</div>
+							<div class="reason" v-if="e.rcmdInfo">{{ e.rcmdInfo.reason }}</div>
 						</div>
-						<div class="time">{{ handleTime(e.eventTime) }}</div>
-						<div class="text" v-html=" e.json.msg "></div>
-						<div v-if="e.type === 39" class="video-wrap" @click="playVideo">
-							<video class="video" :poster="e.json.video.coverUrl"></video>
+						<div class="advertisement" v-if="e.type === 33">
+							<div class="img-wrap">
+								<img :src="e.json.coverPCUrl" alt="">
+							</div>
+							<div class="text">
+								<div class="long-line"></div>
+								<div class="title">#{{ e.json.title }}#</div>
+								<div class="short-line">{{ `${ e.json.participateCount }人参与` }}</div>
+							</div>
 						</div>
-						<div v-if="e.type === 18" class="music-wrap">
-							<img v-for="(pic, index) in e.pics" :src="pic.pcSquareUrl" alt="">
-						</div>
-						<div class="reason" v-if="e.rcmdInfo">{{ e.rcmdInfo.reason }}</div>
 					</div>
 				</li>
 			</ul>
@@ -115,113 +127,180 @@ export default {
 			padding: 0.2rem 0;
 			border-bottom: 1px solid rgb(225, 226, 227);
 
-			.avatar{
-				float: left;
-				padding: 0 0.1rem;
-				width: 0.6rem;
 
-				img{
-					width: 0.4rem;
-					height: 0.4rem;
-					background-size: 100%;
-					border-radius: 50%;
-				}
-
-			}
 
 			.content{
-				padding-left: 0.6rem;
 
-				.name-wrap{
-					overflow: hidden;
-					font-size: 0.15rem;
-
-					.name, .type{
-						float: left;
-					}
-
-					.follow{
-						float: right;
-						margin-right: 0.1rem;
-						color: rgb(210, 50, 39);
-					}
-
-					.name{
-						text-align: left;
-						width: 0.6rem;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-						color: rgb(67, 119, 172);
-					}
-
-					.type{
-						margin-left: 0.24rem;
-						color: rgb(101, 101, 101);
-					}
-
-				}
-
-				.time{
-					margin-top: 0.03rem;
-					text-align: left;
-					font-size: 0.1rem;
-					color: rgb(165, 165, 165);
-				}
-
-				.text{
-					margin-top: 0.15rem;
-					font-weight: bold;
-					text-align: justify;
-					padding-right: 0.1rem;
-					font-size: 0.15rem;
-					line-height: 0.24rem;
-				}
-
-				.video-wrap{
-					margin-top: 0.05rem;
-					width: 2.5rem;
-					height: 1.4rem;
-
-					.video{
-						height: 100%;
-						width: 100%;
-					}
-				}
-
-				.music-wrap{
-					width: 2.5rem;
-					display: flex;
-					justify-content: space-between;
-					flex-wrap: wrap;
-
-					img{
-						margin-top: 0.05rem;
-						width: 0.8rem;
-						height: 0.8rem;
-						background-size: 100%;
-					}
-
-				}
-
-				.reason{
+				.normal{
+					padding-left: 0.6rem;
 					position: relative;
-					margin-top: 0.05rem;
-					color: rgb(141, 141, 141);
-					text-align: left;
-					text-indent: 0.25rem;
-					font-size: 0.13rem;
 
-					&:after{
-						content: '';
+					.avatar{
 						position: absolute;
-						top: 0.06rem;
 						left: 0;
-						display: block;
-						height: 0.01rem;
-						width: 0.2rem;
-						background-color: rgb(222, 223, 224);
+						top: 0;
+						width: 0.6rem;
+
+						img{
+							width: 0.4rem;
+							height: 0.4rem;
+							background-size: 100%;
+							border-radius: 50%;
+						}
+
 					}
+
+					.name-wrap{
+						overflow: hidden;
+						font-size: 0.15rem;
+
+						.name, .type{
+							float: left;
+						}
+
+						.follow{
+							float: right;
+							margin-right: 0.1rem;
+							color: rgb(210, 50, 39);
+						}
+
+						.name{
+							text-align: left;
+							width: 0.6rem;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							color: rgb(67, 119, 172);
+						}
+
+						.type{
+							margin-left: 0.24rem;
+							color: rgb(101, 101, 101);
+						}
+
+					}
+
+					.time{
+						margin-top: 0.03rem;
+						text-align: left;
+						font-size: 0.1rem;
+						color: rgb(165, 165, 165);
+					}
+
+					.text{
+						margin-top: 0.15rem;
+						font-weight: bold;
+						text-align: justify;
+						padding-right: 0.1rem;
+						font-size: 0.15rem;
+						line-height: 0.24rem;
+					}
+
+					.video-wrap{
+						margin-top: 0.05rem;
+						width: 2.5rem;
+						height: 1.4rem;
+
+						.video{
+							height: 100%;
+							width: 100%;
+						}
+					}
+
+					.music-wrap{
+						width: 2.5rem;
+						display: flex;
+						justify-content: space-between;
+						flex-wrap: wrap;
+
+						img{
+							margin-top: 0.05rem;
+							width: 0.8rem;
+							height: 0.8rem;
+							background-size: 100%;
+						}
+
+					}
+
+					.reason{
+						position: relative;
+						margin-top: 0.05rem;
+						color: rgb(141, 141, 141);
+						text-align: left;
+						text-indent: 0.25rem;
+						font-size: 0.13rem;
+
+						&:after{
+							content: '';
+							position: absolute;
+							top: 0.06rem;
+							left: 0;
+							display: block;
+							height: 0.01rem;
+							width: 0.2rem;
+							background-color: rgb(222, 223, 224);
+						}
+					}
+				}
+
+				.advertisement{
+					position: relative;
+					padding: 0.2rem 0.1rem;
+
+					.img-wrap{
+						height: 1.9rem;
+						width: 3rem;
+					}
+
+					.text{
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						margin: auto;
+						width: 2.45rem;
+						height: 0.7rem;
+
+						.long-line{
+							position: absolute;
+							top: 0;
+							left: 0;
+							height: 2px;
+							width: 100%;
+							background-color: #333;
+							opacity: 0.6;
+						}
+
+						.short-line{
+							position: absolute;
+							bottom: 0;
+							left: 0;
+							font-size: 0.12rem;
+
+							&:before{
+								content: '';
+								position: absolute;
+								bottom: 0.05rem;
+								left: 0;
+								height: 2px;
+								width: 0.75rem;
+								background-color: #333;
+							}
+
+							&:after{
+								content: '';
+								position: absolute;
+								bottom: 0.05rem;
+								right: 0;
+								height: 2px;
+								width: 0.75rem;
+								background-color: #333;
+							}
+						}
+					}
+
+
 				}
 
 			}
