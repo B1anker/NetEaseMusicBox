@@ -1,11 +1,11 @@
 <template lang="html">
 	<div class="friends">
 		<div class="head">账号</div>
-		<div class="content-wrap">
+		<div class="content-wrap" ref="content">
 			<ul class="events">
 				<li class="event" v-for="(e, index) in events">
 					<div class="content">
-						<div class="normal" v-if="e.type === 18 || e.type === 39">
+						<div class="normal" v-if="e.type === 18 || e.type === 39 || e.type === 35">
 							<div class="avatar">
 								<img :src="e.user.avatarUrl" :alt="e.user.nickname">
 							</div>
@@ -19,7 +19,7 @@
 							<div v-if="e.type === 39" class="video-wrap" @click="playVideo">
 								<video class="video" :poster="e.json.video.coverUrl"></video>
 							</div>
-							<div v-if="e.type === 18" class="music-wrap">
+							<div v-if="e.type === 18 || e.type === 35" class="music-wrap">
 								<img v-for="(pic, index) in e.pics" :src="pic.pcSquareUrl" alt="">
 							</div>
 							<div class="reason" v-if="e.rcmdInfo">{{ e.rcmdInfo.reason }}</div>
@@ -42,13 +42,16 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll'
 import { getNewEvent } from '@/modules/request';
 export default {
 	name: 'friends',
 
 	data() {
 		return {
-			events: []
+			events: [],
+			refreshing: false,
+			scrollInstance: null
 		}
 	},
 
@@ -58,7 +61,22 @@ export default {
 
 	methods: {
 		init() {
-			getNewEvent().then((res) => {
+			this.getData().then(() => {
+				this.scroll();
+			});
+		},
+
+		refresh() {
+			this.getData().then(() => {
+				this.scrollInstance.destroy();
+				this.scrollInstance = null;
+				this.refreshing = false;
+				this.scroll();
+			});;
+		},
+
+		getData(cb) {
+			return getNewEvent().then((res) => {
 				if (res.data.code !== 200) {
 					this.$message({
 						type: 'error',
@@ -74,6 +92,27 @@ export default {
 						item.json.msg = item.json.msg.replace(/\n/, '<br/>');
 					}
 					return item;
+				});
+			})
+		},
+
+		scroll() {
+			this.$nextTick(() => {
+				this.scrollInstance = new BScroll(this.$refs.content, {
+					startX: 0,
+					startY: 0,
+					scrollY: true,
+					click: true,
+					probeType: 2
+				});
+				this.scrollInstance.on('scroll', (pos) => {
+					if (this.refreshing) {
+						return ;
+					}
+					if (pos.y > 50) {
+						this.refreshing = true;
+						this.refresh();
+					}
 				});
 			})
 		},
@@ -118,9 +157,11 @@ export default {
 	.content-wrap{
 		overflow: scroll;
 		height: 4.503rem;
+		background-color: rgb(239, 240, 241);
 	}
 
 	.events {
+		background-color: white;
 
 		.event {
 			overflow: hidden;
@@ -224,7 +265,7 @@ export default {
 
 					.reason{
 						position: relative;
-						margin-top: 0.05rem;
+						margin-top: 0.1rem;
 						color: rgb(141, 141, 141);
 						text-align: left;
 						text-indent: 0.25rem;
