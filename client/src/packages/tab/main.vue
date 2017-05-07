@@ -54,7 +54,9 @@ export default {
 				width: this.computedList[index].width + 'px',
 				transform: `translateX(${ this.computedList[index].left }px)`
 			};
-			this.$emit('on-item-click', index);
+			this.$nextTick(() => {
+				this.$emit('on-item-click', index);
+			});
 		}
 	}
 }
