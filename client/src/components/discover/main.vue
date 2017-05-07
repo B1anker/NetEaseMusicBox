@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="discover">
   	<search-bar></search-bar>
-		<tab :list="tabList"></tab>
+		<tab :list="tabList" @on-item-click="switchTab"></tab>
 		<router-view></router-view>
   </div>
 </template>
@@ -19,7 +19,14 @@ export default {
 
 	data() {
 		return {
-			tabList: ['个性推荐', '歌单', '主播电台', '排行榜']
+			tabList: ['个性推荐', '歌单', '主播电台', '排行榜'],
+			tabListEn: ['personalized-recommend', 'personalized-recommend', 'personalized-recommend', 'all-ranking-list']
+		}
+	},
+
+	methods: {
+		switchTab(index) {
+			this.$router.push(this.tabListEn[index]);
 		}
 	}
 }

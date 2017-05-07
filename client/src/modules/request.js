@@ -56,6 +56,10 @@ function getNewBanner() {
 	});
 }
 
+function getRankingList(id) {
+	return axios.get(`/music/netEaseApi/rankingList?id=${id}`)
+}
+
 function getPlayLists(id) {
 	return axios.get(`/music/netEaseApi/playList?playListId=${id}`);
 }
@@ -100,6 +104,7 @@ export {
 	getHotPlayList,
 	getBanner,
 	getNewBanner,
+	getRankingList,
 	getPlayLists,
 	getUserDetail,
 	userPlayListsApi,

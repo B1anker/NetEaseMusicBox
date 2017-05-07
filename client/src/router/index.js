@@ -4,6 +4,7 @@ import Welcome from '@/views/welcome/main';
 import Home from '@/views/home/main';
 import Discover from '@/components/discover/index';
 import PersonalizedRecommend from '@/components/discover/personalizedRecommend';
+import AllRankingList from '@/components/discover/rankingList';
 import MyMusic from '@/components/my-music/index';
 import Friends from '@/components/friends/index';
 import Account from '@/components/account/index';
@@ -32,8 +33,11 @@ export default new Router({
 					redirect: '/home/discover/personalized-recommend',
 					children: [
 						{
-						path: 'personalized-recommend',
-						component: PersonalizedRecommend
+							path: 'personalized-recommend',
+							component: PersonalizedRecommend
+						},{
+							path: 'all-ranking-list',
+							component: AllRankingList
 						}
 					]
 				},
