@@ -1,6 +1,6 @@
 <template lang="html">
 	<div class="friends">
-		<div class="head">账号</div>
+		<div class="head">动态</div>
 		<div class="content-wrap" ref="content">
 			<ul class="events">
 				<li class="event" v-for="(e, index) in events">
@@ -26,12 +26,19 @@
 						</div>
 						<div class="advertisement" v-if="e.type === 33">
 							<div class="img-wrap">
-								<img :src="e.json.coverPCUrl" alt="">
+								<img :src="e.json.coverPCUrl + '?param=300y190'" alt="">
 							</div>
 							<div class="text">
 								<div class="long-line"></div>
-								<div class="title">#{{ e.json.title }}#</div>
-								<div class="short-line">{{ `${ e.json.participateCount }人参与` }}</div>
+								<div class="title">
+									<span>#{{ e.json.title }}#</span>
+								</div>
+								<div class="short-line">
+									<span class="cnt">
+										<em class="hide">xxxxxxxx</em>
+										<i>{{ `${ e.json.participateCount }人参与` }}</i>
+									</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -154,9 +161,20 @@ export default {
 	}
 
 	.content-wrap {
+		position: relative;
 		overflow: scroll;
 		height: 4.503rem;
 		background-color: rgb(239, 240, 241);
+
+		&:before{
+			content: '下拉刷新';
+			position: absolute;
+			font-size: 0.15rem;
+			top: 0.15rem;
+			left: 0;
+			right: 0;
+			margin: auto;
+		}
 	}
 
 	.events {
@@ -246,14 +264,18 @@ export default {
 					.music-wrap {
 						width: 2.5rem;
 						display: flex;
-						justify-content: space-between;
 						flex-wrap: wrap;
 
 						img {
+							margin-right: 0.05rem;
 							margin-top: 0.05rem;
 							width: 0.8rem;
 							height: 0.8rem;
 							background-size: 100%;
+
+							&:nth-child(3n+0){
+								margin-right: 0;
+							}
 						}
 					}
 
@@ -303,34 +325,60 @@ export default {
 							left: 0;
 							height: 2px;
 							width: 100%;
-							background-color: #333;
-							opacity: 0.6;
+							background-color: #fff;
+							opacity: 0.2;
+						}
+
+						.title {
+							display: table;
+							height: calc(100% - 0.12rem);
+							font-size: 0.2rem;
+
+							span{
+								display: table-cell; vertical-align:middle; text-align:center;
+							}
 						}
 
 						.short-line {
 							position: absolute;
-							bottom: 0;
 							left: 0;
-							font-size: 0.12rem;
+					    bottom: 0;
+					    word-break: normal;
+
+							.cnt{
+								position: relative;
+								display: table-cell;
+								padding: 0 12px;
+
+								.hide{
+									visibility: hidden;
+									font-size: 0.12rem;
+								}
+
+								i{
+									position: absolute;
+									font-size: 0.12rem;
+									left: 0;
+									right: 0;
+									text-align: center;
+									top: 5px;
+								}
+							}
 
 							&:before {
 								content: '';
-								position: absolute;
-								bottom: 0.05rem;
-								left: 0;
-								height: 2px;
-								width: 0.75rem;
-								background-color: #333;
+								display: table-cell;
+								border-bottom: 2px solid #fff;
+								opacity: 0.2;
+								width: 50%;
 							}
 
 							&:after {
 								content: '';
-								position: absolute;
-								bottom: 0.05rem;
-								right: 0;
-								height: 2px;
-								width: 0.75rem;
-								background-color: #333;
+								display: table-cell;
+								border-bottom: 2px solid #fff;
+								opacity: 0.2;
+								width: 50%;
 							}
 						}
 					}

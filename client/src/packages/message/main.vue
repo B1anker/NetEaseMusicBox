@@ -12,6 +12,7 @@
 <script>
 export default {
 	name: 'message',
+
 	data() {
 		return {
 			visible: false,
@@ -24,14 +25,17 @@ export default {
       timer: null
 		};
 	},
+
 	computed: {
 		iconType() {
 			return 'icon-' + this.type;
 		}
 	},
+
 	mounted() {
 		this.startTimer();
 	},
+
 	watch: {
     closed(newVal) {
       if (newVal) {
@@ -40,21 +44,25 @@ export default {
       }
     }
   },
+
 	methods: {
 		destroyElement() {
       this.$el.removeEventListener('transitionend', this.destroyElement);
       this.$destroy(true);
       this.$el.parentNode.removeChild(this.$el);
     },
+
     close() {
       this.closed = true;
       if (typeof this.onClose === 'function') {
         this.onClose(this);
       }
     },
+
     clearTimer() {
       clearTimeout(this.timer);
     },
+		
     startTimer() {
       if (this.duration > 0) {
         this.timer = setTimeout(() => {

@@ -266,11 +266,16 @@ export default {
 				.song{
 					margin-top: 0.1rem;
 					margin-bottom: 0.07rem;
+					padding-right: 0.1rem;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 					font-size: 0.15rem;
 				}
 
 				.artist-and-album{
 					overflow: hidden;
+					padding-right: 0.13rem;
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					font-size: 0.11rem;

@@ -46,7 +46,7 @@ export default {
 
 		jump(to, index) {
 			this.index = index;
-			this.$router.push(to);
+			this.$router.push('/home/' + to);
 		}
 	}
 }
