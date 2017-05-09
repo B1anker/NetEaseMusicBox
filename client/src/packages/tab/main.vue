@@ -66,6 +66,8 @@ export default {
 $base-color: rgb(212, 60, 51);
 .tab-wrap{
 	position: relative;
+	border-bottom: 1px solid rgb(236, 237, 238);
+	background-color: rgb(249, 249, 249);
 
 	.tab{
 		display: flex;

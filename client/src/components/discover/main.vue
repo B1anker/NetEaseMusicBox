@@ -2,7 +2,9 @@
   <div class="discover">
   	<search-bar></search-bar>
 		<tab :list="tabList" @on-item-click="switchTab"></tab>
-		<router-view></router-view>
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
   </div>
 </template>
 
