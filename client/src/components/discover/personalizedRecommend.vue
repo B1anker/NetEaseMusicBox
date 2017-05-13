@@ -1,23 +1,26 @@
 <template lang="html">
-	<div class="personalized-recommend">
-		<banner :banners="banners"></banner>
-		<div class="recommend-playlist">
-			<div class="title">
-				<div class="text">推荐歌单<i class="icon icon-back"></i></div>
+	<div class="personalized-recommend" ref="recommend">
+		<div class="scroll">
+			<banner :banners="banners"></banner>
+			<div class="recommend-playlist">
+				<div class="title">
+					<div class="text">推荐歌单<i class="icon icon-back"></i></div>
+				</div>
+				<ul class="playlists">
+					<li class="playlist" v-for="(playlist, index) in playlists" @click="toPlayList(index)">
+						<img :src="playlist.picUrl" :alt="playlist.name">
+						<div class="name">{{ playlist.name }}</div>
+						<span class="playcount">{{ transformNumber(playlist.playCount) }}</span>
+					</li>
+				</ul>
 			</div>
-			<ul class="playlists">
-				<li class="playlist" v-for="(playlist, index) in playlists" @click="toPlayList(index)">
-					<img :src="playlist.picUrl" :alt="playlist.name">
-					<div class="name">{{ playlist.name }}</div>
-					<span class="playcount">{{ transformNumber(playlist.playCount) }}</span>
-				</li>
-			</ul>
 		</div>
 	</div>
 </template>
 
 <script>
 import Banner from '@/components/banner/main';
+import BScroll from 'better-scroll';
 import { getHotPlayList, getBanner, getNewBanner } from '@/modules/request';
 import Ls from '@/modules/utils/localStorage';
 import axios from 'axios';
@@ -44,6 +47,7 @@ export default {
 			axios.all([getNewBanner(), getHotPlayList()]).then(axios.spread((banners, hotList) => {
 				this.banners = banners;
 				this.playlists = hotList.data.result;
+				this.scroll();
 			}));
 		},
 
@@ -56,6 +60,18 @@ export default {
 				cover: this.playlists[index].picUrl
 			});
 			this.$router.push({ name: 'playlist', params: { id: this.playlists[index].id }});
+		},
+
+		scroll() {
+			this.$nextTick(() => {
+				this.scrollInstance = new BScroll(this.$refs.recommend, {
+					startX: 0,
+					startY: 0,
+					scrollY: true,
+					click: true,
+					probeType: 2
+				});
+			});
 		}
 	}
 }
@@ -64,7 +80,7 @@ export default {
 <style lang="scss" scoped>
 .personalized-recommend{
 	overflow: scroll;
-	height: 4.503rem;
+	height: calc(100% - 0.46rem - 0.4rem - 0.5rem);
 
 	.title{
 		height: 0.5rem;

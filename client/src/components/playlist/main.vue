@@ -25,13 +25,15 @@
 					<i class="icon icon-start" @click="playMusic(0)"></i>
 					<div class="text">播放全部<span class="count">(共{{ tracks.length }}首)</span></div>
 				</div>
-				<ul class="lists">
-					<li class="list" v-for="(track, index) in tracks" @click="playMusic(index)">
-						<span class="num">{{ index + 1 }}</span>
-						<div class="song">{{ track.name }}</div>
-						<div class="artist-and-album">{{ `${ track.ar[0].name } - ${ track.al.name }` }}</div>
-					</li>
-				</ul>
+				<div class="lists" ref="lists">
+					<ul>
+						<li class="list" v-for="(track, index) in tracks" @click="playMusic(index)">
+							<span class="num">{{ index + 1 }}</span>
+							<div class="song">{{ track.name }}</div>
+							<div class="artist-and-album">{{ `${ track.ar[0].name } - ${ track.al.name }` }}</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 	  </div>
 	</transition>
@@ -41,6 +43,7 @@
 import { getPlayLists } from '@/modules/request';
 import playList from '@/modules/mixins/playList';
 import Ls from '@/modules/utils/localStorage';
+import BScroll from 'better-scroll'
 export default {
 	name: 'playlist',
 
@@ -56,7 +59,8 @@ export default {
 			tracks: [],
 			avatarUrl: '',
 			backgroundUrl: '',
-			nickname: ''
+			nickname: '',
+			scrollInstance: null
 		}
 	},
 
@@ -93,6 +97,7 @@ export default {
 				this.tracks = res.data.playlist.tracks;
 				this.avatarUrl = this.playlist.creator.avatarUrl;
 				this.nickname = this.playlist.creator.nickname;
+				this.scroll();
 			});
 		},
 
@@ -107,6 +112,18 @@ export default {
 				show: true,
 				state: 1
 			});
+		},
+
+		scroll() {
+			this.$nextTick(() => {
+				this.scrollInstance = new BScroll(this.$refs.lists, {
+					startX: 0,
+					startY: 0,
+					scrollY: true,
+					click: true,
+					probeType: 2
+				});
+			})
 		}
 	}
 }
@@ -245,7 +262,7 @@ export default {
 		}
 
 		.lists{
-			height: 2.14rem;
+			height: 2.28rem;
 			padding-left: 0.4rem;
 			overflow: scroll;
 

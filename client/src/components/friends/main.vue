@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll'
+import BScroll from 'better-scroll';
 import { getNewEvent } from '@/modules/request';
 export default {
 	name: 'friends',
@@ -153,7 +153,7 @@ export default {
 .friends {
 	.head {
 		width: 100%;
-		height: 0.48rem;
+		height: 0.46rem;
 		background-color: rgb(212, 60, 51);
 		font-size: 0.17rem;
 		line-height: 0.48rem;
@@ -163,7 +163,7 @@ export default {
 	.content-wrap {
 		position: relative;
 		overflow: scroll;
-		height: 4.503rem;
+		height: calc(100% - 0.46rem - 0.5rem);
 		background-color: rgb(239, 240, 241);
 
 		&:before{

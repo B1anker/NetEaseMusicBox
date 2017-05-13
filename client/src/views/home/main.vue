@@ -27,8 +27,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home-content {
-  height: 5.003rem;
-  width: 100%;
+.home{
+	height: 100%;
+	
+	.home-content {
+	  height: 100%;
+	  width: 100%;
+	}
 }
+
 </style>

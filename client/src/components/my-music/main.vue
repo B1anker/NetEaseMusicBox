@@ -1,46 +1,49 @@
 <template lang="html">
 	<div class="my-music">
 		<div class="top">我的音乐</div>
-		<div class="content-wrap">
-			<div class="create common">
-				<div class="head" @click="toggleCreate">
-					<i class="icon icon-back" :class="{hide: !createShow}"></i>
-					<div class="playlist-type">我创建的歌单({{ create.length }})</div>
+		<div class="content-wrap" ref="content">
+			<div class="">
+				<div class="create common">
+					<div class="head" @click="toggleCreate">
+						<i class="icon icon-back" :class="{hide: !createShow}"></i>
+						<div class="playlist-type">我创建的歌单({{ create.length }})</div>
+					</div>
+					<ul class="lists" v-show="createShow">
+						<li class="list" v-for="(item, index) in create" @click="toPlayList(index, 'create')">
+							<div class="left">
+								<img class="cover" :src="item.coverImgUrl" :alt="item.name">
+							</div>
+							<div class="right">
+								<div class="name">{{ item.name }}</div>
+								<div class="count">{{ item.trackCount + '首' }}</div>
+							</div>
+						</li>
+					</ul>
 				</div>
-				<ul class="lists" v-show="createShow">
-					<li class="list" v-for="(item, index) in create" @click="toPlayList(index, 'create')">
-						<div class="left">
-							<img class="cover" :src="item.coverImgUrl" :alt="item.name">
-						</div>
-						<div class="right">
-							<div class="name">{{ item.name }}</div>
-							<div class="count">{{ item.trackCount + '首' }}</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-			<div class="subscribe common">
-				<div class="head" @click="toggleSubscribe">
-					<i class="icon icon-back" :class="{hide: !subscribeShow}"></i>
-					<div class="playlist-type">我收藏的歌单({{ subscribe.length }})</div>
+				<div class="subscribe common">
+					<div class="head" @click="toggleSubscribe">
+						<i class="icon icon-back" :class="{hide: !subscribeShow}"></i>
+						<div class="playlist-type">我收藏的歌单({{ subscribe.length }})</div>
+					</div>
+					<ul class="lists" v-show="subscribeShow">
+						<li class="list" v-for="(item, index) in subscribe" @click="toPlayList(index, 'subscribe')">
+							<div class="left">
+								<img class="cover" :src="item.coverImgUrl" :alt="item.name">
+							</div>
+							<div class="right">
+								<div class="name">{{ item.name }}</div>
+								<div class="count">{{ item.trackCount + '首' }}</div>
+							</div>
+						</li>
+					</ul>
 				</div>
-				<ul class="lists" v-show="subscribeShow">
-					<li class="list" v-for="(item, index) in subscribe" @click="toPlayList(index, 'subscribe')">
-						<div class="left">
-							<img class="cover" :src="item.coverImgUrl" :alt="item.name">
-						</div>
-						<div class="right">
-							<div class="name">{{ item.name }}</div>
-							<div class="count">{{ item.trackCount + '首' }}</div>
-						</div>
-					</li>
-				</ul>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import BScroll from 'better-scroll'
 import { userPlayListsApi } from '@/modules/request';
 import Ls from '@/modules/utils/localStorage';
 const ls = new Ls();
@@ -53,7 +56,8 @@ export default {
 			create: [],
 			subscribe: [],
 			createShow: true,
-			subscribeShow: true
+			subscribeShow: true,
+			scrollInstance: null
 		}
 	},
 
@@ -82,6 +86,15 @@ export default {
 				this.subscribe = res.data.playlist.filter((item, index) => {
 					return item.userId !== this.user.account.id;
 				});
+				this.$nextTick(() => {
+					this.scrollInstance = new BScroll(this.$refs.content, {
+						startX: 0,
+						startY: 0,
+						scrollY: true,
+						click: true,
+						probeType: 2
+					});
+				})
 			});
 		},
 
@@ -121,11 +134,11 @@ export default {
 
 	.content-wrap{
 		overflow: scroll;
-		height: 4.503rem;
+		height: calc(100% - 0.46rem - 0.5rem);
 	}
 
 	.top{
-		height: 0.5rem;
+		height: 0.46rem;
 		line-height: 0.5rem;
 		background: rgb(212, 60, 51);
 		font-size: 0.18rem;

@@ -11,7 +11,7 @@ newBannerApi.get('/netEaseApi/newBanner', async(ctx, next) => {
 	const form = {
 		"csrf_token": ""
 	};
-	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
+	const cookie = ctx.request.get('Cookie') ? ctx.request.get('Cookie') : (ctx.request.query.cookie ? ctx.request.query.cookie : '');
 	const options = Object.assign({}, {
 		url,
 		form,

@@ -259,13 +259,6 @@ export default {
 		startTimer() {
 			this.timer = setInterval(() => {
 				this.current = Number((this.current + 0.1).toFixed(2));
-
-				if (this.mp3Dom.ended) {
-					this.stopTimer();
-					this.current = 0;
-					this.onplaying = false;
-					this.next();
-				}
 			}, 100);
 		},
 
@@ -290,6 +283,12 @@ export default {
 			this.mp3Dom.load();
 			this.current = 0;
 			this.mp3Dom.addEventListener('canplay', this.canplay, false);
+			this.mp3Dom.addEventListener('ended', () => {
+				this.stopTimer();
+				this.current = 0;
+				this.onplaying = false;
+				this.next();
+			}, false);
 		},
 
 		canplay(e) {

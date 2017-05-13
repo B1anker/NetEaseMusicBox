@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .footer{
 	position: fixed;
-	top: 5.003rem;
+	bottom: 0;
 	left: 0;
 	right: 0;
 	margin: 0 auto;
