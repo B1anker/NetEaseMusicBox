@@ -68,7 +68,7 @@ export default {
 					startX: 0,
 					startY: 0,
 					scrollY: true,
-					click: true,
+					click: false,
 					probeType: 2
 				});
 			});

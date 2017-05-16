@@ -64,7 +64,7 @@ export default {
 		z-index: 999;
 		overflow: hidden;
 		background-image: url("/static/welcome.png");
-		background-size: 100% 100%;
+		background-size: 100% auto;
 
 		.button{
 			margin: auto;

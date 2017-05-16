@@ -18,8 +18,10 @@ function req(form, options, cb) {
 		method: options.method || 'POST',
 		form: encryptData(form)
 	}, (err, res, result) => {
-		if (err)
-			return reject(err);
+		if (err) {
+			cb(err, result);
+			return;
+		}
 		if (dataType === 'json') {
 			if (!result) {
 				req(form, options, cb);
@@ -28,7 +30,7 @@ function req(form, options, cb) {
 				result = JSON.parse(result);
 			}
 		}
-		cb(result);
+		cb(err, result);
 	});
 }
 
@@ -37,7 +39,10 @@ function fetchData(options) {
 		const form = typeof options.form === 'object'
 			? JSON.stringify(options.form)
 			: options.form;
-		req(form, options, (result) => {
+		req(form, options, (err, result) => {
+			if (err) {
+				reject(err)
+			}
 			resolve(result)
 		});
 	});

@@ -12,7 +12,9 @@
 						<div class="level">{{ 'LV ' + details.level }}</div>
 					</div>
 					<div class="sign">
-						<button @click="handleDailySign">签到</button>
+						<div class="button" @click.stop="handleDailySign">
+							签到
+						</div>
 					</div>
 				</div>
 				<div class="down">
@@ -30,7 +32,7 @@
 							<div class="num">{{ followeds.length }}</div>
 						</li>
 						<li>
-							<i class="icon icon-pencil"></i>
+							<i class="icon icon-pencil" @click.stop="test"></i>
 							<div class="my-info">我的资料</div>
 						</li>
 					</ul>
@@ -95,7 +97,11 @@ export default {
 			}));
 		},
 
-		handleDailySign() {
+		test() {
+			console.log(1);
+		},
+
+		handleDailySign(e) {
 			dailySign(1).then((res) => {
 				this.$message({
 					type: 'correct',
@@ -187,7 +193,7 @@ export default {
 				top: 0.3rem;
 				right: 0.1rem;
 
-				button{
+				.button{
 					width: 0.62rem;
 					height: 0.25rem;
 					border-radius: 0.25rem;
@@ -195,6 +201,8 @@ export default {
 					border: 1px solid rgb(205, 0, 0);
 					color: rgb(205, 0, 0);
 					font-size: 0.1rem;
+					text-align: center;
+					line-height: 0.25rem;
 				}
 			}
 		}

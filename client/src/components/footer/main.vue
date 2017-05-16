@@ -61,7 +61,6 @@ export default {
 	margin: 0 auto;
 	z-index: 99;
 	height: 0.5rem;
-	width: 3.2rem;
 	background-color: rgb(57, 57, 57);
 
 	ul{

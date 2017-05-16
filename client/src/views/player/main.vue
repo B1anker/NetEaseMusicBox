@@ -65,8 +65,8 @@
 </template>
 
 <script>
-import { detail, getMp3Url } from '@/modules/request';
-import { getPlayLists } from '@/modules/request';
+import { detail, getMp3Url, history, getPlayLists } from '@/modules/request';
+import Ls from '@/modules/utils/localStorage';
 import Cover from './cover';
 import Lyric from './lyric';
 import Drag from './drag';
@@ -87,6 +87,7 @@ export default {
      * @param {HTMLELEMENT} [mp3Dom] [mp3元素]
      * @param {String} [artist] [歌手名]
      * @param {String} [music] [音乐名]
+		 * @param {Object} [detail] [音乐详细信息]
      * @param {String} [url] [音乐链接]
      * @param {String} [picUrl] [图片链接]
      * @param {Boolean} [played] [是否播放过]
@@ -105,6 +106,7 @@ export default {
 			mp3Dom: null,
 			artist: '',
 			music: '',
+			detail: {},
 			url: '',
 			picUrl: '',
 			played: false,
@@ -230,6 +232,7 @@ export default {
 					return ;
 				}
 				const song = res.data.songs[0];
+				this.detail = song;
 				const artist = [];
 				this.music = song.name;
 				song.ar.forEach((item, index, arr) => {
@@ -264,6 +267,7 @@ export default {
 
 		stopTimer() {
 			clearInterval(this.timer);
+			this.timer = null;
 		},
 
 		transformDuation(seconds) {
@@ -284,6 +288,11 @@ export default {
 			this.current = 0;
 			this.mp3Dom.addEventListener('canplay', this.canplay, false);
 			this.mp3Dom.addEventListener('ended', () => {
+				const user = new Ls().get('user');
+				history('set', {
+					username: user.profile.nickname,
+					music: this.detail
+				});
 				this.stopTimer();
 				this.current = 0;
 				this.onplaying = false;

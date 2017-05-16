@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="button">
-  	<button type="button" name="button" @click="emitClick">{{ val }}</button>
+  	<button type="button" name="button" @click.stop.prev="emitClick">{{ val }}</button>
   </div>
 </template>
 

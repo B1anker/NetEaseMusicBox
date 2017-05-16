@@ -11,14 +11,14 @@ export default signinRouter.post('/authority/signin', async(ctx, next) => {
 	if (result[0].password === ctx.request.body.password) {
 		ctx.status = 200;
 		ctx.body = {
-			code: 0,
+			code: 200,
 			message: '登录成功'
 		};
 		return;
 	}
 	ctx.status = 500;
 	ctx.body = {
-		code: 0,
+		code: 500,
 		message: '账号或密码错误'
 	};
 });

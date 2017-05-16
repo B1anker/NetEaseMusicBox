@@ -3,18 +3,13 @@
 		<keep-alive>
 			<router-view class="home-content"></router-view>
 		</keep-alive>
-		<controler></controler>
   </div>
 </template>
 
 <script>
-import Controler from '@/views/player/controler';
+
 export default {
 	name: 'home',
-
-	components: {
-		Controler
-	},
 
 	mounted() {
 		const user = JSON.parse(localStorage.getItem('user'));
@@ -29,7 +24,7 @@ export default {
 <style lang="scss" scoped>
 .home{
 	height: 100%;
-	
+
 	.home-content {
 	  height: 100%;
 	  width: 100%;

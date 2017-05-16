@@ -26,7 +26,7 @@ export default {
 .controler-wrap{
 	position: absolute;
 	color: white;
-	z-index: 999;
+	z-index: 1001;
 	top: 0.1rem;
 	right: 0.1rem;
 	font-size: 0.25rem;

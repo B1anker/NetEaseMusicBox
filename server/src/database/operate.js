@@ -1,4 +1,4 @@
-import mongodb from 'mongodb'; 
+import mongodb from 'mongodb';
 const MongoClient = mongodb.MongoClient;
 
 class Operate {
@@ -23,9 +23,26 @@ class Operate {
 		});
 	}
 
-	insert(params) {
-		this.collection.insertMany(params);
-		return this;
+	async insert(params) {
+		return await new Promise((resolve, reject) => {
+			this.collection.insert(params, (err, result) => {
+				if (!err) {
+					resolve(result);
+				}
+				reject(err);
+			});
+		})
+	}
+
+	async update(query, params, force = false) {
+		return await new Promise((resolve, reject) => {
+			this.collection.update(query, params, (err, result) => {
+				if (!err) {
+					resolve(result);
+				}
+				reject(err);
+			}, force);
+		})
 	}
 
 	async find(query) {

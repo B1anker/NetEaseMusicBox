@@ -4,7 +4,7 @@
 		<div class="content-wrap" ref="content">
 			<div class="">
 				<div class="create common">
-					<div class="head" @click="toggleCreate">
+					<div class="head" @click.stop.prev="toggleCreate">
 						<i class="icon icon-back" :class="{hide: !createShow}"></i>
 						<div class="playlist-type">我创建的歌单({{ create.length }})</div>
 					</div>
@@ -91,7 +91,7 @@ export default {
 						startX: 0,
 						startY: 0,
 						scrollY: true,
-						click: true,
+						click: false,
 						probeType: 2
 					});
 				})
@@ -105,6 +105,7 @@ export default {
 		},
 
 		toggleCreate() {
+			console.log(1);
 			this.createShow = !this.createShow;
 		},
 
