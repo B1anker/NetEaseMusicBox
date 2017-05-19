@@ -1,8 +1,8 @@
 import Encrypt from './crypto';
 import http from 'http';
-import crypto from 'crypto';
-import tough from 'tough-cookie';
-const Cookie = tough.Cookie;
+// import crypto from 'crypto';
+// import tough from 'tough-cookie';
+// const Cookie = tough.Cookie;
 
 function createWebAPIRequest(path, data, cookie, response, method, cb) {
 	let music_req = '';

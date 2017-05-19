@@ -1,12 +1,13 @@
 import KoaRouter from 'koa-router';
 import {
-	fetchData
-} from '../util';
+	req
+} from '../req';
 import crypto from 'crypto';
 const loginApi = KoaRouter();
 
 loginApi.post('/netEaseApi/login', async(ctx, next) => {
 	const url = '/weapi/login/cellphone';
+	const cookie = ctx.request.get('Cookie') ? ctx.request.get('Cookie') : (ctx.request.query.cookie ? ctx.request.query.cookie : '');
 	/**
 	 * 登录api
 	 * @param {String} [cellphone] [手机号]
@@ -22,9 +23,11 @@ loginApi.post('/netEaseApi/login', async(ctx, next) => {
 	const options = Object.assign({}, {
 		url,
 		form,
+		response: ctx.response,
+		cookie,
 		dataType: 'json'
 	});
-	ctx.body = await fetchData(options);
+	ctx.body = await req(options);
 });
 
 export default loginApi;
