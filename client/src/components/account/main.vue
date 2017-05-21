@@ -1,49 +1,94 @@
 <template lang="html">
 	<div class="account">
 		<div class="head">账号</div>
-		<div class="content-wrap">
-			<div class="summary" v-if="summaryShow">
-				<div class="up">
-					<div class="avatar">
-						<img :src="user.profile.avatarUrl" :alt="user.profile.nickname">
-					</div>
-					<div class="username-wrap">
-						<div class="username">{{ user.profile.nickname }}</div>
-						<div class="level">{{ 'LV ' + details.level }}</div>
-					</div>
-					<div class="sign">
-						<div class="button" @click.stop="handleDailySign">
-							签到
+		<div class="content-wrap"  ref="content">
+			<div class="scroll">
+				<div class="summary" v-if="summaryShow">
+					<div class="up">
+						<div class="avatar">
+							<img :src="user.profile.avatarUrl" :alt="user.profile.nickname">
+						</div>
+						<div class="username-wrap">
+							<div class="username">{{ user.profile.nickname }}</div>
+							<div class="level">{{ 'LV ' + details.level }}</div>
+						</div>
+						<div class="sign">
+							<div class="button" @click.stop="handleDailySign">
+								签到
+							</div>
 						</div>
 					</div>
+					<div class="down">
+						<ul>
+							<li>
+								<div class="text">动态</div>
+								<div class="num">0</div>
+							</li>
+							<li>
+								<div class="text">关注</div>
+								<div class="num">{{ follows.length }}</div>
+							</li>
+							<li>
+								<div class="text">粉丝</div>
+								<div class="num">{{ followeds.length }}</div>
+							</li>
+							<li>
+								<i class="icon icon-pencil" @click.stop="test"></i>
+								<div class="my-info">我的资料</div>
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="down">
-					<ul>
-						<li>
-							<div class="text">动态</div>
-							<div class="num">0</div>
+				<div class="menu-wrap">
+					<ul class="menu">
+						<li class="item">
+							<i class="icon icon-envelope left"></i>
+							<span class="text">我的消息</span>
+							<i class="icon icon-back right"></i>
 						</li>
-						<li>
-							<div class="text">关注</div>
-							<div class="num">{{ follows.length }}</div>
+					</ul>
+					<ul class="menu">
+						<li class="item">
+							<i class="icon icon-member left"></i>
+							<span class="text">会员中心</span>
+							<i class="icon icon-back right"></i>
 						</li>
-						<li>
-							<div class="text">粉丝</div>
-							<div class="num">{{ followeds.length }}</div>
+						<li class="item">
+							<i class="icon icon-cart left"></i>
+							<span class="text">商城</span>
+							<i class="icon icon-back right"></i>
 						</li>
-						<li>
-							<i class="icon icon-pencil" @click.stop="test"></i>
-							<div class="my-info">我的资料</div>
+					</ul>
+					<ul class="menu">
+						<li class="item">
+							<i class="icon icon-setting left"></i>
+							<span class="text">设置</span>
+							<i class="icon icon-back right"></i>
+						</li>
+						<li class="item">
+							<i class="icon icon-lamp left"></i>
+							<span class="text">夜间模式</span>
+							<i class="icon icon-back right"></i>
+						</li>
+						<li class="item">
+							<i class="icon icon-scan left"></i>
+							<span class="text">扫一扫</span>
+							<i class="icon icon-back right"></i>
+						</li>
+					</ul>
+					<ul class="menu">
+						<li class="item">
+							<i class="icon icon-share left"></i>
+							<span class="text">分享网易云音乐</span>
+							<i class="icon icon-back right"></i>
+						</li>
+						<li class="item">
+							<i class="icon icon-info left"></i>
+							<span class="text">关于</span>
+							<i class="icon icon-back right"></i>
 						</li>
 					</ul>
 				</div>
-			</div>
-			<div class="menu">
-				<ul>
-					<li><i></i><span></span></li>
-					<li><i></i><span></span></li>
-					<li><i></i><span></span></li>
-				</ul>
 			</div>
 		</div>
 	</div>
@@ -51,6 +96,7 @@
 
 <script>
 import { getFollows, getFolloweds, getUserDetail, dailySign, refresh } from '@/modules/request';
+import BScroll from 'better-scroll';
 import axios from 'axios';
 import MySwitch from '@/packages/switch';
 export default {
@@ -61,7 +107,8 @@ export default {
 			user: {},
 			follows: [],
 			followeds: [],
-			details: {}
+			details: {},
+			scrollInstance: null
 		}
 	},
 
@@ -94,11 +141,20 @@ export default {
 				this.details = details.data;
 				this.follows = follows.data.follow;
 				this.followeds = followeds.data.followeds;
+				this.scroll();
 			}));
 		},
 
-		test() {
-			console.log(1);
+		scroll() {
+			this.$nextTick(() => {
+				this.scrollInstance = new BScroll(this.$refs.content, {
+					startX: 0,
+					startY: 0,
+					scrollY: true,
+					click: false,
+					probeType: 2
+				});
+			});
 		},
 
 		handleDailySign(e) {
@@ -135,11 +191,10 @@ export default {
 
 	.content-wrap{
 		overflow: scroll;
-		height: 4.503rem;
+		height: calc(100% - 0.46rem - 0.5rem);
 	}
 
 	.summary{
-		height: 1.22rem;
 		width: 100%;
 
 		.up{
@@ -243,6 +298,57 @@ export default {
 						color: rgb(140, 140, 140);
 					}
 				}
+			}
+		}
+	}
+
+	.menu-wrap{
+		overflow: hidden;
+
+		.menu{
+			margin-top: 0.1rem;
+			padding-left: 0.45rem;
+			background-color: white;
+
+			.item{
+				position: relative;
+				text-align: left;
+				height: 0.45rem;
+				border-bottom: 1px solid rgb(226, 227, 228);
+
+				.text{
+					font-size: 0.16rem;
+					line-height: 0.45rem;
+				}
+
+				.icon{
+					font-size: 0.2rem;
+					color: rgb(138, 139, 145);
+
+					&.left{
+						position: absolute;
+						left: -0.33rem;
+						top: 0.11rem;
+					}
+
+					&.right{
+						font-size: 0.17rem;
+						position: absolute;
+						right: 0.05rem;
+						top: 0.14rem;
+						font-weight: bolder;
+						color: rgb(230, 231, 232);
+						transform: rotate(180deg);
+					}
+				}
+
+				&:last-child{
+					border-bottom: none;
+				}
+			}
+
+			&:last-child{
+				margin-bottom: 0.2rem;
 			}
 		}
 	}

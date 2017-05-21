@@ -7,19 +7,22 @@
 				<div class="favor">收藏</div>
 				<div class="clear">清空</div>
 	  	</div>
-			<ul class="lists">
-				<li class="list" :class="{active: index === _index}" v-for="(list, index) in lists" @click="switchMusic(index)">
-					<span class="music-name">{{ list.name }}</span>
-					<span class="split">-</span>
-					<span class="artist">{{list.ar[0].name}}</span>
-				</li>
-			</ul>
+			<div class="lists" ref="lists">
+				<ul>
+					<li class="list" :class="{active: index === _index}" v-for="(list, index) in lists" @click="switchMusic(index)">
+						<span class="music-name">{{ list.name }}</span>
+						<span class="split">-</span>
+						<span class="artist">{{(list.ar && list.ar[0].name) || (list.artists && list.artists[0].name) }}</span>
+					</li>
+				</ul>
+			</div>
 			<div class="close" @click="close">关闭</div>
 	  </div>
   </transition>
 </template>
 
 <script>
+import BScroll from 'better-scroll';
 import axios from 'axios';
 export default {
 	name: 'lists',
@@ -41,7 +44,7 @@ export default {
 	},
 
 	mounted() {
-
+		this.scroll();
 	},
 
 	methods: {
@@ -59,6 +62,18 @@ export default {
 				index
 			});
 			this.close();
+		},
+
+		scroll() {
+			this.$nextTick(() => {
+				this.scrollInstance = new BScroll(this.$refs.lists, {
+					startX: 0,
+					startY: 0,
+					scrollY: true,
+					click: true,
+					probeType: 2
+				});
+			})
 		}
 	}
 }

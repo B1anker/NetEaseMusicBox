@@ -28,100 +28,121 @@ export default StyleSheet.create({
         "WebkitFontSmoothing": "antialiased",
         "MozOsxFontSmoothing": "grayscale"
     },
-    "icon-pencil:before": {
-        "content": "\\e91f"
-    },
-    "icon-praise:before": {
-        "content": "\\e91e"
-    },
-    "icon-favor-hollow:before": {
+    "icon-cart:before": {
         "content": "\\e900"
     },
-    "icon-favor:before": {
+    "icon-envelope:before": {
         "content": "\\e901"
     },
-    "icon-order-loop:before": {
+    "icon-info:before": {
         "content": "\\e902"
     },
-    "icon-shuffle-loop:before": {
+    "icon-lamp:before": {
         "content": "\\e903"
     },
-    "icon-single-loop:before": {
+    "icon-member:before": {
         "content": "\\e904"
     },
-    "icon-song-lists:before": {
+    "icon-scan:before": {
         "content": "\\e905"
     },
-    "icon-account:before": {
+    "icon-setting:before": {
         "content": "\\e906"
     },
-    "icon-back:before": {
+    "icon-favor-hollow:before": {
         "content": "\\e907"
     },
-    "icon-comment:before": {
+    "icon-favor:before": {
         "content": "\\e908"
     },
-    "icon-correct:before": {
+    "icon-order-loop:before": {
         "content": "\\e909"
     },
-    "icon-cross:before": {
+    "icon-pencil:before": {
         "content": "\\e90a"
     },
-    "icon-error:before": {
+    "icon-praise:before": {
         "content": "\\e90b"
     },
-    "icon-expand:before": {
+    "icon-shuffle-loop:before": {
         "content": "\\e90c"
     },
-    "icon-friends:before": {
+    "icon-single-loop:before": {
         "content": "\\e90d"
     },
-    "icon-lock:before": {
+    "icon-song-lists:before": {
         "content": "\\e90e"
     },
-    "icon-logo:before": {
+    "icon-account:before": {
         "content": "\\e90f"
     },
-    "icon-next:before": {
+    "icon-back:before": {
         "content": "\\e910"
     },
-    "icon-note-2:before": {
+    "icon-comment:before": {
         "content": "\\e911"
     },
-    "icon-note:before": {
+    "icon-correct:before": {
         "content": "\\e912"
     },
-    "icon-option:before": {
+    "icon-cross:before": {
         "content": "\\e913"
     },
-    "icon-player:before": {
+    "icon-error:before": {
         "content": "\\e914"
     },
-    "icon-prev:before": {
+    "icon-expand:before": {
         "content": "\\e915"
     },
-    "icon-search:before": {
+    "icon-friends:before": {
         "content": "\\e916"
     },
-    "icon-share:before": {
+    "icon-lock:before": {
         "content": "\\e917"
     },
-    "icon-singer:before": {
+    "icon-logo:before": {
         "content": "\\e918"
     },
-    "icon-start:before": {
+    "icon-next:before": {
         "content": "\\e919"
     },
-    "icon-stop:before": {
+    "icon-note-2:before": {
         "content": "\\e91a"
     },
-    "icon-time:before": {
+    "icon-note:before": {
         "content": "\\e91b"
     },
-    "icon-trumpet:before": {
+    "icon-option:before": {
         "content": "\\e91c"
     },
-    "icon-user:before": {
+    "icon-player:before": {
         "content": "\\e91d"
+    },
+    "icon-prev:before": {
+        "content": "\\e91e"
+    },
+    "icon-search:before": {
+        "content": "\\e91f"
+    },
+    "icon-share:before": {
+        "content": "\\e920"
+    },
+    "icon-singer:before": {
+        "content": "\\e921"
+    },
+    "icon-start:before": {
+        "content": "\\e922"
+    },
+    "icon-stop:before": {
+        "content": "\\e923"
+    },
+    "icon-time:before": {
+        "content": "\\e924"
+    },
+    "icon-trumpet:before": {
+        "content": "\\e925"
+    },
+    "icon-user:before": {
+        "content": "\\e926"
     }
 });

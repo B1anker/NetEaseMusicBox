@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { isVNode } from '@/modules/utils/vdom';
 let MessageConstructor = Vue.extend(require('./main.vue'));
 let instance;
 let instances = [];

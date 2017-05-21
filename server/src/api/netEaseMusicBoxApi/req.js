@@ -1,8 +1,5 @@
 import Encrypt from './crypto';
 import http from 'http';
-// import crypto from 'crypto';
-// import tough from 'tough-cookie';
-// const Cookie = tough.Cookie;
 
 function createWebAPIRequest(path, data, cookie, response, method, cb) {
 	let music_req = '';
@@ -51,7 +48,7 @@ function createWebAPIRequest(path, data, cookie, response, method, cb) {
 }
 
 function req(options){
-	options.method = options.method ? options.method : "POST";
+	options.method = options.method || "POST";
 	return new Promise((resolve, reject) => {
 		createWebAPIRequest(options.url, options.form, options.cookie, options.response, options.method, (_data) => {
 			resolve(_data);

@@ -4,13 +4,13 @@ const ls = new Ls();
 
 const playList = {
 	methods: {
-		setList(id, index) {
+		setList(tracks, index) {
 			ls.set('playLists', {
-				id,
+				tracks,
 				index
 			});
 			this.$store.dispatch('setLists', {
-				id,
+				tracks,
 				index
 			});
 		}

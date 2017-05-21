@@ -43,7 +43,7 @@
 import { getPlayLists } from '@/modules/request';
 import playList from '@/modules/mixins/playList';
 import Ls from '@/modules/utils/localStorage';
-import BScroll from 'better-scroll'
+import BScroll from 'better-scroll';
 export default {
 	name: 'playlist',
 
@@ -106,7 +106,7 @@ export default {
 		},
 
 		playMusic(index) {
-			this.setList(this.$route.params.id, index);
+			this.setList(this.tracks, index);
 			this.$store.dispatch('setPlayer', {
 				songId: this.tracks[index].id,
 				show: true,

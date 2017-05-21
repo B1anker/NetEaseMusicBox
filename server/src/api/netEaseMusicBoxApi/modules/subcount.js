@@ -3,6 +3,8 @@ import {
 	fetchData
 } from '../util';
 
+import {req} from '../req'
+
 const subcountApi = KoaRouter();
 
 /* 通过id获取用户信息
@@ -19,14 +21,15 @@ subcountApi.get('/netEaseApi/subcount', async(ctx, next) => {
 		userId: ctx.query.id,
 		csrf_token: ''
 	};
-	const cookie = ctx.get('Cookie') ? ctx.get('Cookie') : (ctx.query.cookie ? ctx.query.cookie : '');
+	const cookie = ctx.request.get('Cookie') ? ctx.request.get('Cookie') : (ctx.request.query.cookie ? ctx.request.query.cookie : '');
+	console.log(cookie);
 	const options = Object.assign({}, {
 		url,
 		form,
 		cookie,
 		dataType: 'json'
 	});
-	ctx.body = await fetchData(options);
+	ctx.body = await req(options);
 });
 
 export default subcountApi;

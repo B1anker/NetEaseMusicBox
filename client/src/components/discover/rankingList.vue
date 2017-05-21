@@ -3,14 +3,16 @@
   	<div class="netMusic common">
 			<div class="title">云音乐官方榜</div>
 			<div class="content">
-				<div class="avatar">
-					<img :src="netMusic.coverImgUrl" alt="云音乐官方榜">
+				<div class="unit" @click="goRankingList">
+					<div class="avatar">
+						<img :src="netMusic.coverImgUrl" alt="云音乐官方榜">
+					</div>
+					<ul class="lists">
+						<li class="list" v-for="(list, index) in netMusicSummary">
+							{{ `${ index + 1 }. ${ list.name } - ${ list.artists }` }}
+						</li>
+					</ul>
 				</div>
-				<ul class="lists">
-					<li class="list" v-for="(list, index) in netMusicSummary">
-						{{ `${ index + 1 }. ${ list.name } - ${ list.artists }` }}
-					</li>
-				</ul>
 			</div>
   	</div>
   </div>
@@ -48,6 +50,10 @@ export default {
 				return item;
 			});
 			return result;
+		},
+
+		goRankingList() {
+			this.$router.push({ name: 'rankingList', params: { id: 3 }});
 		}
 	}
 }

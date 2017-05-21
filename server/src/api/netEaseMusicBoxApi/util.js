@@ -27,6 +27,7 @@ function req(form, options, cb) {
 				req(form, options, cb);
 				return;
 			} else {
+				console.log(options.url);
 				result = JSON.parse(result);
 			}
 		}

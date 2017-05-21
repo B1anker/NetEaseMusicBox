@@ -56,7 +56,7 @@
 					</div>
 			  </div>
 				<keep-alive>
-					<lists :lists="playLists"></lists>
+					<lists :lists="tracks"></lists>
 				</keep-alive>
 				<comments :picUrl="picUrl" :music="music" :artist="artist"></comments>
 			</div>
@@ -119,6 +119,7 @@ export default {
 			showCover: true,
 			playLists: [],
 			playListsId: 0,
+			tracks: [],
 			playIndex: 0
 		}
 	},
@@ -169,24 +170,24 @@ export default {
 		},
 
 		setPlayLists() {
-			const playLists = JSON.parse(localStorage.getItem('playLists')) || {id: 0, index: 0};
-			this.playListsId = playLists.id ? playLists.id : this.playListsId;
+			const playLists = JSON.parse(localStorage.getItem('playLists')) || {tracks: [], index: 0};
+			this.tracks = playLists.tracks ? playLists.tracks : [];
 			this.playIndex = playLists.index;
 
-			if (this.playListsId) {
-				getPlayLists(this.playListsId).then((res) => {
-					if (!res.data) {
-						this.$message({
-							message: '获取歌单失败',
-							type: 'error',
-							duration: 1000
-						});
-						return;
-					}
-
-					this.playLists = res.data.playlist.tracks;
-				})
-			}
+			// if (this.playListsId) {
+			// 	getPlayLists(this.playListsId).then((res) => {
+			// 		if (!res.data) {
+			// 			this.$message({
+			// 				message: '获取歌单失败',
+			// 				type: 'error',
+			// 				duration: 1000
+			// 			});
+			// 			return;
+			// 		}
+			//
+			// 		this.playLists = res.data.playlist.tracks;
+			// 	})
+			// }
 		},
 
 		switchSong(id) {
