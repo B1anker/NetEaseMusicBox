@@ -3,7 +3,10 @@
 		<div v-show="visible" class="message"
 			@mouseenter="clearTimer"
       @mouseleave="startTimer">
-			<i class="icon" :class="iconType"></i>
+			<div v-if="type === 'loading'">
+				<img :src="require('@/assets/loading.png')" alt="loding" class="loading">
+			</div>
+			<i v-else class="icon" :class="iconType"></i>
 			<div class="text">{{ message }}</div>
 	  </div>
   </transition>
@@ -62,7 +65,7 @@ export default {
     clearTimer() {
       clearTimeout(this.timer);
     },
-		
+
     startTimer() {
       if (this.duration > 0) {
         this.timer = setTimeout(() => {
@@ -89,6 +92,22 @@ export default {
 		text-align: center;
 		border-radius: 0.1rem;
 		background-color: rgba(0, 0, 0, 0.7);
+
+		.loading{
+			margin: 0.15rem 0;
+			width: 0.32rem;
+			height: 0.32rem;
+			animation: rotate 2.5s linear infinite;
+		}
+
+		@keyframes rotate {
+			from {
+				transform: rotate(0);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+		}
 
 		.icon{
 			margin: 0.18rem 0 0.15rem 0;

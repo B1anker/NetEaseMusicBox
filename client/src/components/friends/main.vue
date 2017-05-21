@@ -1,7 +1,7 @@
 <template lang="html">
 	<div class="friends">
 		<div class="head">动态</div>
-		<div class="content-wrap" ref="content">
+		<div class="content-wrap" ref="content" v-show="ready">
 			<ul class="events">
 				<li class="event" v-for="(e, index) in events">
 					<div class="content">
@@ -58,8 +58,18 @@ export default {
 		return {
 			events: [],
 			refreshing: false,
-			scrollInstance: null
+			scrollInstance: null,
+			handling: null,
+			ready: false
 		}
+	},
+
+	created() {
+		this.handling = this.$message({
+			type: 'loading',
+			message: '请稍等',
+			duration: 0
+		})
 	},
 
 	mounted() {
@@ -69,6 +79,8 @@ export default {
 	methods: {
 		init() {
 			this.getData().then(() => {
+				this.handling.close();
+				this.ready = true;
 				this.scroll();
 			});
 		},

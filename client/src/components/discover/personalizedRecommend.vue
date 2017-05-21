@@ -34,8 +34,17 @@ export default {
 		return {
 			banners: [],
 			playlists: [],
-			playListId: '0'
+			playListId: '0',
+			handling: null
 		}
+	},
+
+	created() {
+		this.handling = this.$message({
+			type: 'loading',
+			message: '请稍等',
+			duration: 0
+		})
 	},
 
 	mounted() {
@@ -45,6 +54,7 @@ export default {
 	methods: {
 		init() {
 			axios.all([getNewBanner(), getHotPlayList()]).then(axios.spread((banners, hotList) => {
+				this.handling.close();
 				this.banners = banners;
 				this.playlists = hotList.data.result;
 				this.scroll();
