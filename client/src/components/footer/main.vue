@@ -25,9 +25,10 @@ export default {
 
 	methods: {
 		init() {
-			const path = this.$route.path.replace(/\/home\//, '');
+			const routes = this.$route.path.split('/')
+			const path = routes[routes.length - 1];
 			switch (path) {
-				case 'discover':
+				case 'personalized-recommend' || 'all-ranking-list':
 					this.index = 0;
 					break;
 				case 'my-music':

@@ -3,8 +3,8 @@ import db from '../../database/index.js';
 
 const getHistoryApi = KoaRouter();
 
-export default getHistoryApi.get('/history/get', async(ctx, next) => {
+export default getHistoryApi.post('/history/get', async(ctx, next) => {
 	const col = await db.connect('history');
-	const username = ctx.query.username.toLowerCase();
+	const username = ctx.request.body.username.toLowerCase();
 	ctx.body = await col.find({username: username});
 });

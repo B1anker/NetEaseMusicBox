@@ -41,6 +41,11 @@
 				</div>
 				<div class="menu-wrap">
 					<ul class="menu">
+						<li class="item" @click="$router.push('/history')">
+							<i class="icon icon-history left"></i>
+							<span class="text">听歌记录</span>
+							<i class="icon icon-back right"></i>
+						</li>
 						<li class="item">
 							<i class="icon icon-envelope left"></i>
 							<span class="text">我的消息</span>

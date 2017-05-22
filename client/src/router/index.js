@@ -13,6 +13,7 @@ import Signup from '@/views/signup/main';
 import Player from '@/views/player/main';
 import PlayList from '@/components/playlist';
 import RankingList from '@/components/rankingList';
+import History from '@/components/history';
 
 Vue.use(Router)
 
@@ -77,6 +78,11 @@ export default new Router({
 			path: '/rankingList:id',
 			name: 'rankingList',
 			component: RankingList
+		},
+		{
+			path: '/history',
+			name: 'history',
+			component: History
 		}
   ]
 })

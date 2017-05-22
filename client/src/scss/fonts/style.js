@@ -28,6 +28,9 @@ export default StyleSheet.create({
         "WebkitFontSmoothing": "antialiased",
         "MozOsxFontSmoothing": "grayscale"
     },
+    "icon-history:before": {
+        "content": "\\e928"
+    },
     "icon-cd:before": {
         "content": "\\e927"
     },
