@@ -16,7 +16,7 @@
 							</div>
 							<div class="time">{{ handleTime(e.eventTime) }}</div>
 							<div class="text" v-html=" e.json.msg "></div>
-							<div v-if="e.type === 39" class="video-wrap" @click="playVideo">
+							<div v-if="e.type === 39" class="video-wrap" @click.stop="playVideo">
 								<video class="video" :poster="e.json.video.coverUrl"></video>
 							</div>
 							<div v-if="e.type === 18 || e.type === 35" class="music-wrap">
@@ -121,7 +121,7 @@ export default {
 					startX: 0,
 					startY: 0,
 					scrollY: true,
-					click: true,
+					click: false,
 					probeType: 2
 				});
 				this.scrollInstance.on('scroll', (pos) => {

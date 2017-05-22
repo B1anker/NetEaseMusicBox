@@ -89,8 +89,43 @@ export default {
 
 <style lang="scss" scoped>
 .personalized-recommend{
+	position: relative;
 	overflow: scroll;
 	height: calc(100% - 0.46rem - 0.4rem - 0.5rem);
+
+	&:before{
+		position: absolute;
+		top: 0.24rem;
+		left: .96rem;
+		z-index: -1;
+		content: "首页内容根据您的口味生成";
+		font-size: 0.13rem;
+	}
+
+	&:after{
+		position: absolute;
+		content: "\e927";
+		z-index: -1;
+		color: rgb(85, 85, 85);
+		top: 0.18rem;
+		left: 0.63rem;
+		font-size: 0.26rem;
+		font-family: 'icomoon' !important;
+	  speak: none;
+	  font-style: normal;
+	  font-weight: normal;
+	  font-variant: normal;
+	  text-transform: none;
+	  line-height: 1;
+
+	  /* Better Font Rendering =========== */
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
+	}
+
+	.scroll{
+		background-color: white;
+	}
 
 	.title{
 		height: 0.5rem;

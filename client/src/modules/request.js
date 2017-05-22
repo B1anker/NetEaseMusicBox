@@ -90,6 +90,10 @@ function dailySign(type) {
 	return axios.get(`/music/netEaseApi/dailySign?type=${type}`);
 }
 
+function getMvUrl(type) {
+	return axios.get(`/music/netEaseApi/dailySign?type=${type}`);
+}
+
 function history(type, params) {
 	return axios.post(`/music/history/${type}`, params);
 }
@@ -115,6 +119,7 @@ export {
 	userPlayListsApi,
 	getEvent,
 	getNewEvent,
+	getMvUrl,
 	dailySign,
 	history
 }

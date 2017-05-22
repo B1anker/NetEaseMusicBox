@@ -28,64 +28,8 @@ export default StyleSheet.create({
         "WebkitFontSmoothing": "antialiased",
         "MozOsxFontSmoothing": "grayscale"
     },
-    "icon-loading path1:before": {
-        "content": "\\e927",
-        "color": "rgb(233, 233, 233)"
-    },
-    "icon-loading path2:before": {
-        "content": "\\e928",
-        "marginLeft": -1,
-        "color": "rgb(152, 150, 151)"
-    },
-    "icon-loading path3:before": {
-        "content": "\\e929",
-        "marginLeft": -1,
-        "color": "rgb(155, 153, 154)"
-    },
-    "icon-loading path4:before": {
-        "content": "\\e92a",
-        "marginLeft": -1,
-        "color": "rgb(163, 161, 162)"
-    },
-    "icon-loading path5:before": {
-        "content": "\\e92b",
-        "marginLeft": -1,
-        "color": "rgb(171, 169, 170)"
-    },
-    "icon-loading path6:before": {
-        "content": "\\e92c",
-        "marginLeft": -1,
-        "color": "rgb(178, 178, 178)"
-    },
-    "icon-loading path7:before": {
-        "content": "\\e92d",
-        "marginLeft": -1,
-        "color": "rgb(186, 184, 185)"
-    },
-    "icon-loading path8:before": {
-        "content": "\\e92e",
-        "marginLeft": -1,
-        "color": "rgb(194, 192, 193)"
-    },
-    "icon-loading path9:before": {
-        "content": "\\e92f",
-        "marginLeft": -1,
-        "color": "rgb(203, 203, 203)"
-    },
-    "icon-loading path10:before": {
-        "content": "\\e930",
-        "marginLeft": -1,
-        "color": "rgb(210, 210, 210)"
-    },
-    "icon-loading path11:before": {
-        "content": "\\e931",
-        "marginLeft": -1,
-        "color": "rgb(218, 218, 218)"
-    },
-    "icon-loading path12:before": {
-        "content": "\\e932",
-        "marginLeft": -1,
-        "color": "rgb(226, 226, 226)"
+    "icon-cd:before": {
+        "content": "\\e927"
     },
     "icon-cart:before": {
         "content": "\\e900"
@@ -130,8 +74,7 @@ export default StyleSheet.create({
         "content": "\\e90d"
     },
     "icon-song-lists:before": {
-        "content": "\\e90e",
-        "color": "#666"
+        "content": "\\e90e"
     },
     "icon-account:before": {
         "content": "\\e90f"

@@ -8,64 +8,68 @@
 				</div>
 				<i class="icon icon-share"></i>
 			</div>
-			<div class="song-info">
-				<img :src="picUrl" alt="" class="song-pic">
-				<div class="info">
-					<div class="name">{{ music }}</div>
-					<div class="artist">{{ artist }}</div>
+			<div class="scroll-wrap" ref="comments">
+				<div class="scroll">
+					<div class="song-info">
+						<img :src="picUrl" alt="" class="song-pic">
+						<div class="info">
+							<div class="name">{{ music }}</div>
+							<div class="artist">{{ artist }}</div>
+						</div>
+					</div>
+					<div class="hot-comments">
+						<div class="title">精彩评论</div>
+						<ul>
+							<li class="comment-item" v-for="(comment, index) in hotComments">
+								<div class="avatar">
+									<img :src="comment.user.avatarUrl" alt="" class="avatar">
+								</div>
+								<div class="comment-wrap">
+									<div class="nickname">{{ comment.user.nickname }}</div>
+									<div class="date">{{ getDate(comment.time) }}</div>
+									<div class="content">
+										<span v-if="comment.beReplied[0]">回复<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span></span>
+										{{ comment.content }}
+										<div class="reply" v-if="comment.beReplied[0]">
+											<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span>
+											{{ comment.beReplied[0].content  }}
+										</div>
+									</div>
+									<div class="count">
+										<div class="num">{{ comment.likedCount }}</div>
+										<i class="icon icon-praise"></i>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="all-comments">
+						<div class="title">{{ `最新评论(${ total })` }}</div>
+						<ul>
+							<li class="comment-item" v-for="(comment, index) in comments">
+								<div class="avatar">
+									<img :src="comment.user.avatarUrl" alt="" class="avatar">
+								</div>
+								<div class="comment-wrap">
+									<div class="nickname">{{ comment.user.nickname }}</div>
+									<div class="date">{{ getDate(comment.time) }}</div>
+									<div class="content">
+										<span v-if="comment.beReplied[0]">回复<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span></span>
+										{{ comment.content }}
+										<div class="reply" v-if="comment.beReplied[0]">
+											<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span>
+											{{ comment.beReplied[0].content  }}
+										</div>
+									</div>
+									<div class="count">
+										<div class="num">{{ comment.likedCount }}</div>
+										<i class="icon icon-praise"></i>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
-			<div class="hot-comments">
-				<div class="title">精彩评论</div>
-				<ul>
-					<li class="comment-item" v-for="(comment, index) in hotComments">
-						<div class="avatar">
-							<img :src="comment.user.avatarUrl" alt="" class="avatar">
-						</div>
-						<div class="comment-wrap">
-							<div class="nickname">{{ comment.user.nickname }}</div>
-							<div class="date">{{ getDate(comment.time) }}</div>
-							<div class="content">
-								<span v-if="comment.beReplied[0]">回复<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span></span>
-								{{ comment.content }}
-								<div class="reply" v-if="comment.beReplied[0]">
-									<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span>
-									{{ comment.beReplied[0].content  }}
-								</div>
-							</div>
-							<div class="count">
-								<div class="num">{{ comment.likedCount }}</div>
-								<i class="icon icon-praise"></i>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-			<div class="all-comments">
-				<div class="title">{{ `最新评论(${ total })` }}</div>
-				<ul>
-					<li class="comment-item" v-for="(comment, index) in comments">
-						<div class="avatar">
-							<img :src="comment.user.avatarUrl" alt="" class="avatar">
-						</div>
-						<div class="comment-wrap">
-							<div class="nickname">{{ comment.user.nickname }}</div>
-							<div class="date">{{ getDate(comment.time) }}</div>
-							<div class="content">
-								<span v-if="comment.beReplied[0]">回复<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span></span>
-								{{ comment.content }}
-								<div class="reply" v-if="comment.beReplied[0]">
-									<span class="call">{{ `@${ comment.beReplied[0].user.nickname }:` }}</span>
-									{{ comment.beReplied[0].content  }}
-								</div>
-							</div>
-							<div class="count">
-								<div class="num">{{ comment.likedCount }}</div>
-								<i class="icon icon-praise"></i>
-							</div>
-						</div>
-					</li>
-				</ul>
 			</div>
 	  </div>
   </transition>
@@ -73,6 +77,7 @@
 
 <script>
 import { getMp3Comments } from '@/modules/request';
+import BScroll from 'better-scroll';
 export default {
 	name: 'comments',
 
@@ -104,6 +109,7 @@ export default {
 			this.total = res.data.total;
 			this.hotComments = res.data.hotComments;
 			this.comments = res.data.comments;
+			this.scroll();
 		});
 	},
 
@@ -117,6 +123,18 @@ export default {
 			this.$store.dispatch('setPlayer', {
 				comments: true
 			});
+		},
+
+		scroll() {
+			this.$nextTick(() => {
+				this.scrollInstance = new BScroll(this.$refs.comments, {
+					startX: 0,
+					startY: 0,
+					scrollY: true,
+					click: false,
+					probeType: 2
+				});
+			})
 		}
 	}
 }
@@ -160,6 +178,11 @@ $base-color: rgb(212, 60, 51);
 			line-height: 0.45rem;
 			color: white;
 		}
+	}
+
+	.scroll-wrap{
+		overflow: scroll;
+		height: calc(100% - 0.45rem);
 	}
 
 	.song-info{
