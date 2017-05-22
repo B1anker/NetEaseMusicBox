@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="discover">
   	<search-bar></search-bar>
-		<tab :list="tabList" @on-item-click="switchTab"></tab>
+		<tab :list="tabList" :listEn="tabListEn" @on-item-click="switchTab"></tab>
 		<keep-alive>
 			<router-view></router-view>
 		</keep-alive>

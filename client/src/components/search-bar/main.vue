@@ -205,7 +205,7 @@ export default {
 			background-color: white;
 			z-index: 999;
 			width: 100%;
-			height: 4.5rem;
+			height: 4.75rem;
 			overflow: scroll;
 
 			.lists{

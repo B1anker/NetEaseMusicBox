@@ -54,7 +54,8 @@ export default {
 			tracks: [],
 			avatarUrl: '',
 			backgroundUrl: '',
-			nickname: ''
+			nickname: '',
+			handling: null
 		}
 	},
 
@@ -64,14 +65,19 @@ export default {
 		}
 	},
 
-
 	created() {
+		this.handling = this.$message({
+			type: 'loading',
+			message: '加载中',
+			duration: 0
+		});
 		this.init();
 	},
 
 	methods: {
 		init(id) {
 			getRankingList(this.id).then((res) => {
+				this.handling.close();
 				const result = res.data.result;
 				this.rankingList= result;
 				this.backgroundUrl = result.coverImgUrl;

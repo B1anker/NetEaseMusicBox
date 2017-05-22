@@ -17,14 +17,16 @@ export default {
 	name: 'tab',
 
 	props: {
-		list: Array
+		list: Array,
+		listEn: Array
 	},
 
 	data() {
 		return {
 			activeIndex: 0,
 			computedList: [],
-			lineStyle: {}
+			lineStyle: {},
+			currentList: ''
 		}
 	},
 
@@ -36,6 +38,22 @@ export default {
 
 	methods: {
 		init() {
+			this.handleRoute();
+		},
+
+		handleRoute() {
+			const items = this.$route.path.split('/');
+			this.currentList = items[items.length - 1];
+			this.listEn.every((item, index) => {
+				if (item === this.currentList) {
+					this.setPosition(index);
+					return false;
+				}
+				return true;
+			})
+		},
+
+		setPosition(index) {
 			this.computedList = this.$refs.item.map((item, index) => {
 				return {
 					width: item.offsetWidth,
@@ -43,8 +61,8 @@ export default {
 				};
 			});
 			this.lineStyle = {
-				width: this.computedList[0].width + 'px',
-				transform: `translateX(${ this.computedList[0].left }px)`
+				width: this.computedList[index].width + 'px',
+				transform: `translateX(${ this.computedList[index].left }px)`
 			};
 		},
 

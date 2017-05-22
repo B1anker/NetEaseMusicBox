@@ -69,7 +69,7 @@ export default {
 			type: 'loading',
 			message: '请稍等',
 			duration: 0
-		})
+		});
 	},
 
 	mounted() {
@@ -86,7 +86,13 @@ export default {
 		},
 
 		refresh() {
+			this.handling = this.$message({
+				type: 'loading',
+				message: '请稍等',
+				duration: 0
+			})
 			this.getData().then(() => {
+				this.handling.close();
 				this.scrollInstance.destroy();
 				this.scrollInstance = null;
 				this.refreshing = false;

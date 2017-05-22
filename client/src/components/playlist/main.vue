@@ -60,9 +60,11 @@ export default {
 			avatarUrl: '',
 			backgroundUrl: '',
 			nickname: '',
-			scrollInstance: null
+			scrollInstance: null,
+			handling: null
 		}
 	},
+
 
 	computed: {
 		id() {
@@ -77,6 +79,15 @@ export default {
 		}
 	},
 
+
+	created() {
+		this.handling = this.$message({
+			type: 'loading',
+			message: '加载中',
+			duration: 0
+		})
+	},
+
 	mounted() {
 		this.init();
 	},
@@ -86,6 +97,7 @@ export default {
 			const ls = new Ls();
 			this.backgroundUrl = ls.get('playLists').cover;
 			getPlayLists(id || this.id).then((res) => {
+				this.handling.close();
 				if(!res.data){
 					this.$message({
 						type: 'error',

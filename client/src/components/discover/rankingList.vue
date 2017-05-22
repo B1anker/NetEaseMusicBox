@@ -26,18 +26,29 @@ export default {
 	data() {
 		return {
 			netMusic: {},
-			netMusicSummary: []
+			netMusicSummary: [],
+			handling: null
 		}
 	},
 
 	created() {
-		getRankingList(3).then((res) => {
-			this.netMusic = res.data.result;
-			this.netMusicSummary = this.cut(this.netMusic.tracks);
+		this.handling = this.$message({
+			type: 'loading',
+			message: '加载中',
+			duration: 0
 		});
+		this.init();
 	},
 
 	methods: {
+		init() {
+			getRankingList(3).then((res) => {
+				this.handling.close();
+				this.netMusic = res.data.result;
+				this.netMusicSummary = this.cut(this.netMusic.tracks);
+			});
+		},
+
 		cut(arr) {
 			const result = [...arr].splice(0, 3).map((item, index) => {
 				if (item.album.artists.length === 1) {

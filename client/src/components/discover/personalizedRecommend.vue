@@ -42,7 +42,7 @@ export default {
 	created() {
 		this.handling = this.$message({
 			type: 'loading',
-			message: '请稍等',
+			message: '加载中',
 			duration: 0
 		})
 	},

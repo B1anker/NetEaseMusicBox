@@ -105,7 +105,6 @@ export default {
 		},
 
 		toggleCreate() {
-			console.log(1);
 			this.createShow = !this.createShow;
 		},
 

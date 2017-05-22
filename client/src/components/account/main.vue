@@ -33,7 +33,7 @@
 								<div class="num">{{ followeds.length }}</div>
 							</li>
 							<li>
-								<i class="icon icon-pencil" @click.stop="test"></i>
+								<i class="icon icon-pencil"></i>
 								<div class="my-info">我的资料</div>
 							</li>
 						</ul>
