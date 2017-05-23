@@ -1,6 +1,8 @@
+import path from 'path'
 import api from './api/index.js';
 import Koa from 'koa';
 import KoaRouter from 'koa-router';
+import koaStatic from 'koa-static';
 import bodyParser from 'koa-bodyparser';
 const app = new Koa();
 const router = KoaRouter();
@@ -11,6 +13,10 @@ app.use(bodyParser());
 app.use(api.routes(), api.allowedMethods());
 
 console.log(`listening in ${port}`);
+
+app.use(koaStatic(
+  path.join(__dirname , './../../dist')
+))
 
 app.listen(port, function(err) {
 	if (err) {

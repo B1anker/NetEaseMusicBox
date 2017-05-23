@@ -1,5 +1,6 @@
 <template lang="html">
-  <div class="history">
+	<transition name="slide-fade">
+  	<div class="history">
 		<div class="head">
 			<div class="title">
 				<i class="icon icon-back" @click.stop="handleBack"></i>
@@ -20,6 +21,7 @@
 			</div>
 		</div>
   </div>
+	</transition>
 </template>
 
 <script>
@@ -52,7 +54,6 @@ export default {
 			}).then((res) => {
 				const tracks = res.data[0].tracks
 				this.tracks = this.insertionSort(tracks);
-				console.log(this.tracks);
 				this.scroll();
 			});
 		},
@@ -175,13 +176,18 @@ $base-color: rgb(232, 53, 53);
 					font-size: 0.1rem;
 					color: rgb(127, 128, 129);
 				}
-
 			}
-
 		}
-
 	}
+}
 
 
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+	transition: transform 0.3s;
+}
+.slide-fade-enter,
+.slide-fade-leave-active {
+	transform: translateX(100%);
 }
 </style>

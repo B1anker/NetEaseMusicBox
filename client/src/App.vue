@@ -2,9 +2,7 @@
   <div id="app" ref="app">
 		<div class="app-scroll">
 			<controler></controler>
-			<keep-alive>
-				<router-view class="view"></router-view>
-			</keep-alive>
+			<router-view class="view"></router-view>
 			<my-footer></my-footer>
 			<player></player>
 		</div>

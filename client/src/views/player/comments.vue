@@ -1,6 +1,6 @@
 <template lang="html">
   <transition name="slide-fade">
-		<div class="comments" v-show="$store.getters.getPlayer.comments.show">
+		<div class="comments" v-if="$store.getters.getPlayer.comments.show">
 			<div class="head">
 				<i class="icon icon-back" @click="handleClose"></i>
 				<div class="title">
@@ -109,7 +109,7 @@ export default {
 			this.total = res.data.total;
 			this.hotComments = res.data.hotComments;
 			this.comments = res.data.comments;
-			this.scroll();
+			//this.scroll();
 		});
 	},
 

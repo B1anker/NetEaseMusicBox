@@ -297,7 +297,9 @@ export default {
 				this.stopTimer();
 				this.current = 0;
 				this.onplaying = false;
+				console.log(1);
 				this.next();
+				console.log(2);
 			}, false);
 		},
 

@@ -27,7 +27,6 @@ export default {
 		init() {
 			const routes = this.$route.path.split('/')
 			const path = routes[routes.length - 1];
-			console.log(path);
 			switch (path) {
 				case 'personalized-recommend':
 					this.index = 0;

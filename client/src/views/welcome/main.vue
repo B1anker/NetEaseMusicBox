@@ -5,7 +5,7 @@
 		<my-button val="注册"></my-button>
 	</div>
 	<p class="try" @click="enterHome">
-		<span>游客试用</span>
+		<!-- <span>游客试用</span> -->
 		<i class="icon icon-angle-right degree-1"></i>
 		<i class="icon icon-angle-right degree-2"></i>
 		<i class="icon icon-angle-right degree-3"></i>
@@ -33,7 +33,7 @@ export default {
 	methods: {
 		init() {
 			const user = JSON.parse(localStorage.getItem('user'));
-			if (user.code !== 200) {
+			if (user && user.code !== 200) {
 				return ;
 			}
 			// getUserDetail(user.account.id).then((res) => {

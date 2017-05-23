@@ -1,11 +1,13 @@
 <template lang="html">
-  <div class="discover">
-  	<search-bar></search-bar>
-		<tab :list="tabList" :listEn="tabListEn" @on-item-click="switchTab"></tab>
-		<keep-alive>
-			<router-view></router-view>
-		</keep-alive>
-  </div>
+  <keep-alive>
+		<div class="discover">
+	  	<search-bar></search-bar>
+			<tab :list="tabList" :listEn="tabListEn" @on-item-click="switchTab"></tab>
+			<keep-alive>
+				<router-view></router-view>
+			</keep-alive>
+	  </div>
+  </keep-alive>
 </template>
 
 <script>

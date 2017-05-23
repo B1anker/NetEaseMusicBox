@@ -1,44 +1,36 @@
 'use strict';
 
-var _regenerator = require('babel-runtime/regenerator');
+var _index = require('./api/index.js');
 
-var _regenerator2 = _interopRequireDefault(_regenerator);
+var _index2 = _interopRequireDefault(_index);
 
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+var _koa = require('koa');
 
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+var _koa2 = _interopRequireDefault(_koa);
+
+var _koaRouter = require('koa-router');
+
+var _koaRouter2 = _interopRequireDefault(_koaRouter);
+
+var _koaBodyparser = require('koa-bodyparser');
+
+var _koaBodyparser2 = _interopRequireDefault(_koaBodyparser);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Koa = require('koa');
+const app = new _koa2.default();
+const router = (0, _koaRouter2.default)();
+const port = 3000;
 
-var app = new Koa();
+app.use((0, _koaBodyparser2.default)());
 
-app.use(function () {
-    var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
-        return _regenerator2.default.wrap(function _callee$(_context) {
-            while (1) {
-                switch (_context.prev = _context.next) {
-                    case 0:
-                        _context.next = 2;
-                        return next();
+app.use(_index2.default.routes(), _index2.default.allowedMethods());
 
-                    case 2:
-                        ctx.response.type = 'text/html';
-                        ctx.response.body = '<h1>Hello, koa2!</h1>';
+console.log(`listening in ${port}`);
 
-                    case 4:
-                    case 'end':
-                        return _context.stop();
-                }
-            }
-        }, _callee, undefined);
-    }));
-
-    return function (_x, _x2) {
-        return _ref.apply(this, arguments);
-    };
-}());
-
-app.listen(3000);
-console.log('app started at port 3000...');
+app.listen(port, function (err) {
+	if (err) {
+		console.log(err);
+		return;
+	}
+});
