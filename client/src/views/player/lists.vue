@@ -70,7 +70,7 @@ export default {
 					startX: 0,
 					startY: 0,
 					scrollY: true,
-					click: false,
+					click: true,
 					probeType: 2
 				});
 			})

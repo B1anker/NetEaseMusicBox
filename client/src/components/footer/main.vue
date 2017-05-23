@@ -27,8 +27,12 @@ export default {
 		init() {
 			const routes = this.$route.path.split('/')
 			const path = routes[routes.length - 1];
+			console.log(path);
 			switch (path) {
-				case 'personalized-recommend' || 'all-ranking-list':
+				case 'personalized-recommend':
+					this.index = 0;
+					break;
+				case 'all-ranking-list':
 					this.index = 0;
 					break;
 				case 'my-music':
@@ -38,6 +42,9 @@ export default {
 					this.index = 2;
 					break;
 				case 'account':
+					this.index = 3;
+					break;
+				case 'history':
 					this.index = 3;
 					break;
 				default:
