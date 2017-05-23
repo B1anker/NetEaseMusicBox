@@ -1,6 +1,5 @@
 <template lang="html">
-	<keep-alive>
-		<div class="my-music">
+	<div class="my-music">
 		<div class="top">我的音乐</div>
 		<div class="content-wrap" ref="content">
 			<div class="">
@@ -41,7 +40,6 @@
 			</div>
 		</div>
 	</div>
-	</keep-alive>
 </template>
 
 <script>

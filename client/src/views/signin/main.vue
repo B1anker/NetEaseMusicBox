@@ -47,19 +47,25 @@ export default {
 			this.$router.back();
 		},
 		handleSignin() {
-			if (!this.username.match(/[a-zA-Z0-9_]{3,16}/)) {
+			if (!this.username.match(/^1[34578]\d{9}$/)) {
 				this.$message({
-					message: '用户名不能有非法字符',
+					message: '手机格式不正确',
 					type: 'error',
 					duration: 1000
 				});
 				return ;
 			}
 			this.unAbleToSignin = true;
+			let handling = this.$message({
+				message: '登录中',
+				type: 'loading',
+				duration: 0
+			});
 			signin({
 				cellphone: this.username,
 				password: this.password
 			}).then((res) => {
+				handling.close();
 				this.$store.dispatch('setUser', res.data);
 				localStorage.setItem('user', JSON.stringify(res.data));
 				this.unAbleToSignin = false;

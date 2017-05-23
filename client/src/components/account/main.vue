@@ -1,6 +1,5 @@
 <template lang="html">
-	<keep-alive>
-		<div class="account">
+	<div class="account">
 		<div class="head">账号</div>
 		<div class="content-wrap"  ref="content">
 			<div class="scroll">
@@ -98,7 +97,6 @@
 			</div>
 		</div>
 	</div>
-	</keep-alive>
 </template>
 
 <script>

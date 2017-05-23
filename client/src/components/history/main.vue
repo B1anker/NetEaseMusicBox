@@ -52,8 +52,9 @@ export default {
 			history('get', {
 				username: ls.get('user').profile.nickname
 			}).then((res) => {
-				const tracks = res.data[0].tracks
-				this.tracks = this.insertionSort(tracks);
+				this.tracks = [...res.data[0].tracks].sort((a, b) => {
+					return a.count < b.count;
+				})
 				this.scroll();
 			});
 		},

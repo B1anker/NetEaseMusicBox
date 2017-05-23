@@ -35,6 +35,7 @@
 							<span class="current">{{ transformDuation(current) }}</span>
 							<div class="process-bar">
 								<div class="point" ref="processPoint" :style="{left: process(current)}"></div>
+								<div class="top" :style="{ 'width': progressPercent + '%' }"></div>
 							</div>
 							<span class="total">{{ transformDuation(total) }}</span>
 						</div>
@@ -117,10 +118,10 @@ export default {
 			timer: null,
 			processDrag: null,
 			showCover: true,
-			playLists: [],
 			playListsId: 0,
 			tracks: [],
-			playIndex: 0
+			playIndex: 0,
+			progressPercent: 0
 		}
 	},
 
@@ -171,23 +172,8 @@ export default {
 
 		setPlayLists() {
 			const playLists = JSON.parse(localStorage.getItem('playLists')) || {tracks: [], index: 0};
-			this.tracks = playLists.tracks ? playLists.tracks : [];
+			this.tracks = playLists.tracks || [];
 			this.playIndex = playLists.index;
-
-			// if (this.playListsId) {
-			// 	getPlayLists(this.playListsId).then((res) => {
-			// 		if (!res.data) {
-			// 			this.$message({
-			// 				message: '获取歌单失败',
-			// 				type: 'error',
-			// 				duration: 1000
-			// 			});
-			// 			return;
-			// 		}
-			//
-			// 		this.playLists = res.data.playlist.tracks;
-			// 	})
-			// }
 		},
 
 		switchSong(id) {
@@ -288,19 +274,17 @@ export default {
 			this.mp3Dom.load();
 			this.current = 0;
 			this.mp3Dom.addEventListener('canplay', this.canplay, false);
-			this.mp3Dom.addEventListener('ended', () => {
-				const user = new Ls().get('user');
-				history('set', {
-					username: user.profile.nickname,
-					music: this.detail
-				});
-				this.stopTimer();
-				this.current = 0;
-				this.onplaying = false;
-				console.log(1);
-				this.next();
-				console.log(2);
-			}, false);
+			this.mp3Dom.addEventListener('timeupdate', this.progress, false)
+			this.mp3Dom.addEventListener('ended', this.ended, false);
+		},
+
+		progress(e) {
+			if (this.mp3Dom.readyState === 4) {
+				this.progressPercent = Math.round(this.mp3Dom.buffered.end(0) / this.mp3Dom.duration * 100);
+			}
+			if (this.progressPercent === 100) {
+				this.mp3Dom.removeEventListener('timeupdate', this.progress, false);
+			}
 		},
 
 		canplay(e) {
@@ -335,6 +319,19 @@ export default {
 				state: 1
 			});
 			this.mp3Dom.removeEventListener('canplay', this.canplay, false);
+		},
+
+		ended() {
+			this.mp3Dom.removeEventListener('ended', this.end, false);
+			const user = new Ls().get('user');
+			history('set', {
+				username: user.profile.nickname,
+				music: this.detail
+			});
+			this.stopTimer();
+			this.current = 0;
+			this.onplaying = false;
+			this.next();
 		},
 
 		play() {
@@ -391,13 +388,14 @@ export default {
 		},
 
 		next() {
-			if (this.playIndex < this.playLists.length) {
+			if (this.playIndex < this.tracks.length) {
 				this.$store.dispatch('setPlayer', {
-					songId: '' + this.playLists[++this.playIndex].id
+					songId: '' + this.tracks[++this.playIndex].id
 				});
 				this.$store.dispatch('setLists', {
 					index: this.playIndex
 				});
+				this.progressPercent = 0;
 			}
 		}
 	}
@@ -510,14 +508,19 @@ export default {
 						background-color: rgba(140, 140, 140, 0.7);
 						position: relative;
 
-						&:before{
-							content: '';
+						.top{
 							position: absolute;
+							transition: width ease 0.3s;
+							top: 0;
+							left: 0;
+							height: 0.02rem;
+							z-index: 10;
+							background-color: rgba(255, 255, 255, 0.4);
 						}
 
 						.point{
-							content: '';
 							position: absolute;
+							z-index: 100;
 							top: -0.07rem;
 							left: -0.07rem;
 							box-sizing: border-box;
