@@ -8,7 +8,7 @@
 				<div class="clear">清空</div>
 	  	</div>
 			<div class="lists" ref="lists">
-				<ul>
+				<ul ref="ul">
 					<li class="list" :class="{active: index === _index}" v-for="(list, index) in lists" @click="switchMusic(index)">
 						<span class="music-name">{{ list.name }}</span>
 						<span class="split">-</span>
@@ -66,6 +66,8 @@ export default {
 
 		scroll() {
 			this.$nextTick(() => {
+				const playLists = JSON.parse(localStorage.getItem('playLists')) || {tracks: [], index: 0};
+				this.$refs['ul'].style.height = playLists.tracks.length * 0.45 * parseInt(getComputedStyle(window.document.documentElement)['font-size']) + 'px';
 				this.scrollInstance = new BScroll(this.$refs.lists, {
 					startX: 0,
 					startY: 0,

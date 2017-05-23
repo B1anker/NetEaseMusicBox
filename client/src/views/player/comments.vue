@@ -1,6 +1,6 @@
 <template lang="html">
   <transition name="slide-fade">
-		<div class="comments" v-if="$store.getters.getPlayer.comments.show">
+		<div class="comments" v-if="show">
 			<div class="head">
 				<i class="icon icon-back" @click="handleClose"></i>
 				<div class="title">
@@ -9,7 +9,7 @@
 				<i class="icon icon-share"></i>
 			</div>
 			<div class="scroll-wrap" ref="comments">
-				<div class="scroll">
+				<div class="scroll" ref="scroll">
 					<div class="song-info">
 						<img :src="picUrl" alt="" class="song-pic">
 						<div class="info">
@@ -90,6 +90,24 @@ export default {
 	computed: {
 		id() {
 			return '' + this.$store.getters.getPlayer.songId;
+		},
+
+		show() {
+			return this.$store.getters.getPlayer.comments.show;
+		}
+	},
+
+	watch: {
+		show(newVal) {
+			if (newVal) {
+				this.$nextTick(() => {
+					this.scroll();
+				});
+			} else {
+				this.scrollInstance.destroy();
+				this.scrollInstance = null;
+			}
+			return newVal;
 		}
 	},
 
@@ -97,7 +115,8 @@ export default {
 		return {
 			total: 0,
 			comments: [],
-			hotComments: []
+			hotComments: [],
+			scrollInstance: null
 		};
 	},
 
@@ -109,7 +128,6 @@ export default {
 			this.total = res.data.total;
 			this.hotComments = res.data.hotComments;
 			this.comments = res.data.comments;
-			//this.scroll();
 		});
 	},
 
