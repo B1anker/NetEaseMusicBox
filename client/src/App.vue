@@ -10,40 +10,40 @@
 </template>
 
 <script>
-import Controler from '@/views/player/controler';
+import Controler from '@/views/player/controler'
 import MyFooter from '@/components/footer/index'
 import Player from '@/views/player/main'
 import store from '@/store/store'
-import BScroll from 'better-scroll';
+import BScroll from 'better-scroll'
 export default {
   name: 'app',
 
   store,
 
-	data() {
-		return {
-			scrollInstance: null
-		}
-	},
+  data () {
+return {
+  scrollInstance: null
+}
+},
 
   components: {
 	  Player,
 	  MyFooter,
-		Controler
-	},
+    Controler
+  },
 
   mounted () {
-		this.$nextTick(() => {
-			this.scrollInstance = new BScroll(this.$refs.app, {
-				startX: 0,
-				startY: 0,
-				scrollY: true,
-				click: true,
-				preventDefault: true,
-				probeType: 2
-			});
+    this.$nextTick(() => {
+  this.scrollInstance = new BScroll(this.$refs.app, {
+  startX: 0,
+  startY: 0,
+  scrollY: true,
+  click: true,
+  preventDefault: true,
+  probeType: 2
+})
 		})
-	}
+  }
 }
 </script>
 

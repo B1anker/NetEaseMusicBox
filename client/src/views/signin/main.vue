@@ -98,7 +98,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" rel="stylesheet/scss">
 $base-color: rgb(212, 60, 51);
 
 .signin {

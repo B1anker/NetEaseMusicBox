@@ -23,6 +23,7 @@ exports.default = setHistoryApi.post('/history/set', async (ctx, next) => {
 	const history = await col.find({ username: username });
 	let result = [];
 	if (history.length === 0) {
+		console.log('insert');
 		result = await col.insert({
 			username,
 			tracks: [{
@@ -32,11 +33,13 @@ exports.default = setHistoryApi.post('/history/set', async (ctx, next) => {
 		});
 	} else {
 		let index = 0;
-		const exist = history[0].tracks.some((item, _index) => {
+		const exist = history[0].tracks.every((item, _index) => {
 			index = _index;
-			return item.song.id === song.id;
+			return item.song.id !== song.id;
 		});
-		if (exist) {
+		console.log(index);
+		if (!exist) {
+			console.log('inc');
 			result = await col.update({
 				username
 			}, {
@@ -45,6 +48,7 @@ exports.default = setHistoryApi.post('/history/set', async (ctx, next) => {
 				}
 			});
 		} else {
+			console.log('push');
 			result = await col.update({
 				username
 			}, {
