@@ -10,13 +10,23 @@ const port = 3000;
 
 app.use(bodyParser());
 
-app.use(api.routes(), api.allowedMethods());
-
-console.log(`listening in ${port}`);
+app.use((ctx, next) => {
+	console.log(ctx.req.method + ': ' + ctx.req.url);
+	next()
+})
 
 app.use(koaStatic(
   path.join(__dirname , './../../dist')
 ))
+
+
+
+app.use(api.routes(), api.allowedMethods());
+
+console.log(`listening in ${port}`);
+
+
+
 
 app.listen(port, function(err) {
 	if (err) {
