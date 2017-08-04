@@ -16,7 +16,7 @@ app.use(bodyParser())
 // })
 
 app.use(koaStatic(
-  path.join(__dirname , '../../client/dist')
+  path.join(__dirname , '../../client/dist/index.html')
 ))
 
 
