@@ -40,79 +40,79 @@
 </template>
 
 <script>
-import { getRankingList } from '@/modules/request';
-import playList from '@/modules/mixins/playList';
+import { getRankingList } from '@/modules/request'
+import playList from '@/modules/mixins/playList'
 import BScroll from 'better-scroll'
 export default {
-	name: 'rankingList',
+  name: 'rankingList',
 
-	mixins: [playList],
+  mixins: [playList],
 
-	data() {
-		return {
-			rankingList: {},
-			tracks: [],
-			avatarUrl: '',
-			backgroundUrl: '',
-			nickname: '',
-			handling: null
-		}
-	},
+  data () {
+    return {
+      rankingList: {},
+      tracks: [],
+      avatarUrl: '',
+      backgroundUrl: '',
+      nickname: '',
+      handling: null
+    }
+  },
 
-	computed: {
-		id() {
-			return this.$route.params.id;
-		}
-	},
+  computed: {
+    id () {
+      return this.$route.params.id
+    }
+  },
 
-	created() {
-		this.handling = this.$message({
-			type: 'loading',
-			message: '加载中',
-			duration: 0
-		});
-		this.init();
-	},
+  created () {
+    this.handling = this.$message({
+      type: 'loading',
+      message: '加载中',
+      duration: 0
+    })
+    this.init()
+  },
 
-	methods: {
-		init(id) {
-			getRankingList(this.id).then((res) => {
-				this.handling.close();
-				const result = res.data.result;
-				this.rankingList= result;
-				this.backgroundUrl = result.coverImgUrl;
-				this.avatarUrl = result.creator.avatarUrl;
-				this.nickname = result.creator.nickname;
-				this.tracks = result.tracks;
-				this.scroll();
-			});
-		},
+  methods: {
+    init (id) {
+      getRankingList(this.id).then((res) => {
+        this.handling.close()
+        const result = res.data.result
+        this.rankingList = result
+        this.backgroundUrl = result.coverImgUrl
+        this.avatarUrl = result.creator.avatarUrl
+        this.nickname = result.creator.nickname
+        this.tracks = result.tracks
+        this.scroll()
+      })
+    },
 
-		handleBack() {
-			this.$router.back();
-		},
+    handleBack () {
+      this.$router.back()
+    },
 
-		playMusic(index) {
-			this.setList(this.tracks, index);
-			this.$store.dispatch('setPlayer', {
-				songId: this.tracks[index].id,
-				show: true,
-				state: 1
-			});
-		},
+    playMusic (index) {
+      this.setList(this.tracks, index)
+      this.$store.dispatch('setPlayer', {
+        songId: this.tracks[index].id,
+        show: true,
+        state: 1
+      })
+    },
 
-		scroll() {
-			this.$nextTick(() => {
-				this.scrollInstance = new BScroll(this.$refs.lists, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: true,
-					probeType: 2
-				});
-			})
-		}
-	}
+    scroll () {
+      this.$nextTick(() => {
+        this.scrollInstance = new BScroll(this.$refs.lists, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: true,
+          probeType: 2
+        })
+      })
+    }
+  }
 }
 </script>
 

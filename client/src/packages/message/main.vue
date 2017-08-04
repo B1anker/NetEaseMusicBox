@@ -14,11 +14,11 @@
 
 <script>
 export default {
-	name: 'message',
+  name: 'message',
 
-	data() {
-		return {
-			visible: false,
+  data () {
+    return {
+      visible: false,
       message: '',
       duration: 2000,
       type: 'correct',
@@ -26,64 +26,64 @@ export default {
       showClose: false,
       closed: false,
       timer: null
-		};
-	},
+    }
+  },
 
-	computed: {
-		iconType() {
-			return 'icon-' + this.type;
-		}
-	},
+  computed: {
+    iconType () {
+      return 'icon-' + this.type
+    }
+  },
 
-	mounted() {
-		this.startTimer();
-	},
+  mounted () {
+    this.startTimer()
+  },
 
-	watch: {
-    closed(newVal) {
+  watch: {
+    closed (newVal) {
       if (newVal) {
-        this.visible = false;
-        this.$el.addEventListener('transitionend', this.destroyElement);
+        this.visible = false
+        this.$el.addEventListener('transitionend', this.destroyElement)
       }
     }
   },
 
-	methods: {
-		destroyElement() {
-      this.$el.removeEventListener('transitionend', this.destroyElement);
-      this.$destroy(true);
-      this.$el.parentNode.removeChild(this.$el);
+  methods: {
+    destroyElement () {
+      this.$el.removeEventListener('transitionend', this.destroyElement)
+      this.$destroy(true)
+      this.$el.parentNode.removeChild(this.$el)
     },
 
-    close() {
-      this.closed = true;
+    close () {
+      this.closed = true
       if (typeof this.onClose === 'function') {
-        this.onClose(this);
+        this.onClose(this)
       }
     },
 
-    clearTimer() {
-      clearTimeout(this.timer);
+    clearTimer () {
+      clearTimeout(this.timer)
     },
 
-    startTimer() {
+    startTimer () {
       if (this.duration > 0) {
         this.timer = setTimeout(() => {
           if (!this.closed) {
-            this.close();
+            this.close()
           }
-        }, this.duration);
+        }, this.duration)
       }
     }
-	}
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-	.message{
-		$width: 1.78rem;
-		$height: 0.98rem;
-		$font-color: rgb(193, 196, 200);
+  .message{
+    $width: 1.78rem;
+    $height: 0.98rem;
+    $font-color: rgb(193, 196, 200);
 		position: fixed;
 		top: 1.15rem;
 		left: calc(50% - #{$width / 2});

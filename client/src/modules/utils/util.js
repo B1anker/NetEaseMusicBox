@@ -1,33 +1,33 @@
-const hasOwnProperty = Object.prototype.hasOwnProperty;
-export function hasOwn(obj, key) {
-  return hasOwnProperty.call(obj, key);
+const hasOwnProperty = Object.prototype.hasOwnProperty
+export function hasOwn (obj, key) {
+  return hasOwnProperty.call(obj, key)
 };
 
-function extend(to, _from) {
+function extend (to, _from) {
   for (let key in _from) {
-    to[key] = _from[key];
+    to[key] = _from[key]
   }
-  return to;
+  return to
 };
 
-export function toObject(arr) {
-  var res = {};
+export function toObject (arr) {
+  var res = {}
   for (let i = 0; i < arr.length; i++) {
     if (arr[i]) {
-      extend(res, arr[i]);
+      extend(res, arr[i])
     }
   }
-  return res;
+  return res
 };
 
-export function uniq(arr) {
-	let result = [],
-		hash = {};
-	arr.forEach((item, index, arr) => {
-		if(!hash[item]){
-			hash[item] = true;
-			result.push(item);
-		}
-	});
-	return result;
+export function uniq (arr) {
+  let result = []
+  let hash = {}
+  arr.forEach((item, index, arr) => {
+    if (!hash[item]) {
+      hash[item] = true
+      result.push(item)
+    }
+  })
+  return result
 }

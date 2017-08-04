@@ -11,52 +11,47 @@
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import { getBanner } from '@/modules/request';
 export default {
-	name: 'banner',
+  name: 'banner',
 
-	props: {
-		banners: Array
-	},
+  props: {
+    banners: Array
+  },
 
-	components: {
-		swiper,
-		swiperSlide
-	},
+  components: {
+    swiper,
+    swiperSlide
+  },
 
-	data() {
-		return {
-			swiperOption: {
+  data () {
+    return {
+      swiperOption: {
         pagination: '.swiper-pagination',
         paginationClickable: true,
-				loop: true,
-				autoplay: 3000,
-				initialSlide: 0,
-				autoplayDisableOnInteraction: false
+        loop: true,
+        autoplay: 3000,
+        initialSlide: 0,
+        autoplayDisableOnInteraction: false
       }
-		}
-	},
+    }
+  },
 
-	computed: {
-		width() {
-			return (this.banners.length + 1) * 100 + '%';
-		}
-	},
-
-	created() {
-
-	}
+  computed: {
+    width () {
+      return (this.banners.length + 1) * 100 + '%'
+    }
+  }
 }
 </script>
 
 <style lang="scss">
 .banner{
-	overflow: hidden;
-	height: 1.25rem;
+  overflow: hidden;
+  height: 1.25rem;
 
-	.img{
-		position: relative;
-		top: -0.14rem;
+  .img{
+    position: relative;
+    top: -0.14rem;
 		width: 100%;
 		background-size: auto 100%;
 	}

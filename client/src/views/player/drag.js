@@ -24,10 +24,10 @@ class Drag {
     let position = e.touches[0]
     if (position.clientX > this.boundary.max) {
       this.el.style.left = this.boundary.max - this.offset - this.halfPointWidth + 'px'
-      return;
+      return
     } else if (position.clientX < this.boundary.min) {
       this.el.style.left = this.boundary.min - this.offset - this.halfPointWidth + 'px'
-      return;
+      return
     }
 
     this.el.style.left = position.clientX.toFixed(2) - this.offset - this.halfPointWidth + 'px'

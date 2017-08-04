@@ -16,62 +16,61 @@
 
 <script>
 export default {
-	name: 'cover',
+  name: 'cover',
 
-	props: {
-		onplaying: Boolean,
-		picUrl: String
-	},
+  props: {
+    onplaying: Boolean,
+    picUrl: String
+  },
 
-	mounted() {
-		if (onplaying) {
-			this.$refs.rotateDom.style.animationPlayState = 'running';
-		} else {
-			this.$refs.rotateDom.style.animationPlayState = 'paused';
-		}
+  mounted () {
+    if (this.onplaying) {
+      this.$refs.rotateDom.style.animationPlayState = 'running'
+    } else {
+      this.$refs.rotateDom.style.animationPlayState = 'paused'
+    }
+  },
 
-	},
+  data () {
+    return {
+      showCover: true,
+      timer: null
+    }
+  },
 
-	data() {
-		return {
-			showCover: true,
-			timer: null
-		}
-	},
+  watch: {
+    onplaying (newVal) {
+      if (newVal) {
+        this.$refs.rotateDom.style.animationPlayState = 'running'
+      } else {
+        this.$refs.rotateDom.style.animationPlayState = 'paused'
+      }
+    }
+  },
 
-	watch: {
-		onplaying(newVal) {
-			if(newVal){
-				this.$refs.rotateDom.style.animationPlayState = 'running';
-			}else{
-				this.$refs.rotateDom.style.animationPlayState = 'paused';
-			}
-		}
-	},
+  methods: {
+    emitTouchStart () {
+      clearTimeout(this.timer)
+      this.$emit('touchstart')
+    },
 
-	methods: {
-		emitTouchStart() {
-			clearTimeout(this.timer);
-			this.$emit('touchstart');
-		},
+    handleTouchstart () {
+      this.$refs.stick.addEventListener('touchend', this.emitTouchStart, false)
+      this.$refs.rotateDom.addEventListener('touchend', this.emitTouchStart, false)
+      this.timer = setTimeout(() => {
+        this.$refs.stick.removeEventListener('touchend', this.emitTouchStart, false)
+        this.$refs.rotateDom.removeEventListener('touchend', this.emitTouchStart, false)
+      }, 300)
+    },
 
-		handleTouchstart() {
-			this.$refs.stick.addEventListener('touchend', this.emitTouchStart, false);
-			this.$refs.rotateDom.addEventListener('touchend', this.emitTouchStart, false);
-			this.timer = setTimeout(() => {
-				this.$refs.stick.removeEventListener('touchend', this.emitTouchStart, false);
-				this.$refs.rotateDom.removeEventListener('touchend', this.emitTouchStart, false);
-			}, 300);
-		},
-
-		showComments() {
-			this.$store.dispatch('setPlayer', {
-				comments: {
-					show: true
-				}
-			})
-		}
-	}
+    showComments () {
+      this.$store.dispatch('setPlayer', {
+        comments: {
+          show: true
+        }
+      })
+    }
+  }
 }
 </script>
 

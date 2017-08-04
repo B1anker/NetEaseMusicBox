@@ -8,26 +8,26 @@ Vue.use(Vuex)
 
 const state = {
   player: {
-		state: -1,
-		songId: localStorage.getItem('songId') || '418603077',
-		show: false,
-		lists: {
-			id: 0,
-			show: false,
-			index: 0
-		},
-		comments: {
-			show: false
-		}
-	},
+    state: -1,
+    songId: localStorage.getItem('songId') || '418603077',
+    show: false,
+    lists: {
+      id: 0,
+      show: false,
+      index: 0
+    },
+    comments: {
+      show: false
+    }
+  },
 
-	playLists: {
-		cover: JSON.parse(localStorage.getItem('playLists')) ? JSON.parse(localStorage.getItem('playLists')).cover : ''
-	},
+  playLists: {
+    cover: JSON.parse(localStorage.getItem('playLists')) ? JSON.parse(localStorage.getItem('playLists')).cover : ''
+  },
 
-	user: {},
+  user: {},
 
-	controler: true
+  controler: true
 }
 
 export default new Vuex.Store({
@@ -35,4 +35,4 @@ export default new Vuex.Store({
   getters,
   actions,
   mutations
-});
+})

@@ -25,83 +25,83 @@
 </template>
 
 <script>
-import playList from '@/modules/mixins/playList';
-import Ls from '@/modules/utils/localStorage';
-import { history } from '@/modules/request';
-import BScroll from 'better-scroll';
+import playList from '@/modules/mixins/playList'
+import Ls from '@/modules/utils/localStorage'
+import { history } from '@/modules/request'
+import BScroll from 'better-scroll'
 export default {
-	name: 'history',
+  name: 'history',
 
-	mixins: [playList],
+  mixins: [playList],
 
-	data() {
-		return {
-			playlist: {},
-			scrollInstance: null,
-			tracks: []
-		}
-	},
+  data () {
+    return {
+      playlist: {},
+      scrollInstance: null,
+      tracks: []
+    }
+  },
 
-	mounted() {
-		this.init();
-	},
+  mounted () {
+    this.init()
+  },
 
-	methods: {
-		init(id) {
-			const ls = new Ls();
-			history('get', {
-				username: ls.get('user').profile.nickname
-			}).then((res) => {
-				this.tracks = [...res.data[0].tracks].sort((a, b) => {
-					return a.count < b.count;
-				})
-				this.scroll();
-			});
-		},
+  methods: {
+    init (id) {
+      const ls = new Ls()
+      history('get', {
+        username: ls.get('user').profile.nickname
+      }).then((res) => {
+        this.tracks = [...res.data[0].tracks].sort((a, b) => {
+          return a.count < b.count
+        })
+        this.scroll()
+      })
+    },
 
-		insertionSort(arr) {
-	    let len = arr.length;
-	    let preIndex, current;
-	    for (let i = 1; i < len; i++) {
-	        preIndex = i - 1;
-	        current = arr[i].count;
-	        while(preIndex >= 0 && arr[preIndex].count < current) {
-	            arr[preIndex+1].count = arr[preIndex].count;
-	            preIndex--;
-	        }
-	        arr[preIndex+1].count = current;
-	    }
-	    return arr;
-		},
+    insertionSort (arr) {
+      let len = arr.length
+      let preIndex, current
+      for (let i = 1; i < len; i++) {
+        preIndex = i - 1
+        current = arr[i].count
+        while (preIndex >= 0 && arr[preIndex].count < current) {
+          arr[preIndex + 1].count = arr[preIndex].count
+          preIndex--
+        }
+        arr[preIndex + 1].count = current
+      }
+      return arr
+    },
 
-		handleBack() {
-			this.$router.back();
-		},
+    handleBack () {
+      this.$router.back()
+    },
 
-		playMusic(index) {
-			const tracks = this.tracks.map((item, index) => {
-				return item.song;
-			});
-			this.setList(tracks, index);
-			this.$store.dispatch('setPlayer', {
-				songId: tracks[index].id,
-				show: true,
-				state: 1
-			});
-		},
+    playMusic (index) {
+      const tracks = this.tracks.map((item, index) => {
+        return item.song
+      })
+      this.setList(tracks, index)
+      this.$store.dispatch('setPlayer', {
+        songId: tracks[index].id,
+        show: true,
+        state: 1
+      })
+    },
 
-		scroll() {
-			this.$nextTick(() => {
-				this.scrollInstance = new BScroll(this.$refs.lists, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: false,
-					probeType: 2
-				});
-			})
-		}
-	}
+    scroll () {
+      this.$nextTick(() => {
+        this.scrollInstance = new BScroll(this.$refs.lists, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: false,
+          probeType: 2
+        })
+      })
+    }
+  }
 }
 </script>
 

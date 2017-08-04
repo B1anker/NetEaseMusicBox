@@ -1,0 +1,37 @@
+{
+  "name": "neteasemusicbox",
+  "version": "1.0.0",
+  "description": "A Vue.js project",
+  "author": "b1anker <narutowontstop@gmail.com>",
+  "private": true,
+  "scripts": {
+    "start": "node ./build/app.js",
+    "dev": "babel-node ./src/app.js",
+    "build": "babel server/src --out-dir server/build"
+  },
+  "dependencies": {
+    "big-integer": "^1.6.23",
+    "cheerio": "^1.0.0-rc.2",
+    "crypto": "^0.0.3",
+    "fs": "^0.0.1-security",
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.2.1",
+    "koa-static": "^4.0.1",
+    "mongodb": "^2.2.30",
+    "net": "^1.0.2",
+    "request": "^2.81.0",
+    "tls": "^0.0.1",
+    "tough-cookie": "^2.3.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-istanbul": "^4.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.24.1"
+  }
+}

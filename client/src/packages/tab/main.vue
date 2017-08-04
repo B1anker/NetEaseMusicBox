@@ -14,69 +14,69 @@
 
 <script>
 export default {
-	name: 'tab',
+  name: 'tab',
 
-	props: {
-		list: Array,
-		listEn: Array
-	},
+  props: {
+    list: Array,
+    listEn: Array
+  },
 
-	data() {
-		return {
-			activeIndex: 0,
-			computedList: [],
-			lineStyle: {},
-			currentList: ''
-		}
-	},
+  data () {
+    return {
+      activeIndex: 0,
+      computedList: [],
+      lineStyle: {},
+      currentList: ''
+    }
+  },
 
-	mounted() {
-		this.$nextTick(() => {
-			this.init();
-		});
-	},
+  mounted () {
+    this.$nextTick(() => {
+      this.init()
+    })
+  },
 
-	methods: {
-		init() {
-			this.handleRoute();
-		},
+  methods: {
+    init () {
+      this.handleRoute()
+    },
 
-		handleRoute() {
-			const items = this.$route.path.split('/');
-			this.currentList = items[items.length - 1];
-			this.listEn.every((item, index) => {
-				if (item === this.currentList) {
-					this.setPosition(index);
-					return false;
-				}
-				return true;
-			})
-		},
+    handleRoute () {
+      const items = this.$route.path.split('/')
+      this.currentList = items[items.length - 1]
+      this.listEn.every((item, index) => {
+        if (item === this.currentList) {
+          this.setPosition(index)
+          return false
+        }
+        return true
+      })
+    },
 
-		setPosition(index) {
-			this.computedList = this.$refs.item.map((item, index) => {
-				return {
-					width: item.offsetWidth,
-					left: item.offsetLeft
-				};
-			});
-			this.lineStyle = {
-				width: this.computedList[index].width + 'px',
-				transform: `translateX(${ this.computedList[index].left }px)`
-			};
-		},
+    setPosition (index) {
+      this.computedList = this.$refs.item.map((item, index) => {
+        return {
+          width: item.offsetWidth,
+          left: item.offsetLeft
+        }
+      })
+      this.lineStyle = {
+        width: this.computedList[index].width + 'px',
+        transform: `translateX(${this.computedList[index].left}px)`
+      }
+    },
 
-		switchItem(index) {
-			this.activeIndex = index;
-			this.lineStyle = {
-				width: this.computedList[index].width + 'px',
-				transform: `translateX(${ this.computedList[index].left }px)`
-			};
-			this.$nextTick(() => {
-				this.$emit('on-item-click', index);
-			});
-		}
-	}
+    switchItem (index) {
+      this.activeIndex = index
+      this.lineStyle = {
+        width: this.computedList[index].width + 'px',
+        transform: `translateX(${this.computedList[index].left}px)`
+      }
+      this.$nextTick(() => {
+        this.$emit('on-item-click', index)
+      })
+    }
+  }
 }
 </script>
 

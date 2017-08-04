@@ -1,3 +1,3 @@
-import MyMusic from './main';
+import MyMusic from './main'
 
-export default MyMusic;
+export default MyMusic

@@ -1,3 +1,3 @@
-import MySwitch from './main';
+import MySwitch from './main'
 
-export default MySwitch;
+export default MySwitch

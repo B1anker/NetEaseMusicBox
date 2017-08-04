@@ -9,28 +9,28 @@
 </template>
 
 <script>
-import Tab from '@/packages/tab';
-import SearchBar from '@/components/search-bar/main';
+import Tab from '@/packages/tab'
+import SearchBar from '@/components/search-bar/main'
 export default {
-	name: 'Discover',
+  name: 'Discover',
 
-	components: {
-		Tab,
-		SearchBar
-	},
+  components: {
+    Tab,
+    SearchBar
+  },
 
-	data() {
-		return {
-			tabList: ['个性推荐', '歌单', '主播电台', '排行榜'],
-			tabListEn: ['personalized-recommend', 'personalized-recommend', 'personalized-recommend', 'all-ranking-list']
-		}
-	},
+  data () {
+    return {
+      tabList: ['个性推荐', '歌单', '主播电台', '排行榜'],
+      tabListEn: ['personalized-recommend', 'personalized-recommend', 'personalized-recommend', 'all-ranking-list']
+    }
+  },
 
-	methods: {
-		switchTab(index) {
-			this.$router.push(this.tabListEn[index]);
-		}
-	}
+  methods: {
+    switchTab (index) {
+      this.$router.push(this.tabListEn[index])
+    }
+  }
 }
 </script>
 

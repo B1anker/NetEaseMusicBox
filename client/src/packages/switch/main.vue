@@ -6,28 +6,28 @@
 
 <script>
 export default {
-	name: 'my-switch',
+  name: 'my-switch',
 
-	props: {
-		init: Boolean
-	},
+  props: {
+    init: Boolean
+  },
 
-	data() {
-		return {
-			active: false
-		}
-	},
+  data () {
+    return {
+      active: false
+    }
+  },
 
-	mounted() {
-		this.active = this.init || false;
-	},
+  mounted () {
+    this.active = this.init || false
+  },
 
-	methods: {
-		_switch() {
-			this.active = !this.active;
-			this.$emit('switch', this.active);
-		}
-	}
+  methods: {
+    _switch () {
+      this.active = !this.active
+      this.$emit('switch', this.active)
+    }
+  }
 }
 </script>
 

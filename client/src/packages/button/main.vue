@@ -6,20 +6,20 @@
 
 <script>
 export default {
-	name: 'my-button',
-	props: {
+  name: 'my-button',
+  props: {
     val: String
   },
-	data() {
-		return {
+  data () {
+    return {
 
-		}
-	},
-	methods: {
-		emitClick() {
-			this.$emit("click");
-		}
-	}
+    }
+  },
+  methods: {
+    emitClick () {
+      this.$emit('click')
+    }
+  }
 }
 </script>
 

@@ -37,79 +37,79 @@
 </template>
 
 <script>
-import { search } from '@/modules/request';
-import { uniq } from '@/modules/utils/util';
+import { search } from '@/modules/request'
+import { uniq } from '@/modules/utils/util'
 export default {
-	name: 'search-bar',
+  name: 'search-bar',
 
-	data() {
-		return {
-			content: '',
-			histories: [],
-			historyShow: false,
-			resultShow: false,
-			lists: [],
-			cancelShow: false
-		}
-	},
+  data () {
+    return {
+      content: '',
+      histories: [],
+      historyShow: false,
+      resultShow: false,
+      lists: [],
+      cancelShow: false
+    }
+  },
 
-	mounted() {
-		this.histories = JSON.parse(localStorage.getItem('histories'));
-		this.histories = this.histories ? this.histories : [];
-	},
+  mounted () {
+    this.histories = JSON.parse(localStorage.getItem('histories'))
+    this.histories = this.histories ? this.histories : []
+  },
 
-	methods: {
-		handleClick(e) {
-			this.$store.dispatch('showControler', false);
-			this.historyShow = true;
-			this.resultShow = false;
-			this.cancelShow = true;
-		},
+  methods: {
+    handleClick (e) {
+      this.$store.dispatch('showControler', false)
+      this.historyShow = true
+      this.resultShow = false
+      this.cancelShow = true
+    },
 
-		handleSearch(history) {
-			if((Object.prototype.toString.call(history).slice(8, -1) === 'KeyboardEvent') && !this.content.trim()){
-				return ;
-			}
-			this.historyShow = false;
-			this.resultShow = true;
+    handleSearch (history) {
+      if ((Object.prototype.toString.call(history).slice(8, -1) === 'KeyboardEvent') && !this.content.trim()) {
+        return
+      }
+      this.historyShow = false
+      this.resultShow = true
 
-			if(Object.prototype.toString.call(history).slice(8, -1) === 'String'){
-				search(history).then((res) => {
-					this.content = history;
-					this.lists = res.data.result.songs;
-				});
-				return ;
-			}
+      if (Object.prototype.toString.call(history).slice(8, -1) === 'String') {
+        search(history).then((res) => {
+          this.content = history
+          this.lists = res.data.result.songs
+        })
+        return
+      }
 
-			search(this.content).then((res) => {
-				this.histories.push(this.content);
-				this.histories = uniq(this.histories);
-				localStorage.setItem('histories', JSON.stringify(this.histories));
-				this.lists = res.data.result.songs;
-			});
-		},
+      search(this.content).then((res) => {
+        this.histories.push(this.content)
+        this.histories = uniq(this.histories)
+        localStorage.setItem('histories', JSON.stringify(this.histories))
+        this.lists = res.data.result.songs
+      })
+    },
 
-		playMusic(index) {
-			this.$store.dispatch('setPlayer', {
-				songId: this.lists[index].id,
-				show: true,
-				state: 1
-			});
-		},
+    playMusic (index) {
+      this.$store.dispatch('setPlayer', {
+        songId: this.lists[index].id,
+        show: true,
+        state: 1
+      })
+    },
 
-		deleteHistory(index) {
-			this.histories.splice(index, 1);
-			localStorage.setItem('histories', JSON.stringify(this.histories));
-		},
+    deleteHistory (index) {
+      this.histories.splice(index, 1)
+      localStorage.setItem('histories', JSON.stringify(this.histories))
+    },
 
-		cancel() {
-			this.content = '';
-			this.cancelShow = false;
-			this.historyShow = false;
-			this.resultShow = false;
-			this.$store.dispatch('showControler', true);
-		}
-	}
+    cancel () {
+      this.content = ''
+      this.cancelShow = false
+      this.historyShow = false
+      this.resultShow = false
+      this.$store.dispatch('showControler', true)
+    }
+  }
 }
 </script>
 

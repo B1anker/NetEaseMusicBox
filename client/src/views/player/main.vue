@@ -66,347 +66,347 @@
 </template>
 
 <script>
-import { detail, getMp3Url, history, getPlayLists } from '@/modules/request';
-import Ls from '@/modules/utils/localStorage';
-import Cover from './cover';
-import Lyric from './lyric';
-import Drag from './drag';
-import Lists from './lists';
-import Comments from './comments';
+import { detail, getMp3Url, history } from '@/modules/request'
+import Ls from '@/modules/utils/localStorage'
+import Cover from './cover'
+import Lyric from './lyric'
+import Drag from './drag'
+import Lists from './lists'
+import Comments from './comments'
 export default {
-	name: 'player',
+  name: 'player',
 
-	components: {
-		Cover,
-		Lyric,
-		Lists,
-		Comments
-	},
+  components: {
+    Cover,
+    Lyric,
+    Lists,
+    Comments
+  },
 
-	data() {
-		/**
+  data () {
+    /**
      * @param {HTMLELEMENT} [mp3Dom] [mp3元素]
      * @param {String} [artist] [歌手名]
      * @param {String} [music] [音乐名]
-		 * @param {Object} [detail] [音乐详细信息]
+     * @param {Object} [detail] [音乐详细信息]
      * @param {String} [url] [音乐链接]
      * @param {String} [picUrl] [图片链接]
      * @param {Boolean} [played] [是否播放过]
-		 * @param {Boolean} [onplaying] [是否正在播放]
+     * @param {Boolean} [onplaying] [是否正在播放]
      * @param {Number} [current] [当前播放进度]
      * @param {Number} [total] [音乐总时长]
      * @param {Number} [step] [每秒播放圆点移动距离]
      * @param {Number} [timer] [定时器返回值]
      * @param {Object} [processDrag] [拖动对象]
-		 * @param {Boolean} [switchCoverOrLyric] [切换封面/歌词]
+     * @param {Boolean} [switchCoverOrLyric] [切换封面/歌词]
      * @param {Array} [playLists] [歌单列表]
      * @param {String} [playListsId] [歌单id]
      * @param {Number} [playIndex] [播放歌单索引]
      */
-		return {
-			mp3Dom: null,
-			artist: '',
-			music: '',
-			detail: {},
-			url: '',
-			picUrl: '',
-			played: false,
-			onplaying: false,
-			current: 0,
-			total: 0,
-			step: 0,
-			timer: null,
-			processDrag: null,
-			showCover: true,
-			playListsId: 0,
-			tracks: [],
-			playIndex: 0,
-			progressPercent: 0
-		}
-	},
+    return {
+      mp3Dom: null,
+      artist: '',
+      music: '',
+      detail: {},
+      url: '',
+      picUrl: '',
+      played: false,
+      onplaying: false,
+      current: 0,
+      total: 0,
+      step: 0,
+      timer: null,
+      processDrag: null,
+      showCover: true,
+      playListsId: 0,
+      tracks: [],
+      playIndex: 0,
+      progressPercent: 0
+    }
+  },
 
-	computed: {
-		show() {
-			return this.$store.getters.getPlayer.show;
-		},
+  computed: {
+    show () {
+      return this.$store.getters.getPlayer.show
+    },
 
-		id() {
-			return '' + this.$store.getters.getPlayer.songId;
-		}
-	},
+    id () {
+      return '' + this.$store.getters.getPlayer.songId
+    }
+  },
 
-	watch: {
-		id(newVal) {
-			this.switchSong(newVal);
-			return newVal;
-		}
-	},
+  watch: {
+    id (newVal) {
+      this.switchSong(newVal)
+      return newVal
+    }
+  },
 
-	mounted() {
-		this.$nextTick(() => {
-			this.setPlayLists();
-			this.init(this.id);
-		});
-	},
+  mounted () {
+    this.$nextTick(() => {
+      this.setPlayLists()
+      this.init(this.id)
+    })
+  },
 
-	methods: {
-		init(id) {
-			if(!id){
-				return ;
-			}
+  methods: {
+    init (id) {
+      if (!id) {
+        return
+      }
 
-			this.mp3Dom = this.$refs.mp3;
-			this.mp3Dom.volume = localStorage.getItem('volume');
-			this.getDetail().then(() => {
-				this.getMp3();
-			});
-			this.processDrag = new Drag({
-				el: this.$refs.processPoint,
-				parentNodeWidth: 212,
-				boundary: {
-					min: (320 - 212) / 2 + 8,
-					max: (320 - 212) / 2 + 212
-				}
-			});
-		},
+      this.mp3Dom = this.$refs.mp3
+      this.mp3Dom.volume = localStorage.getItem('volume')
+      this.getDetail().then(() => {
+        this.getMp3()
+      })
+      this.processDrag = new Drag({
+        el: this.$refs.processPoint,
+        parentNodeWidth: 212,
+        boundary: {
+          min: (320 - 212) / 2 + 8,
+          max: (320 - 212) / 2 + 212
+        }
+      })
+    },
 
-		setPlayLists() {
-			const playLists = JSON.parse(localStorage.getItem('playLists')) || {tracks: [], index: 0};
-			this.tracks = playLists.tracks || [];
-			this.playIndex = playLists.index;
-		},
+    setPlayLists () {
+      const playLists = JSON.parse(localStorage.getItem('playLists')) || {tracks: [], index: 0}
+      this.tracks = playLists.tracks || []
+      this.playIndex = playLists.index
+    },
 
-		switchSong(id) {
-			if(!id){
-				return ;
-			}
-			if(!this.mp3Dom){
-				return ;
-			}
-			this.current = 0;
-			this.processDrag = new Drag({
-				el: this.$refs.processPoint,
-				parentNodeWidth: 212,
-				boundary: {
-					min: (320 - 212) / 2 + 8,
-					max: (320 - 212) / 2 + 212
-				}
-			});
-			this.getDetail(id).then(() => {
-				this.played = false;
-				this.getMp3().then(() => {
-					this.play();
-				});
-			});
-		},
+    switchSong (id) {
+      if (!id) {
+        return
+      }
+      if (!this.mp3Dom) {
+        return
+      }
+      this.current = 0
+      this.processDrag = new Drag({
+        el: this.$refs.processPoint,
+        parentNodeWidth: 212,
+        boundary: {
+          min: (320 - 212) / 2 + 8,
+          max: (320 - 212) / 2 + 212
+        }
+      })
+      this.getDetail(id).then(() => {
+        this.played = false
+        this.getMp3().then(() => {
+          this.play()
+        })
+      })
+    },
 
-		handleBack() {
-			this.$store.dispatch('showPlayer', false);
-		},
+    handleBack () {
+      this.$store.dispatch('showPlayer', false)
+    },
 
-		handleShare() {
+    handleShare () {
 
-		},
+    },
 
-		getDetail(id) {
-			return detail(id || this.id).then((res) => {
-				if (!res.data.songs) {
-					this.$message({
-						message: '获取歌曲信息失败',
-						type: 'error',
-						duration: 1000
-					});
-					return ;
-				}
-				const song = res.data.songs[0];
-				this.detail = song;
-				const artist = [];
-				this.music = song.name;
-				song.ar.forEach((item, index, arr) => {
-					artist.push(item.name);
-				});
-				this.artist = artist.join('\/');
-				this.picUrl = song.al.picUrl;
-			});
-		},
+    getDetail (id) {
+      return detail(id || this.id).then((res) => {
+        if (!res.data.songs) {
+          this.$message({
+            message: '获取歌曲信息失败',
+            type: 'error',
+            duration: 1000
+          })
+          return
+        }
+        const song = res.data.songs[0]
+        this.detail = song
+        const artist = []
+        this.music = song.name
+        song.ar.forEach((item, index, arr) => {
+          artist.push(item.name)
+        })
+        this.artist = artist.join('/')
+        this.picUrl = song.al.picUrl
+      })
+    },
 
-		getMp3() {
-			return getMp3Url(this.id).then((res) => {
-				if (!res.data.songs) {
-					this.$message({
-						message: '获取歌曲失败',
-						type: 'error',
-						duration: 1000
-					});
-					return ;
-				}
-				const song = res.data.songs[0];
-				this.url = song.url;
-				this.played = false;
-			});
-		},
+    getMp3 () {
+      return getMp3Url(this.id).then((res) => {
+        if (!res.data.songs) {
+          this.$message({
+            message: '获取歌曲失败',
+            type: 'error',
+            duration: 1000
+          })
+          return
+        }
+        const song = res.data.songs[0]
+        this.url = song.url
+        this.played = false
+      })
+    },
 
-		startTimer() {
-			this.timer = setInterval(() => {
-				this.current = Number((this.current + 0.1).toFixed(2));
-			}, 100);
-		},
+    startTimer () {
+      this.timer = setInterval(() => {
+        this.current = Number((this.current + 0.1).toFixed(2))
+      }, 100)
+    },
 
-		stopTimer() {
-			clearInterval(this.timer);
-			this.timer = null;
-		},
+    stopTimer () {
+      clearInterval(this.timer)
+      this.timer = null
+    },
 
-		transformDuation(seconds) {
-			const minutes = Math.floor(seconds / 60);
-			seconds = Math.floor(seconds - minutes * 60);
-			if(seconds < 10){
-				seconds = '0' + seconds;
-			}
-			return `${ minutes }:${ seconds }`
-		},
+    transformDuation (seconds) {
+      const minutes = Math.floor(seconds / 60)
+      seconds = Math.floor(seconds - minutes * 60)
+      if (seconds < 10) {
+        seconds = '0' + seconds
+      }
+      return `${minutes}:${seconds}`
+    },
 
-		process() {
-			return this.current * this.step + 'px';
-		},
+    process () {
+      return this.current * this.step + 'px'
+    },
 
-		load() {
-			this.mp3Dom.load();
-			this.current = 0;
-			this.mp3Dom.addEventListener('canplay', this.canplay, false);
-			this.mp3Dom.addEventListener('timeupdate', this.progress, false)
-			this.mp3Dom.addEventListener('ended', this.ended, false);
-		},
+    load () {
+      this.mp3Dom.load()
+      this.current = 0
+      this.mp3Dom.addEventListener('canplay', this.canplay, false)
+      this.mp3Dom.addEventListener('timeupdate', this.progress, false)
+      this.mp3Dom.addEventListener('ended', this.ended, false)
+    },
 
-		progress(e) {
-			if (this.mp3Dom.readyState === 4) {
-				this.progressPercent = Math.round(this.mp3Dom.buffered.end(0) / this.mp3Dom.duration * 100);
-			}
-			if (this.progressPercent === 100) {
-				this.mp3Dom.removeEventListener('timeupdate', this.progress, false);
-			}
-		},
+    progress (e) {
+      if (this.mp3Dom.readyState === 4) {
+        this.progressPercent = Math.round(this.mp3Dom.buffered.end(0) / this.mp3Dom.duration * 100)
+      }
+      if (this.progressPercent === 100) {
+        this.mp3Dom.removeEventListener('timeupdate', this.progress, false)
+      }
+    },
 
-		canplay(e) {
-			this.played = true;
-			this.total = this.mp3Dom.duration;
-			this.step = (212 / this.total).toFixed(2);
-			this.processDrag.start(function(e) {
-				e.preventDefault();
+    canplay (e) {
+      this.played = true
+      this.total = this.mp3Dom.duration
+      this.step = (212 / this.total).toFixed(2)
+      this.processDrag.start(function (e) {
+        e.preventDefault()
 
-				if(e.target.className !== 'point'){
-					return;
-				}
+        if (e.target.className !== 'point') {
+          return
+        }
 
-				this.stopTimer();
-			}.bind(this));
-			this.processDrag.end(function(e) {
-				e.preventDefault();
+        this.stopTimer()
+      }.bind(this))
+      this.processDrag.end(function (e) {
+        e.preventDefault()
 
-				if(e.target.className !== 'point'){
-					return;
-				}
+        if (e.target.className !== 'point') {
+          return
+        }
 
-				this.current =  Number(((parseInt(this.$refs.processPoint.style.left) / 212) * this.total).toFixed(2));
-				this.mp3Dom.currentTime = this.current;
-				this.startTimer();
-			}.bind(this));
-			this.mp3Dom.play();
-			this.stopTimer();
-			this.startTimer();
-			this.onplaying = true;
-			this.$store.dispatch('setPlayer', {
-				state: 1
-			});
-			this.mp3Dom.removeEventListener('canplay', this.canplay, false);
-		},
+        this.current = Number(((parseInt(this.$refs.processPoint.style.left) / 212) * this.total).toFixed(2))
+        this.mp3Dom.currentTime = this.current
+        this.startTimer()
+      }.bind(this))
+      this.mp3Dom.play()
+      this.stopTimer()
+      this.startTimer()
+      this.onplaying = true
+      this.$store.dispatch('setPlayer', {
+        state: 1
+      })
+      this.mp3Dom.removeEventListener('canplay', this.canplay, false)
+    },
 
-		ended() {
-			this.mp3Dom.removeEventListener('ended', this.end, false);
-			const user = new Ls().get('user');
-			history('set', {
-				username: user.profile.nickname,
-				music: this.detail
-			});
-			this.stopTimer();
-			this.current = 0;
-			this.onplaying = false;
-			this.next();
-		},
+    ended () {
+      this.mp3Dom.removeEventListener('ended', this.end, false)
+      const user = new Ls().get('user')
+      history('set', {
+        username: user.profile.nickname,
+        music: this.detail
+      })
+      this.stopTimer()
+      this.current = 0
+      this.onplaying = false
+      this.next()
+    },
 
-		play() {
-			if(!this.played){
-				this.load();
-				return ;
-			}
+    play () {
+      if (!this.played) {
+        this.load()
+        return
+      }
 
-			if(this.mp3Dom.paused && !this.onplaying){
-				this.mp3Dom.play();
-				this.stopTimer();
-				this.startTimer();
-				this.onplaying = true;
-				this.$store.dispatch('setPlayer', {
-					state: 1
-				});
-				return ;
-			}
+      if (this.mp3Dom.paused && !this.onplaying) {
+        this.mp3Dom.play()
+        this.stopTimer()
+        this.startTimer()
+        this.onplaying = true
+        this.$store.dispatch('setPlayer', {
+          state: 1
+        })
+        return
+      }
 
-			this.mp3Dom.pause();
-			this.stopTimer();
-			this.onplaying = false;
-			this.$store.dispatch('setPlayer', {
-				state: -1
-			});
-		},
+      this.mp3Dom.pause()
+      this.stopTimer()
+      this.onplaying = false
+      this.$store.dispatch('setPlayer', {
+        state: -1
+      })
+    },
 
-		switchCoverOrLyric() {
-			this.showCover = !this.showCover;
-		},
+    switchCoverOrLyric () {
+      this.showCover = !this.showCover
+    },
 
-		handleVolume(level) {
-			if(this.mp3Dom){
-				this.mp3Dom.volume = level;
-				return ;
-			}
-		},
+    handleVolume (level) {
+      if (this.mp3Dom) {
+        this.mp3Dom.volume = level
+        return
+      }
+    },
 
-		popLists() {
-			this.$store.dispatch('setLists', {
-				show: true
-			});
-		},
+    popLists () {
+      this.$store.dispatch('setLists', {
+        show: true
+      })
+    },
 
-		prev() {
-			if (this.playIndex > 0) {
-				this.$store.dispatch('setPlayer', {
-					songId: '' + this.playLists[--this.playIndex].id
-				});
-				this.$store.dispatch('setLists', {
-					index: this.playIndex
-				});
-			}
-		},
+    prev () {
+      if (this.playIndex > 0) {
+        this.$store.dispatch('setPlayer', {
+          songId: '' + this.playLists[--this.playIndex].id
+        })
+        this.$store.dispatch('setLists', {
+          index: this.playIndex
+        })
+      }
+    },
 
-		next() {
-			if (this.playIndex < this.tracks.length) {
-				this.$store.dispatch('setPlayer', {
-					songId: '' + this.tracks[++this.playIndex].id
-				});
-				this.$store.dispatch('setLists', {
-					index: this.playIndex
-				});
-				this.progressPercent = 0;
-			}
-		}
-	}
+    next () {
+      if (this.playIndex < this.tracks.length) {
+        this.$store.dispatch('setPlayer', {
+          songId: '' + this.tracks[++this.playIndex].id
+        })
+        this.$store.dispatch('setLists', {
+          index: this.playIndex
+        })
+        this.progressPercent = 0
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss">
-	$base-color: rgb(212, 60, 51);
+  $base-color: rgb(212, 60, 51);
 
-	.player-container{
-		width: 100%;
+  .player-container{
+  	width: 100%;
 		height: 100%;
 		position: absolute;
 		top: 0;

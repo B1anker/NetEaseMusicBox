@@ -22,62 +22,61 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll';
-import axios from 'axios';
+import BScroll from 'better-scroll'
 export default {
-	name: 'lists',
+  name: 'lists',
 
-	props: {
-		lists: Array
-	},
+  props: {
+    lists: Array
+  },
 
-	data() {
-		return {
-			listsShow: false
-		}
-	},
+  data () {
+    return {
+      listsShow: false
+    }
+  },
 
-	computed: {
-		_index() {
-			return this.$store.getters.getPlayer.lists.index;
-		}
-	},
+  computed: {
+    _index () {
+      return this.$store.getters.getPlayer.lists.index
+    }
+  },
 
-	mounted() {
-		this.scroll();
-	},
+  mounted () {
+    this.scroll()
+  },
 
-	methods: {
-		close() {
-			this.$store.dispatch('setLists', {
-				show: false
-			});
-		},
+  methods: {
+    close () {
+      this.$store.dispatch('setLists', {
+        show: false
+      })
+    },
 
-		switchMusic(index) {
-			this.$store.dispatch('setPlayer', {
-				songId: this.lists[index].id
-			});
-			this.$store.dispatch('setLists', {
-				index
-			});
-			this.close();
-		},
+    switchMusic (index) {
+      this.$store.dispatch('setPlayer', {
+        songId: this.lists[index].id
+      })
+      this.$store.dispatch('setLists', {
+        index
+      })
+      this.close()
+    },
 
-		scroll() {
-			this.$nextTick(() => {
-				const playLists = JSON.parse(localStorage.getItem('playLists')) || {tracks: [], index: 0};
-				this.$refs['ul'].style.height = playLists.tracks.length * 0.45 * parseInt(getComputedStyle(window.document.documentElement)['font-size']) + 'px';
-				this.scrollInstance = new BScroll(this.$refs.lists, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: false,
-					probeType: 2
-				});
-			})
-		}
-	}
+    scroll () {
+      this.$nextTick(() => {
+        const playLists = JSON.parse(localStorage.getItem('playLists')) || {tracks: [], index: 0}
+        this.$refs['ul'].style.height = playLists.tracks.length * 0.45 * parseInt(getComputedStyle(window.document.documentElement)['font-size']) + 'px'
+        this.scrollInstance = new BScroll(this.$refs.lists, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: false,
+          probeType: 2
+        })
+      })
+    }
+  }
 }
 </script>
 

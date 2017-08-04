@@ -14,43 +14,29 @@
 </template>
 
 <script>
-import { getUserDetail } from '@/modules/request';
 export default {
-	name: 'welcome',
+  name: 'welcome',
 
-	components: {
-	},
+  mounted () {
+    this.init()
+  },
 
-	mounted() {
-		this.init();
-	},
+  methods: {
+    init () {
+      const user = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user'))
+      if (user && user.code !== 200) {
+        return
+      }
+    },
 
-	data() {
-		return {
-		}
-	},
+    signin () {
+      this.$router.push('/signin')
+    },
 
-	methods: {
-		init() {
-			const user = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user'));
-			if (user && user.code !== 200) {
-				return ;
-			}
-			// getUserDetail(user.account.id).then((res) => {
-			// 	if (res.data) {
-			// 		this.$router.push('/home');
-			// 	}
-			// });
-		},
-
-		signin() {
-			this.$router.push('/signin');
-		},
-
-		enterHome() {
-			this.$router.push('/home');
-		}
-	}
+    enterHome () {
+      this.$router.push('/home')
+    }
+  }
 }
 </script>
 

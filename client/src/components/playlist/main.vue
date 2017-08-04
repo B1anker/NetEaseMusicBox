@@ -40,104 +40,102 @@
 </template>
 
 <script>
-import { getPlayLists } from '@/modules/request';
-import playList from '@/modules/mixins/playList';
-import Ls from '@/modules/utils/localStorage';
-import BScroll from 'better-scroll';
+import { getPlayLists } from '@/modules/request'
+import playList from '@/modules/mixins/playList'
+import Ls from '@/modules/utils/localStorage'
+import BScroll from 'better-scroll'
 export default {
-	name: 'playlist',
+  name: 'playlist',
 
-	props: {
-		playListId: String
-	},
+  props: {
+    playListId: String
+  },
 
-	mixins: [playList],
+  mixins: [playList],
 
-	data() {
-		return {
-			playlist: {},
-			tracks: [],
-			avatarUrl: '',
-			backgroundUrl: '',
-			nickname: '',
-			scrollInstance: null,
-			handling: null
-		}
-	},
+  data () {
+    return {
+      playlist: {},
+      tracks: [],
+      avatarUrl: '',
+      backgroundUrl: '',
+      nickname: '',
+      scrollInstance: null,
+      handling: null
+    }
+  },
 
+  computed: {
+    id () {
+      return this.$route.params.id
+    }
+  },
 
-	computed: {
-		id() {
-			return this.$route.params.id;
-		}
-	},
+  watch: {
+    id (newVal) {
+      newVal && this.init(newVal)
+      return newVal
+    }
+  },
 
-	watch: {
-		id(newVal) {
-			newVal && this.init(newVal);
-			return newVal;
-		}
-	},
+  created () {
+    this.handling = this.$message({
+      type: 'loading',
+      message: '加载中',
+      duration: 0
+    })
+  },
 
+  mounted () {
+    this.init()
+  },
 
-	created() {
-		this.handling = this.$message({
-			type: 'loading',
-			message: '加载中',
-			duration: 0
-		})
-	},
+  methods: {
+    init (id) {
+      const ls = new Ls()
+      this.backgroundUrl = ls.get('playLists').cover
+      getPlayLists(id || this.id).then((res) => {
+        this.handling.close()
+        if (!res.data) {
+          this.$message({
+            type: 'error',
+            message: '获取歌单失败',
+            duration: 1000
+          })
+        }
+        this.playlist = res.data.playlist
+        this.tracks = res.data.playlist.tracks
+        this.avatarUrl = this.playlist.creator.avatarUrl
+        this.nickname = this.playlist.creator.nickname
+        this.scroll()
+      })
+    },
 
-	mounted() {
-		this.init();
-	},
+    handleBack () {
+      this.$router.back()
+    },
 
-	methods: {
-		init(id) {
-			const ls = new Ls();
-			this.backgroundUrl = ls.get('playLists').cover;
-			getPlayLists(id || this.id).then((res) => {
-				this.handling.close();
-				if(!res.data){
-					this.$message({
-						type: 'error',
-						message: '获取歌单失败',
-						duration: 1000
-					})
-				}
-				this.playlist = res.data.playlist;
-				this.tracks = res.data.playlist.tracks;
-				this.avatarUrl = this.playlist.creator.avatarUrl;
-				this.nickname = this.playlist.creator.nickname;
-				this.scroll();
-			});
-		},
+    playMusic (index) {
+      this.setList(this.tracks, index)
+      this.$store.dispatch('setPlayer', {
+        songId: this.tracks[index].id,
+        show: true,
+        state: 1
+      })
+    },
 
-		handleBack() {
-			this.$router.back();
-		},
-
-		playMusic(index) {
-			this.setList(this.tracks, index);
-			this.$store.dispatch('setPlayer', {
-				songId: this.tracks[index].id,
-				show: true,
-				state: 1
-			});
-		},
-
-		scroll() {
-			this.$nextTick(() => {
-				this.scrollInstance = new BScroll(this.$refs.lists, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: true,
-					probeType: 2
-				});
-			})
-		}
-	}
+    scroll () {
+      this.$nextTick(() => {
+        this.scrollInstance = new BScroll(this.$refs.lists, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: true,
+          probeType: 2
+        })
+      })
+    }
+  }
 }
 </script>
 

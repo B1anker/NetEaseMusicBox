@@ -1,3 +1,3 @@
-import Friends from './main';
+import Friends from './main'
 
-export default Friends;
+export default Friends

@@ -19,54 +19,54 @@
 </template>
 
 <script>
-import { getRankingList } from '@/modules/request';
+import { getRankingList } from '@/modules/request'
 export default {
-	name: 'ranking-list',
+  name: 'ranking-list',
 
-	data() {
-		return {
-			netMusic: {},
-			netMusicSummary: [],
-			handling: null
-		}
-	},
+  data () {
+    return {
+      netMusic: {},
+      netMusicSummary: [],
+      handling: null
+    }
+  },
 
-	created() {
-		this.handling = this.$message({
-			type: 'loading',
-			message: '加载中',
-			duration: 0
-		});
-		this.init();
-	},
+  created () {
+    this.handling = this.$message({
+      type: 'loading',
+      message: '加载中',
+      duration: 0
+    })
+    this.init()
+  },
 
-	methods: {
-		init() {
-			getRankingList(3).then((res) => {
-				this.handling.close();
-				this.netMusic = res.data.result;
-				this.netMusicSummary = this.cut(this.netMusic.tracks);
-			});
-		},
+  methods: {
+    init () {
+      getRankingList(3).then((res) => {
+        this.handling.close()
+        this.netMusic = res.data.result
+        this.netMusicSummary = this.cut(this.netMusic.tracks)
+      })
+    },
 
-		cut(arr) {
-			const result = [...arr].splice(0, 3).map((item, index) => {
-				if (item.album.artists.length === 1) {
-					item.artists = item.album.artists[0].name;
-				} else {
-					item.artists = item.album.artists.reduce((prev, next) => {
-						return prev.name + '/' + next.name;
-					});
-				}
-				return item;
-			});
-			return result;
-		},
+    cut (arr) {
+      const result = [...arr].splice(0, 3).map((item, index) => {
+        if (item.album.artists.length === 1) {
+          item.artists = item.album.artists[0].name
+        } else {
+          item.artists = item.album.artists.reduce((prev, next) => {
+            return prev.name + '/' + next.name
+          })
+        }
+        return item
+      })
+      return result
+    },
 
-		goRankingList() {
-			this.$router.push({ name: 'rankingList', params: { id: 3 }});
-		}
-	}
+    goRankingList () {
+      this.$router.push({name: 'rankingList', params: { id: 3 }})
+    }
+  }
 }
 </script>
 

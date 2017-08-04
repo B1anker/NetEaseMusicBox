@@ -19,71 +19,71 @@
 </template>
 
 <script>
-import Banner from '@/components/banner/main';
-import BScroll from 'better-scroll';
-import { getHotPlayList, getBanner, getNewBanner } from '@/modules/request';
-import Ls from '@/modules/utils/localStorage';
-import axios from 'axios';
-const ls = new Ls();
+import Banner from '@/components/banner/main'
+import BScroll from 'better-scroll'
+import { getHotPlayList, getNewBanner } from '@/modules/request'
+import Ls from '@/modules/utils/localStorage'
+import axios from 'axios'
+const ls = new Ls()
 export default {
-	components: {
-		Banner
-	},
+  components: {
+    Banner
+  },
 
-	data() {
-		return {
-			banners: [],
-			playlists: [],
-			playListId: '0',
-			handling: null
-		}
-	},
+  data () {
+    return {
+      banners: [],
+      playlists: [],
+      playListId: '0',
+      handling: null
+    }
+  },
 
-	created() {
-		this.handling = this.$message({
-			type: 'loading',
-			message: '加载中',
-			duration: 0
-		})
-	},
+  created () {
+    this.handling = this.$message({
+      type: 'loading',
+      message: '加载中',
+      duration: 0
+    })
+  },
 
-	mounted() {
-		this.init();
-	},
+  mounted () {
+    this.init()
+  },
 
-	methods: {
-		init() {
-			axios.all([getNewBanner(), getHotPlayList()]).then(axios.spread((banners, hotList) => {
-				this.handling.close();
-				this.banners = banners;
-				this.playlists = hotList.data.result;
-				this.scroll();
-			}));
-		},
+  methods: {
+    init () {
+      axios.all([getNewBanner(), getHotPlayList()]).then(axios.spread((banners, hotList) => {
+        this.handling.close()
+        this.banners = banners
+        this.playlists = hotList.data.result
+        this.scroll()
+      }))
+    },
 
-		transformNumber(num) {
-			return Math.floor(num).toString().slice(0, -4) + '万';
-		},
+    transformNumber (num) {
+      return Math.floor(num).toString().slice(0, -4) + '万'
+    },
 
-		toPlayList(index) {
-			ls.set('playLists', {
-				cover: this.playlists[index].picUrl
-			});
-			this.$router.push({ name: 'playlist', params: { id: this.playlists[index].id }});
-		},
+    toPlayList (index) {
+      ls.set('playLists', {
+        cover: this.playlists[index].picUrl
+      })
+      this.$router.push({name: 'playlist', params: { id: this.playlists[index].id }})
+    },
 
-		scroll() {
-			this.$nextTick(() => {
-				this.scrollInstance = new BScroll(this.$refs.recommend, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: false,
-					probeType: 2
-				});
-			});
-		}
-	}
+    scroll () {
+      this.$nextTick(() => {
+        this.scrollInstance = new BScroll(this.$refs.recommend, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: false,
+          probeType: 2
+        })
+      })
+    }
+  }
 }
 </script>
 
@@ -111,7 +111,6 @@ export default {
 		left: 0.63rem;
 		font-size: 0.26rem;
 		font-family: 'icomoon' !important;
-	  speak: none;
 	  font-style: normal;
 	  font-weight: normal;
 	  font-variant: normal;

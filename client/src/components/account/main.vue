@@ -100,84 +100,84 @@
 </template>
 
 <script>
-import { getFollows, getFolloweds, getUserDetail, dailySign, refresh } from '@/modules/request';
-import BScroll from 'better-scroll';
-import axios from 'axios';
-import MySwitch from '@/packages/switch';
+import { getFollows, getFolloweds, getUserDetail, dailySign } from '@/modules/request'
+import BScroll from 'better-scroll'
+import axios from 'axios'
+import MySwitch from '@/packages/switch'
 export default {
-	name: 'account',
+  name: 'account',
 
-	data() {
-		return {
-			user: {},
-			follows: [],
-			followeds: [],
-			details: {},
-			scrollInstance: null
-		}
-	},
+  data () {
+    return {
+      user: {},
+      follows: [],
+      followeds: [],
+      details: {},
+      scrollInstance: null
+    }
+  },
 
-	components: {
-		MySwitch
-	},
+  components: {
+    MySwitch
+  },
 
-	computed: {
-		summaryShow() {
-			return !!this.user.profile;
-		}
-	},
+  computed: {
+    summaryShow () {
+      return !!this.user.profile
+    }
+  },
 
-	mounted() {
-		const user = JSON.parse(localStorage.getItem('user'));
+  mounted () {
+    const user = JSON.parse(localStorage.getItem('user'))
 
-		if (user.code === 200) {
-			this.user = user;
-			this.init();
-		}
-	},
+    if (user.code === 200) {
+      this.user = user
+      this.init()
+    }
+  },
 
-	methods: {
-		init() {
-			axios.all([getUserDetail(this.user.account.id), getFollows({
-				offset: 0,
-				limit: 1000,
-				id: this.user.profile.userId
-			}), getFolloweds(this.user.profile.userId)]).then(axios.spread((details, follows, followeds) => {
-				this.details = details.data;
-				this.follows = follows.data.follow;
-				this.followeds = followeds.data.followeds;
-				this.scroll();
-			}));
-		},
+  methods: {
+    init () {
+      axios.all([getUserDetail(this.user.account.id), getFollows({
+        offset: 0,
+        limit: 1000,
+        id: this.user.profile.userId
+      }), getFolloweds(this.user.profile.userId)]).then(axios.spread((details, follows, followeds) => {
+        this.details = details.data
+        this.follows = follows.data.follow
+        this.followeds = followeds.data.followeds
+        this.scroll()
+      }))
+    },
 
-		scroll() {
-			this.$nextTick(() => {
-				this.scrollInstance = new BScroll(this.$refs.content, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: false,
-					probeType: 2
-				});
-			});
-		},
+    scroll () {
+      this.$nextTick(() => {
+        this.scrollInstance = new BScroll(this.$refs.content, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: false,
+          probeType: 2
+        })
+      })
+    },
 
-		handleDailySign(e) {
-			dailySign(1).then((res) => {
-				this.$message({
-					type: 'correct',
-					message: '签到成功',
-					duration: 1000
-				});
-			}).catch((err) => {
-				this.$message({
-					type: 'error',
-					message: '签到失败',
-					duration: 1000
-				});
-			});
-		}
-	}
+    handleDailySign (e) {
+      dailySign(1).then((res) => {
+        this.$message({
+          type: 'correct',
+          message: '签到成功',
+          duration: 1000
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'error',
+          message: '签到失败',
+          duration: 1000
+        })
+      })
+    }
+  }
 }
 </script>
 

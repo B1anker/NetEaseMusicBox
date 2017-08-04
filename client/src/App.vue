@@ -21,28 +21,28 @@ export default {
   store,
 
   data () {
-return {
-  scrollInstance: null
-}
-},
+    return {
+      scrollInstance: null
+    }
+  },
 
   components: {
-	  Player,
-	  MyFooter,
+    Player,
+    MyFooter,
     Controler
   },
 
   mounted () {
     this.$nextTick(() => {
-  this.scrollInstance = new BScroll(this.$refs.app, {
-  startX: 0,
-  startY: 0,
-  scrollY: true,
-  click: true,
-  preventDefault: true,
-  probeType: 2
-})
-		})
+      this.scrollInstance = new BScroll(this.$refs.app, {
+        startX: 0,
+        startY: 0,
+        scrollY: true,
+        click: true,
+        preventDefault: true,
+        probeType: 2
+      })
+    })
   }
 }
 </script>

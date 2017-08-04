@@ -1,3 +1,3 @@
-import Discover from './main';
+import Discover from './main'
 
-export default Discover;
+export default Discover

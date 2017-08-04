@@ -1,3 +1,3 @@
-import RankingList from './main';
+import RankingList from './main'
 
-export default RankingList;
+export default RankingList

@@ -1,3 +1,3 @@
-import Banner from './main';
+import Banner from './main'
 
-export default Banner;
+export default Banner

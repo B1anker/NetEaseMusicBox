@@ -7,21 +7,20 @@
 </template>
 
 <script>
-
 export default {
-	name: 'home',
+  name: 'home',
 
-	mounted() {
-		try {
-			const user = JSON.parse(localStorage.getItem('user'));
-			if (user.code !== 200) {
-				this.$router.push('/');
-				return ;
-			}
-		} catch (e) {
-			this.$router.push('/');
-		}
-	}
+  mounted () {
+    try {
+      const user = JSON.parse(localStorage.getItem('user'))
+      if (user.code !== 200) {
+        this.$router.push('/')
+        return
+      }
+    } catch (e) {
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 

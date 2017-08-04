@@ -6,19 +6,13 @@
 
 <script>
 export default {
-	name: 'controler',
+  name: 'controler',
 
-	data() {
-		return {
-
-		}
-	},
-
-	methods: {
-		handleShow() {
-			this.$store.dispatch('showPlayer', true);
-		}
-	}
+  methods: {
+    handleShow () {
+      this.$store.dispatch('showPlayer', true)
+    }
+  }
 }
 </script>
 

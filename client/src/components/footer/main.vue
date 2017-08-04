@@ -11,58 +11,58 @@
 
 <script>
 export default {
-	name: 'footer',
+  name: 'footer',
 
-	data() {
-		return {
-			index: 0
-		}
-	},
+  data () {
+    return {
+      index: 0
+    }
+  },
 
-	mounted() {
-		this.init();
-	},
+  mounted () {
+    this.init()
+  },
 
-	methods: {
-		init() {
-			const routes = this.$route.path.split('/')
-			const path = routes[routes.length - 1];
-			switch (path) {
-				case 'personalized-recommend':
-					this.index = 0;
-					break;
-				case 'all-ranking-list':
-					this.index = 0;
-					break;
-				case 'my-music':
-					this.index = 1;
-					break;
-				case 'friends':
-					this.index = 2;
-					break;
-				case 'account':
-					this.index = 3;
-					break;
-				case 'history':
-					this.index = 3;
-					break;
-				default:
-					break;
-			}
-		},
+  methods: {
+    init () {
+      const routes = this.$route.path.split('/')
+      const path = routes[routes.length - 1]
+      switch (path) {
+        case 'personalized-recommend':
+          this.index = 0
+          break
+        case 'all-ranking-list':
+          this.index = 0
+          break
+        case 'my-music':
+          this.index = 1
+          break
+        case 'friends':
+          this.index = 2
+          break
+        case 'account':
+          this.index = 3
+          break
+        case 'history':
+          this.index = 3
+          break
+        default:
+          break
+      }
+    },
 
-		jump(to, index) {
-			this.index = index;
-			this.$router.push('/home/' + to);
-		}
-	}
+    jump (to, index) {
+      this.index = index
+      this.$router.push('/home/' + to)
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .footer{
-	position: fixed;
-	bottom: 0;
+  position: fixed;
+  bottom: 0;
 	left: 0;
 	right: 0;
 	margin: 0 auto;

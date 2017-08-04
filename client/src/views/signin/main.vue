@@ -25,76 +25,71 @@
 </template>
 
 <script>
-import { signin } from '@/modules/request';
+import { signin } from '@/modules/request'
 
 export default {
-	name: 'signin',
+  name: 'signin',
 
-	data() {
-		return {
-			unAbleToSignin: true,
-			username: '',
-			password: ''
-		}
-	},
+  data () {
+    return {
+      unAbleToSignin: true,
+      username: '',
+      password: ''
+    }
+  },
 
-	mounted() {
-
-	},
-
-	methods: {
-		handleBack() {
-			this.$router.back();
-		},
-		handleSignin() {
-			if (!this.username.match(/^1[34578]\d{9}$/)) {
-				this.$message({
-					message: '手机格式不正确',
-					type: 'error',
-					duration: 1000
-				});
-				return ;
-			}
-			this.unAbleToSignin = true;
-			let handling = this.$message({
-				message: '登录中',
-				type: 'loading',
-				duration: 0
-			});
-			signin({
-				cellphone: this.username,
-				password: this.password
-			}).then((res) => {
-				handling.close();
-				this.$store.dispatch('setUser', res.data);
-				localStorage.setItem('user', JSON.stringify(res.data));
-				this.unAbleToSignin = false;
-				this.$router.push('/home');
-			}).catch((err) => {
-				this.$message({
-					message: '账号或密码错误',
-					type: 'error',
-					duration: 1000
-				});
-				this.unAbleToSignin = false;
-			});
-		},
-		validate() {
-			if (this.username !== '' && this.password !== '') {
-				this.unAbleToSignin = false;
-			} else {
-				this.unAbleToSignin = true;
-			}
-		}
-	},
-	watch: {
-		username() {
-			this.validate();
-		},
-		password() {
-			this.validate();
-		}
-	}
+  methods: {
+    handleBack () {
+      this.$router.back()
+    },
+    handleSignin () {
+      if (!this.username.match(/^1[34578]\d{9}$/)) {
+        this.$message({
+          message: '手机格式不正确',
+          type: 'error',
+          duration: 1000
+        })
+        return
+      }
+      this.unAbleToSignin = true
+      let handling = this.$message({
+        message: '登录中',
+        type: 'loading',
+        duration: 0
+      })
+      signin({
+        cellphone: this.username,
+        password: this.password
+      }).then((res) => {
+        handling.close()
+        this.$store.dispatch('setUser', res.data)
+        localStorage.setItem('user', JSON.stringify(res.data))
+        this.unAbleToSignin = false
+        this.$router.push('/home')
+      }).catch(() => {
+        this.$message({
+          message: '账号或密码错误',
+          duration: 1000
+        })
+        this.unAbleToSignin = false
+      })
+    },
+    validate () {
+      if (this.username !== '' && this.password !== '') {
+        this.unAbleToSignin = false
+      } else {
+        this.unAbleToSignin = true
+      }
+    }
+  },
+  watch: {
+    username () {
+      this.validate()
+    },
+    password () {
+      this.validate()
+    }
+  }
 }
 </script>
 

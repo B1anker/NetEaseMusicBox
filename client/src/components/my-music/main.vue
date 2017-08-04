@@ -44,88 +44,88 @@
 
 <script>
 import BScroll from 'better-scroll'
-import { userPlayListsApi } from '@/modules/request';
-import Ls from '@/modules/utils/localStorage';
-const ls = new Ls();
+import { userPlayListsApi } from '@/modules/request'
+import Ls from '@/modules/utils/localStorage'
+const ls = new Ls()
 export default {
-	name: 'my-music',
+  name: 'my-music',
 
-	data() {
-		return {
-			user: {},
-			create: [],
-			subscribe: [],
-			createShow: true,
-			subscribeShow: true,
-			scrollInstance: null
-		}
-	},
+  data () {
+    return {
+      user: {},
+      create: [],
+      subscribe: [],
+      createShow: true,
+      subscribeShow: true,
+      scrollInstance: null
+    }
+  },
 
-	mounted() {
-		this.init();
-	},
+  mounted () {
+    this.init()
+  },
 
-	methods: {
-		init() {
-			this.user = JSON.parse(localStorage.getItem('user'));
-			if (this.user.code !== 200) {
-				return ;
-			}
-			userPlayListsApi(this.user.account.id).then((res) => {
-				if (!res.data) {
-					this.$message({
-						message: '获取用户歌单失败',
-						type: 'error',
-						duration: 1000
-					});
-					return ;
-				}
-				this.create = res.data.playlist.filter((item, index) => {
-					return item.userId === this.user.account.id;
-				});
-				this.subscribe = res.data.playlist.filter((item, index) => {
-					return item.userId !== this.user.account.id;
-				});
-				this.$nextTick(() => {
-					this.scrollInstance = new BScroll(this.$refs.content, {
-						startX: 0,
-						startY: 0,
-						scrollY: true,
-						click: false,
-						probeType: 2
-					});
-				})
-			});
-		},
+  methods: {
+    init () {
+      this.user = JSON.parse(localStorage.getItem('user'))
+      if (this.user.code !== 200) {
+        return
+      }
+      userPlayListsApi(this.user.account.id).then((res) => {
+        if (!res.data) {
+          this.$message({
+            message: '获取用户歌单失败',
+            type: 'error',
+            duration: 1000
+          })
+          return
+        }
+        this.create = res.data.playlist.filter((item, index) => {
+          return item.userId === this.user.account.id
+        })
+        this.subscribe = res.data.playlist.filter((item, index) => {
+          return item.userId !== this.user.account.id
+        })
+        this.$nextTick(() => {
+          this.scrollInstance = new BScroll(this.$refs.content, {
+            startX: 0,
+            startY: 0,
+            scrollY: true,
+            click: false,
+            probeType: 2
+          })
+        })
+      })
+    },
 
-		filterPlayList(arr, type) {
-			return arr.filter((item, index) => {
-				return item.userId === type;
-			});
-		},
+    filterPlayList (arr, type) {
+      return arr.filter((item, index) => {
+        return item.userId === type
+      })
+    },
 
-		toggleCreate() {
-			this.createShow = !this.createShow;
-		},
+    toggleCreate () {
+      this.createShow = !this.createShow
+    },
 
-		toggleSubscribe() {
-			this.subscribeShow = !this.subscribeShow;
-		},
+    toggleSubscribe () {
+      this.subscribeShow = !this.subscribeShow
+    },
 
-		toPlayList(index, type) {
-			if (type === 'create') {
-				ls.set('playLists', {
-					cover: this.create[index].coverImgUrl
-				});
-				this.$router.push({ name: 'playlist', params: { id: this.create[index].id }});
-			} else {
-				ls.set('playLists', {
-					cover: this.subscribe[index].coverImgUrl
-				});
-				this.$router.push({ name: 'playlist', params: { id: this.subscribe[index].id }});
-			}
-		}
-	}
+    toPlayList (index, type) {
+      if (type === 'create') {
+        ls.set('playLists', {
+          cover: this.create[index].coverImgUrl
+        })
+        this.$router.push({name: 'playlist', params: { id: this.create[index].id }})
+      } else {
+        ls.set('playLists', {
+          cover: this.subscribe[index].coverImgUrl
+        })
+        this.$router.push({name: 'playlist', params: { id: this.subscribe[index].id }})
+      }
+    }
+  }
 }
 </script>
 

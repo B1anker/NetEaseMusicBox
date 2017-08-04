@@ -76,85 +76,85 @@
 </template>
 
 <script>
-import { getMp3Comments } from '@/modules/request';
-import BScroll from 'better-scroll';
+import { getMp3Comments } from '@/modules/request'
+import BScroll from 'better-scroll'
 export default {
-	name: 'comments',
+  name: 'comments',
 
-	props: {
-		picUrl: String,
-		music: String,
-		artist: String
-	},
+  props: {
+    picUrl: String,
+    music: String,
+    artist: String
+  },
 
-	computed: {
-		id() {
-			return '' + this.$store.getters.getPlayer.songId;
-		},
+  computed: {
+    id () {
+      return '' + this.$store.getters.getPlayer.songId
+    },
 
-		show() {
-			return this.$store.getters.getPlayer.comments.show;
-		}
-	},
+    show () {
+      return this.$store.getters.getPlayer.comments.show
+    }
+  },
 
-	watch: {
-		show(newVal) {
-			if (newVal) {
-				this.$nextTick(() => {
-					this.scroll();
-				});
-			} else {
-				this.scrollInstance.destroy();
-				this.scrollInstance = null;
-			}
-			return newVal;
-		}
-	},
+  watch: {
+    show (newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          this.scroll()
+        })
+      } else {
+        this.scrollInstance.destroy()
+        this.scrollInstance = null
+      }
+      return newVal
+    }
+  },
 
-	data() {
-		return {
-			total: 0,
-			comments: [],
-			hotComments: [],
-			scrollInstance: null
-		};
-	},
+  data () {
+    return {
+      total: 0,
+      comments: [],
+      hotComments: [],
+      scrollInstance: null
+    }
+  },
 
-	mounted() {
-		getMp3Comments(this.id).then((res) => {
-			if(!res.data){
-				return ;
-			}
-			this.total = res.data.total;
-			this.hotComments = res.data.hotComments;
-			this.comments = res.data.comments;
-		});
-	},
+  mounted () {
+    getMp3Comments(this.id).then((res) => {
+      if (!res.data) {
+        return
+      }
+      this.total = res.data.total
+      this.hotComments = res.data.hotComments
+      this.comments = res.data.comments
+    })
+  },
 
-	methods: {
-		getDate(time) {
-			const date = new Date(time);
-			return `${ date.getMonth() + 1 }月${ date.getDate() }日`;
-		},
+  methods: {
+    getDate (time) {
+      const date = new Date(time)
+      return `${date.getMonth() + 1}月${date.getDate()}日`
+    },
 
-		handleClose() {
-			this.$store.dispatch('setPlayer', {
-				comments: true
-			});
-		},
+    handleClose () {
+      this.$store.dispatch('setPlayer', {
+        comments: true
+      })
+    },
 
-		scroll() {
-			this.$nextTick(() => {
-				this.scrollInstance = new BScroll(this.$refs.comments, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: true,
-					probeType: 2
-				});
-			})
-		}
-	}
+    scroll () {
+      this.$nextTick(() => {
+        this.scrollInstance = new BScroll(this.$refs.comments, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: true,
+          probeType: 2
+        })
+      })
+    }
+  }
 }
 </script>
 

@@ -16,179 +16,176 @@
 </template>
 
 <script>
-
-import Drag from './drag';
-import { lyric } from '@/modules/request';
+import Drag from './drag'
+import { lyric } from '@/modules/request'
 
 export default {
-	props: {
-		id: String,
-		current: Number
-	},
+  props: {
+    id: String,
+    current: Number
+  },
 
-	data() {
-		return {
-			level: 1,
-			timer: null,
-			times: [],
-			lyrics: [],
-			temp: '',
-			count: 0,
-			index: 0,
-			rollStyle: 'transform: translateY(0)',
-			lyricTimer: null,
-			ps: [],
-			autoScrolling: true
-		}
-	},
+  data () {
+    return {
+      level: 1,
+      timer: null,
+      times: [],
+      lyrics: [],
+      temp: '',
+      count: 0,
+      index: 0,
+      rollStyle: 'transform: translateY(0)',
+      lyricTimer: null,
+      ps: [],
+      autoScrolling: true
+    }
+  },
 
-	created() {
-		this.handleLyrics(this.id);
-	},
+  created () {
+    this.handleLyrics(this.id)
+  },
 
-	computed: {
-		playing() {
-			return this.$store.getters.getPlayer.state;
-		}
-	},
+  computed: {
+    playing () {
+      return this.$store.getters.getPlayer.state
+    }
+  },
 
-	watch: {
-		id(newId) {
-			this.handleLyrics(newId);
-			return newId;
-		},
+  watch: {
+    id (newId) {
+      this.handleLyrics(newId)
+      return newId
+    },
 
-		current(newVal, oldVal) {
-			if (Math.abs(newVal - oldVal) > .3) {
-				try {
-					this.index > 1 && this.ps[this.index - 1].className && (this.ps[this.index - 1].className = '');
-					this.ps.forEach((item, index) => {
-						item.className = '';
-					});
-					this.setIndex(newVal);
-					this.index && (this.ps[this.index - 1].className = 'on');
-					this.rollStyle = `transform: translateY(-${ this.index * 43 + 'px' })`;
-					this.autoScrolling = false;
-					setTimeout(() => {
-						this.autoScrolling = true;
-					}, 300);
-				} catch (e) {
-					console.log(e);
-				} finally {
+    current (newVal, oldVal) {
+      if (Math.abs(newVal - oldVal) > 0.3) {
+        try {
+          this.index > 1 && this.ps[this.index - 1].className && (this.ps[this.index - 1].className = '')
+          this.ps.forEach((item, index) => {
+            item.className = ''
+          })
+          this.setIndex(newVal)
+          this.index && (this.ps[this.index - 1].className = 'on')
+          this.rollStyle = `transform: translateY(-${this.index * 43 + 'px'})`
+          this.autoScrolling = false
+          setTimeout(() => {
+            this.autoScrolling = true
+          }, 300)
+        } catch (e) {
+          console.log(e)
+        } finally {
 
-				}
+        }
+      }
+      if (this.autoScrolling && (newVal <= (Number(this.times[this.times.length - 1]) + 0.2)) && (newVal >= Number(this.times[this.index]))) {
+        if (this.index === this.times.length) {
+          return
+        }
+        if (this.index === 0) {
+          this.ps[this.index].className = 'on'
+        } else {
+          this.ps[this.index - 1].className = ''
+          this.ps[this.index].className = 'on'
+        }
+        this.rollStyle = `transform: translateY(-${++this.index * 43 + 'px'})`
+      }
+      return newVal
+    }
+  },
 
-			}
-			if (this.autoScrolling && (newVal <= (Number(this.times[this.times.length - 1]) + 0.2)) && (newVal >= Number(this.times[this.index]))) {
-				if (this.index === this.times.length) {
-					return;
-				}
-				if (this.index === 0) {
-					this.ps[this.index].className = 'on';
-				} else {
-					this.ps[this.index - 1].className = '';
-					this.ps[this.index].className = 'on';
-				}
-				this.rollStyle = `transform: translateY(-${ ++this.index * 43 + 'px' })`;
-			}
-			return newVal;
-		}
-	},
+  mounted () {
+    this.$nextTick(() => {
+      this.init()
+    })
+  },
 
+  methods: {
+    init () {
+      this.volumeDrag = new Drag({
+        el: this.$refs.volumePoint,
+        parentNodeWidth: 212,
+        boundary: {
+          min: (320 - 212) / 2 + 4.5,
+          max: (320 - 212) / 2 + 212
+        }
+      })
 
-	mounted() {
-		this.$nextTick(() => {
-			this.init();
-		});
-	},
+      this.setVolume()
+    },
 
-	methods: {
-		init() {
-			this.volumeDrag = new Drag({
-				el: this.$refs.volumePoint,
-				parentNodeWidth: 212,
-				boundary: {
-					min: (320 - 212) / 2 + 4.5,
-					max: (320 - 212) / 2 + 212
-				}
-			});
+    setVolume () {
+      if (localStorage.getItem('volume')) {
+        this.level = localStorage.getItem('volume')
+        this.$refs.volumePoint.style.left = localStorage.getItem('volume') * 212 + 'px'
+      }
+      this.volumeDrag.end(function (e) {
+        e.preventDefault()
+        this.level = (this.$refs.volumePoint.offsetLeft / 212).toFixed(1)
+        localStorage.setItem('volume', this.level)
+        this.$emit('volume', this.level)
+      }.bind(this))
+      this.$refs.volumePoint.style.left = this.level * 212 + 'px'
+    },
 
-			this.setVolume();
-		},
+    emitTouchStart () {
+      clearTimeout(this.timer)
+      this.$emit('touchstart', this.level)
+    },
 
-		setVolume() {
-			if (localStorage.getItem('volume')) {
-				this.level = localStorage.getItem('volume');
-				this.$refs.volumePoint.style.left = localStorage.getItem('volume') * 212 + 'px';
-			}
-			this.volumeDrag.end(function(e) {
-				e.preventDefault();
-				this.level = (this.$refs.volumePoint.offsetLeft / 212).toFixed(1);
-				localStorage.setItem('volume', this.level);
-				this.$emit('volume', this.level);
-			}.bind(this));
-			this.$refs.volumePoint.style.left = this.level * 212 + 'px';
-		},
+    handleTouchstart () {
+      this.$refs.lyric.addEventListener('touchend', this.emitTouchStart, false)
+      this.timer = setTimeout(() => {
+        this.$refs.lyric.removeEventListener('touchend', this.emitTouchStart, false)
+      }, 300)
+    },
 
-		emitTouchStart() {
-			clearTimeout(this.timer);
-			this.$emit('touchstart', this.level);
-		},
+    handleLyrics (id) {
+      lyric(id).then((res) => {
+        if (!res.data.lrc) {
+          this.$message({
+            message: '获取歌词失败',
+            type: 'error',
+            duration: 1000
+          })
+          return
+        }
+        this.times = res.data.lrc.lyric.match(/\[\d{2}:\d{2}\.\d{2,3}\]/g).map((value) => {
+          const time = value.slice(1, -1)
+          const min = Number(time.split(':')[0])
+          const sec = Number(time.split(':')[1])
+          return (min * 60 + sec).toFixed(2)
+        })
 
-		handleTouchstart() {
-			this.$refs.lyric.addEventListener('touchend', this.emitTouchStart, false);
-			this.timer = setTimeout(() => {
-				this.$refs.lyric.removeEventListener('touchend', this.emitTouchStart, false);
-			}, 300);
-		},
+        this.lyrics = res.data.lrc.lyric.match(/\].*\n/g).map((value) => {
+          if (value.length === 2) {
+            return '<p>&nbsp</p>'
+          }
+          return `<p>${value.slice(1, value.length + 1).trim()}</p>`
+        })
+        this.renderLyrics()
+      })
+    },
 
-		handleLyrics(id) {
-			lyric(id).then((res) => {
-				if (!res.data.lrc) {
-					this.$message({
-						message: '获取歌词失败',
-						type: 'error',
-						duration: 1000
-					});
-					return ;
-				}
-				this.times = res.data.lrc.lyric.match(/\[\d{2}\:\d{2}\.\d{2,3}\]/g).map((value) => {
-					const time = value.slice(1, -1),
-						min = Number(time.split(':')[0]),
-						sec = Number(time.split(':')[1]);
-					return (min * 60 + sec).toFixed(2);
-				});
+    renderLyrics () {
+      this.temp = ''
+      this.lyrics.forEach((value, index) => {
+        this.temp += value
+      })
+      this.$nextTick(() => {
+        this.ps = this.$refs.roll.querySelectorAll('p')
+      })
+    },
 
-				this.lyrics = res.data.lrc.lyric.match(/\].*\n/g).map((value) => {
-					if(value.length === 2){
-						return '<p>&nbsp;</p>';
-					}
-					return `<p>${ value.slice(1, value.length + 1).trim() }</p>`;
-				});
-				this.renderLyrics();
-			});
-		},
-
-		renderLyrics() {
-			this.temp = '';
-			this.lyrics.forEach((value, index) => {
-				this.temp += value;
-			});
-			this.$nextTick(() => {
-				this.ps = this.$refs.roll.querySelectorAll('p');
-			});
-		},
-
-		setIndex(current) {
-			this.times.every((item, index) => {
-				if (current >= Number(item)) {
-					return true;
-				}
-				this.index = index;
-				return false;
-			})
-		}
-	}
+    setIndex (current) {
+      this.times.every((item, index) => {
+        if (current >= Number(item)) {
+          return true
+        }
+        this.index = index
+        return false
+      })
+    }
+  }
 }
 </script>
 

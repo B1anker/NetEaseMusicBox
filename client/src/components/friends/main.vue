@@ -49,121 +49,119 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll';
-import { getNewEvent } from '@/modules/request';
+import BScroll from 'better-scroll'
+import { getNewEvent } from '@/modules/request'
 export default {
-	name: 'friends',
+  name: 'friends',
 
-	data() {
-		return {
-			events: [],
-			refreshing: false,
-			scrollInstance: null,
-			handling: null,
-			ready: false
-		}
-	},
+  data () {
+    return {
+      events: [],
+      refreshing: false,
+      scrollInstance: null,
+      handling: null,
+      ready: false
+    }
+  },
 
-	created() {
-		this.handling = this.$message({
-			type: 'loading',
-			message: '请稍等',
-			duration: 0
-		});
-	},
+  created () {
+    this.handling = this.$message({
+      type: 'loading',
+      message: '请稍等',
+      duration: 0
+    })
+  },
 
-	mounted() {
-		this.init();
-	},
+  mounted () {
+    this.init()
+  },
 
-	methods: {
-		init() {
-			this.getData().then(() => {
-				this.handling.close();
-				this.ready = true;
-				this.scroll();
-			});
-		},
+  methods: {
+    init () {
+      this.getData().then(() => {
+        this.handling.close()
+        this.ready = true
+        this.scroll()
+      })
+    },
 
-		refresh() {
-			this.handling = this.$message({
-				type: 'loading',
-				message: '请稍等',
-				duration: 0
-			})
-			this.getData().then(() => {
-				this.handling.close();
-				this.scrollInstance.destroy();
-				this.scrollInstance = null;
-				this.refreshing = false;
-				this.scroll();
-			});;
-		},
+    refresh () {
+      this.handling = this.$message({
+        type: 'loading',
+        message: '请稍等',
+        duration: 0
+      })
+      this.getData().then(() => {
+        this.handling.close()
+        this.scrollInstance.destroy()
+        this.scrollInstance = null
+        this.refreshing = false
+        this.scroll()
+      })
+    },
 
-		getData(cb) {
-			return getNewEvent().then((res) => {
-				if (res.data.code !== 200) {
-					this.$message({
-						type: 'error',
-						message: '获取动态失败',
-						duration: 1000
-					});
-					return ;
-				}
-				this.events = res.data.event;
-				this.events = this.events.map((item, index) => {
-					item.json = JSON.parse(item.json);
-					if (item.json.msg) {
-						item.json.msg = item.json.msg.replace(/\n/, '<br/>');
-					}
-					return item;
-				});
-			})
-		},
+    getData (cb) {
+      return getNewEvent().then((res) => {
+        if (res.data.code !== 200) {
+          this.$message({
+            type: 'error',
+            message: '获取动态失败',
+            duration: 1000
+          })
+          return
+        }
+        this.events = res.data.event
+        this.events = this.events.map((item, index) => {
+          item.json = JSON.parse(item.json)
+          if (item.json.msg) {
+            item.json.msg = item.json.msg.replace(/\n/, '<br/>')
+          }
+          return item
+        })
+      })
+    },
 
-		scroll() {
-			this.$nextTick(() => {
-				this.scrollInstance = new BScroll(this.$refs.content, {
-					startX: 0,
-					startY: 0,
-					scrollY: true,
-					click: false,
-					probeType: 2
-				});
-				this.scrollInstance.on('scroll', (pos) => {
-					if (this.refreshing) {
-						return ;
-					}
-					if (pos.y > 50) {
-						this.refreshing = true;
-						this.refresh();
-					}
-				});
-			})
-		},
+    scroll () {
+      this.$nextTick(() => {
+        this.scrollInstance = new BScroll(this.$refs.content, {
+          startX: 0,
+          startY: 0,
+          scrollY: true,
+          click: false,
+          probeType: 2
+        })
+        this.scrollInstance.on('scroll', (pos) => {
+          if (this.refreshing) {
+            return
+          }
+          if (pos.y > 50) {
+            this.refreshing = true
+            this.refresh()
+          }
+        })
+      })
+    },
 
-		handleType(type) {
-			switch (type) {
-				case 39:
-					return '发布短视频：'
-					break;
-				case 18:
-					return '分享单曲：'
-					break;
-				default:
-					break;
-			}
-		},
+    handleType (type) {
+      switch (type) {
+        case 39:
+          return '发布短视频：'
+        case 18:
+          return '分享单曲：'
+        default:
+          break
+      }
+    },
 
-		handleTime(time) {
-			const date = new Date(time);
-			return date.getFullYear();
-		},
+    handleTime (time) {
+      const date = new Date(time)
+      return date.getFullYear()
+    },
 
-		playVideo(e){
-			console.log(e.target);
-		}
-	}
+    playVideo (e) {
+      console.log(e.target)
+    }
+  }
 }
 </script>
 

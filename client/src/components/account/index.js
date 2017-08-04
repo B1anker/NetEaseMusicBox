@@ -1,3 +1,3 @@
-import Account from './main';
+import Account from './main'
 
-export default Account;
+export default Account

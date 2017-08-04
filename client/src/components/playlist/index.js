@@ -1,3 +1,3 @@
-import Playlist from './main';
+import Playlist from './main'
 
-export default Playlist;
+export default Playlist

@@ -1,3 +1,3 @@
-import Message from './main';
+import Message from './main'
 
-export default Message;
+export default Message
